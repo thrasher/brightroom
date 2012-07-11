@@ -1,0 +1,273 @@
+<!doctype html>
+<!-- The DOCTYPE declaration above will set the    -->
+<!-- browser's rendering engine into               -->
+<!-- "Standards Mode". Replacing this declaration  -->
+<!-- with a "Quirks Mode" doctype may lead to some -->
+<!-- differences in layout.                        -->
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <!--                                                               -->
+    <!-- Consider inlining CSS to reduce the number of requested files -->
+    <!--                                                               -->
+    <link type="text/css" rel="stylesheet" href="Rooms.css">
+
+    <!--                                           -->
+    <!-- Any title is fine                         -->
+    <!--                                           -->
+    <title>Web Application Starter Project</title>
+
+    <!--                                           -->
+    <!-- This script loads your compiled module.   -->
+    <!-- If you add any GWT meta tags, they must   -->
+    <!-- be added before this line.                -->
+    <!--                                           -->
+    <script type="text/javascript" language="javascript" src="Rooms/Rooms.nocache.js"></script>
+    
+    <style type="text/css">
+    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+    .string { color: green; }
+    .number { color: darkorange; }
+    .boolean { color: blue; }
+    .null { color: magenta; }
+    .key { color: red; }
+    ​</style>
+    <script type="text/javascript">
+    /*
+    1) check what office the user is in.  Let them specify the office location
+    2) use the office location to verify/add access to all calendars in that office
+    3) use CalendarList: get for each calendar, to see if the user has access to it
+    4) add any calendars the user doesn't have access to for the given location
+    5) inform the user that all calendars for the given location have been added to their calendar
+    6) let the user choose a room (same url as QR code to scan a room)
+    7) show schedule of events for the room for the current day
+      button to allow them to navigate to the next day
+      button to allow them to navigate to the previous day
+      button to schedule the next available meeting in the room
+      button to schedule the next available room to meet in (need to specify number of people?)
+    */
+    // all room resources
+    var rooms = {'sf':[
+'brightroll.com_2d34333237383332352d3535@resource.calendar.google.com',
+'brightroll.com_3436323139323534373431@resource.calendar.google.com',
+'brightroll.com_34313939373537382d343838@resource.calendar.google.com',
+'brightroll.com_2d38333031373532372d333831@resource.calendar.google.com',
+'brightroll.com_3835383832343430323437@resource.calendar.google.com',
+'brightroll.com_2d3430343930353038373432@resource.calendar.google.com',
+'brightroll.com_3533333139333531353330@resource.calendar.google.com',
+'brightroll.com_3835373938343733393133@resource.calendar.google.com',
+'brightroll.com_2d36363934303630302d333235@resource.calendar.google.com',
+'brightroll.com_3133343633373135323233@resource.calendar.google.com',
+'brightroll.com_35373634313730352d313236@resource.calendar.google.com',
+'brightroll.com_2d31393435363031362d393232@resource.calendar.google.com'// SF: Golden Gate (15)
+                       ],
+                       'ny':[
+'brightroll.com_3639343733353437313330@resource.calendar.google.com',
+'brightroll.com_34393131343630322d373933@resource.calendar.google.com',
+'brightroll.com_2d34353938363237303235@resource.calendar.google.com',
+'brightroll.com_36343134373931352d353037@resource.calendar.google.com'                             
+                             ]};
+    
+    // http://code.google.com/p/google-api-javascript-client/wiki/Samples
+    var clientId = '706281234659.apps.googleusercontent.com';
+    var apiKey = 'AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q';
+    var scopes = 'https://www.googleapis.com/auth/calendar';
+    // 'https://www.googleapis.com/auth/calendar.readonly'
+    
+    function init() {
+        //alert('we are in init');
+        gapi.client.setApiKey(apiKey);
+        window.setTimeout(checkAuth, 1);
+    }
+    function checkAuth() {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+    }
+    function handleAuthResult(authResult) {
+        //alert('we are in handleAuthResult');
+        
+        var authorizeButton = document.getElementById('authorize-button');
+        if (authResult && !authResult.error) {
+            // Subtract five minutes from expires_in to ensure timely refresh
+            var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
+            setTimeout(checkAuth, authTimeout);
+            
+            authorizeButton.style.visibility = 'hidden';
+            gapi.client.load('calendar', 'v3', makeApiCall);
+        } else {
+            authorizeButton.style.visibility = '';
+            authorizeButton.onclick = handleAuthClick;
+        }
+    }
+    function handleAuthClick(event) {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+    }
+    function makeApiCall() {
+        doListTodaysMeetings();
+    }
+    function doListEventsPrimary() {
+        var request = gapi.client.calendar.events.list({
+          'calendarId': 'primary'
+        });
+        request.execute(function(response, raw) {
+            appendResults(response.result.items.length);
+            prettyPrintJson(raw);
+        });
+    }
+    function doListAllMeetingRooms() {
+        gapi.client.calendar.calendarList.list({
+        }).execute(function(response, raw) {
+            var slist = {};
+            slist.sf = [];
+            slist.ny = [];
+            for (var i=0; i < response.result.items.length; i++) {
+                if (response.result.items[i].summary.indexOf('NY') >= 0) {
+                    appendResults("'"+response.result.items[i].id+"',");
+                    slist.sf[slist.sf.length] = response.result.items[i].id;
+                }
+            }
+            
+            //appendResults(slist.sf.length);
+            prettyPrintJson(raw);
+        });
+    }
+    function doListAllUserCalendars() {
+        gapi.client.calendar.calendarList.list({
+        }).execute(function(response, raw) {
+            appendResults(response.result.items.length);
+            prettyPrintJson(raw);
+        });
+    }
+    // get all events for the meeting room today
+    function doListTodaysMeetings() {
+        var d1 = new Date();
+        d1.setHours(0, 0, 0, 0);
+        var d2 = new Date();
+        d2.setHours(24, 0, 0, 0);
+        //alert(d1 + "\n" + d2);
+        gapi.client.calendar.events.list({
+            'calendarId': rooms.sf[0],
+            'orderBy': 'startTime',
+            'singleEvents': true,
+            'timeMax': d2,
+            'timeMin': d1
+        }).execute(function(response, raw) {
+            appendResults(response.result.items.length + " meetings today");
+            prettyPrintJson(raw);
+        });
+    }
+    function makeRestRequest(){
+        gapi.client.request({
+            'path': '/calendar/v3/users/me/calendarList',
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'application/json' // This is the default
+            },
+            'body': JSON.stringify({
+                'id': 'jthrasher@brightroll.com',
+                'selected': true
+            }),
+            'callback': function(jsonResponse, rawResponse) {
+                // Response is inserted Calendar
+                alert('response callback: '+jsonResponse+"\nrawResponse: "+rawResponse);
+            }
+        });
+    }
+    function appendResults(text) {
+           var results = document.getElementById('results');
+           results.appendChild(document.createElement('p'));
+           results.appendChild(document.createTextNode(text));
+    }
+    function prettyPrintJson(text) {
+        var print = document.createElement('pre');
+        print.innerHTML = syntaxHighlight(text);
+        
+        var results = document.getElementById('results');
+        results.appendChild(print);
+    }
+
+    function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+    function createCookie(name,value,days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+    }
+
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name,"",-1);
+    }    
+    </script>
+    <script type="text/javascript" src='https://apis.google.com/js/client.js?onload=init'></script>
+    
+  </head>
+
+  <!--                                           -->
+  <!-- The body can have arbitrary html, or      -->
+  <!-- you can leave the body empty if you want  -->
+  <!-- to create a completely dynamic UI.        -->
+  <!--                                           -->
+  <body>
+  
+  <button id='authorize-button'>Authorize</button>
+  <div id='results'></div>
+
+    <!-- OPTIONAL: include this if you want history support -->
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+
+    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+    <noscript>
+      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+        Your web browser must have JavaScript enabled
+        in order for this application to display correctly.
+      </div>
+    </noscript>
+
+    <h1>Web Application Starter Project</h1>
+
+    <table align="center">
+      <tr>
+        <td colspan="2" style="font-weight:bold;">Please enter your name:</td>
+      </tr>
+      <tr>
+        <td id="nameFieldContainer"></td>
+        <td id="sendButtonContainer"></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="color:red;" id="errorLabelContainer"></td>
+      </tr>
+    </table>
+  </body>
+</html>

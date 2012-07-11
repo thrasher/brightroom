@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='com.btrll.rooms.Rooms' />
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/Rooms/greet" class="com.btrll.rooms.server.GreetingServiceImpl" />
+
+</module>
