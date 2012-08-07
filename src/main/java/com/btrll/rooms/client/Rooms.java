@@ -1,164 +1,142 @@
 package com.btrll.rooms.client;
 
-import com.btrll.rooms.shared.FieldVerifier;
+import com.btrll.rooms.client.css.AppBundle;
+import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.dom.client.StyleInjector;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
+import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
+import com.googlecode.mgwt.mvp.client.history.MGWTPlaceHistoryHandler;
+import com.googlecode.mgwt.ui.client.MGWT;
+import com.googlecode.mgwt.ui.client.MGWTSettings;
+import com.googlecode.mgwt.ui.client.MGWTSettings.ViewPort;
+import com.googlecode.mgwt.ui.client.MGWTSettings.ViewPort.DENSITY;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Rooms implements EntryPoint {
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */
-	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network "
-			+ "connection and try again.";
-
-	/**
-	 * Create a remote service proxy to talk to the server-side Greeting
-	 * service.
-	 */
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
 
 	private final Messages messages = GWT.create(Messages.class);
 
-	/**
-	 * This is the entry point method.
-	 */
+	@Override
 	public void onModuleLoad() {
-		final Button sendButton = new Button(messages.sendButton());
-		final TextBox nameField = new TextBox();
-		nameField.setText(messages.nameField());
-		final Label errorLabel = new Label();
 
-		// We can add style names to widgets
-		sendButton.addStyleName("sendButton");
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 
-		// Add the nameField and sendButton to the RootPanel
-		// Use RootPanel.get() to get the entire body element
-		RootPanel.get("nameFieldContainer").add(nameField);
-		RootPanel.get("sendButtonContainer").add(sendButton);
-		RootPanel.get("errorLabelContainer").add(errorLabel);
+			@Override
+			public void onUncaughtException(Throwable e) {
+				Window.alert("uncaught: " + e.getMessage());
+				String s = buildStackTrace(e, "RuntimeExceotion:\n");
+				Window.alert(s);
+				e.printStackTrace();
 
-		// Focus the cursor on the name field when the app loads
-		nameField.setFocus(true);
-		nameField.selectAll();
-
-		// Create the popup dialog box
-		final DialogBox dialogBox = new DialogBox();
-		dialogBox.setText("Remote Procedure Call");
-		dialogBox.setAnimationEnabled(true);
-		final Button closeButton = new Button("Close");
-		// We can set the id of a widget by accessing its Element
-		closeButton.getElement().setId("closeButton");
-		final Label textToServerLabel = new Label();
-		final HTML serverResponseLabel = new HTML();
-		VerticalPanel dialogVPanel = new VerticalPanel();
-		dialogVPanel.addStyleName("dialogVPanel");
-		dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
-		dialogVPanel.add(textToServerLabel);
-		dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
-		dialogVPanel.add(serverResponseLabel);
-		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-		dialogVPanel.add(closeButton);
-		dialogBox.setWidget(dialogVPanel);
-
-		// Add a handler to close the DialogBox
-		closeButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				dialogBox.hide();
-				sendButton.setEnabled(true);
-				sendButton.setFocus(true);
 			}
 		});
 
-		// Create a handler for the sendButton and nameField
-		class MyHandler implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the sendButton.
-			 */
-			public void onClick(ClickEvent event) {
-				sendNameToServer();
-			}
+		start();
+		// new Timer() {
+		// @Override
+		// public void run() {
+		// start();
+		//
+		// }
+		// }.schedule(1);
+	}
 
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					sendNameToServer();
-				}
-			}
+	private void start() {
+		ViewPort viewPort = new MGWTSettings.ViewPort();
+		viewPort.setTargetDensity(DENSITY.MEDIUM);
+		viewPort.setUserScaleAble(false).setMinimumScale(1.0)
+				.setMinimumScale(1.0).setMaximumScale(1.0);
 
-			/**
-			 * Send the name from the nameField to the server and wait for a
-			 * response.
-			 */
-			private void sendNameToServer() {
-				// First, we validate the input.
-				errorLabel.setText("");
-				String textToServer = nameField.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
-					return;
-				}
+		MGWTSettings settings = new MGWTSettings();
+		settings.setViewPort(viewPort);
+		settings.setIconUrl("images/logo.png");
+		settings.setAddGlosToIcon(true);
+		settings.setFullscreen(true);
+		settings.setPreventScrolling(true);
 
-				// Then, we send the input to the server.
-				sendButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
-				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer,
-						new AsyncCallback<String>() {
-							public void onFailure(Throwable caught) {
-								// Show the RPC error message to the user
-								dialogBox
-										.setText("Remote Procedure Call - Failure");
-								serverResponseLabel
-										.addStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(SERVER_ERROR);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
+		MGWT.applySettings(settings);
+		final ClientFactory clientFactory = new ClientFactoryImpl();
 
-							public void onSuccess(String result) {
-								dialogBox.setText("Remote Procedure Call");
-								serverResponseLabel
-										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(result);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-						});
-			}
+		// Start PlaceHistoryHandler with our PlaceHistoryMapper
+		AppPlaceHistoryMapper historyMapper = GWT
+				.create(AppPlaceHistoryMapper.class);
+
+		if (MGWT.getOsDetection().isTablet()) {
+
+			// very nasty workaround because GWT does not corretly support
+			// @media
+			StyleInjector.inject(AppBundle.INSTANCE.css().getText());
+
+//			createTabletDisplay(clientFactory);
+		} else {
+
+			createPhoneDisplay(clientFactory);
+
 		}
 
-		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
-		sendButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
+		AppHistoryObserver historyObserver = new AppHistoryObserver();
 
-		// RootPanel.get().add(new Anchor("image",
-		// true,"images/open_door-icon.gif"));
-		Image image = new Image();
-		image.setUrl("images/open_door-icon.gif");
-		RootPanel.get().add(image);
+		MGWTPlaceHistoryHandler historyHandler = new MGWTPlaceHistoryHandler(
+				historyMapper, historyObserver);
 
+		historyHandler.register(clientFactory.getPlaceController(),
+				clientFactory.getEventBus(), new HomePlace());
+		historyHandler.handleCurrentHistory();
+
+	}
+
+	private void createPhoneDisplay(ClientFactory clientFactory) {
+		AnimatableDisplay display = GWT.create(AnimatableDisplay.class);
+
+		PhoneActivityMapper appActivityMapper = new PhoneActivityMapper(
+				clientFactory);
+
+		PhoneAnimationMapper appAnimationMapper = new PhoneAnimationMapper();
+
+		AnimatingActivityManager activityManager = new AnimatingActivityManager(
+				appActivityMapper, appAnimationMapper,
+				clientFactory.getEventBus());
+
+		activityManager.setDisplay(display);
+
+		RootPanel.get().add(display);
+
+	}
+
+	private String buildStackTrace(Throwable t, String log) {
+
+		if (t != null) {
+			log += t.getClass().toString();
+			log += t.getMessage();
+			//
+			StackTraceElement[] stackTrace = t.getStackTrace();
+			if (stackTrace != null) {
+				StringBuffer trace = new StringBuffer();
+
+				for (int i = 0; i < stackTrace.length; i++) {
+					trace.append(stackTrace[i].getClassName() + "."
+							+ stackTrace[i].getMethodName() + "("
+							+ stackTrace[i].getFileName() + ":"
+							+ stackTrace[i].getLineNumber());
+				}
+
+				log += trace.toString();
+			}
+			//
+			Throwable cause = t.getCause();
+			if (cause != null && cause != t) {
+
+				log += buildStackTrace(cause, "CausedBy:\n");
+
+			}
+		}
+		return log;
 	}
 }
