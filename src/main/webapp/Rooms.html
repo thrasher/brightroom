@@ -73,8 +73,9 @@
     // http://code.google.com/p/google-api-javascript-client/wiki/Samples
     var clientId = '706281234659.apps.googleusercontent.com';
     var apiKey = 'AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q';
-    var scopes = 'https://www.googleapis.com/auth/calendar';
+    var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email';
     // 'https://www.googleapis.com/auth/calendar.readonly'
+    // https://www.googleapis.com/auth/userinfo.profile
     
     function init() {
         //alert('we are in init');
@@ -95,6 +96,7 @@
             
             authorizeButton.style.visibility = 'hidden';
             gapi.client.load('calendar', 'v3', makeApiCall);
+            gapi.client.load('oauth2','v1', makeOAuthCall);
         } else {
             authorizeButton.style.visibility = '';
             authorizeButton.onclick = handleAuthClick;
@@ -110,21 +112,21 @@
         var request = gapi.client.calendar.events.list({
           'calendarId': 'primary'
         });
-        request.execute(function(response, raw) {
-            appendResults(response.result.items.length);
+        request.execute(function(resp, raw) {
+            appendResults(resp.result.items.length);
             prettyPrintJson(raw);
         });
     }
     function doListAllMeetingRooms() {
         gapi.client.calendar.calendarList.list({
-        }).execute(function(response, raw) {
+        }).execute(function(resp, raw) {
             var slist = {};
             slist.sf = [];
             slist.ny = [];
-            for (var i=0; i < response.result.items.length; i++) {
-                if (response.result.items[i].summary.indexOf('NY') >= 0) {
-                    appendResults("'"+response.result.items[i].id+"',");
-                    slist.sf[slist.sf.length] = response.result.items[i].id;
+            for (var i=0; i < resp.result.items.length; i++) {
+                if (resp.result.items[i].summary.indexOf('NY') >= 0) {
+                    appendResults("'"+resp.result.items[i].id+"',");
+                    slist.sf[slist.sf.length] = resp.result.items[i].id;
                 }
             }
             
@@ -134,8 +136,8 @@
     }
     function doListAllUserCalendars() {
         gapi.client.calendar.calendarList.list({
-        }).execute(function(response, raw) {
-            appendResults(response.result.items.length);
+        }).execute(function(resp, raw) {
+            appendResults(resp.result.items.length);
             prettyPrintJson(raw);
         });
     }
@@ -152,10 +154,20 @@
             'singleEvents': true,
             'timeMax': d2,
             'timeMin': d1
-        }).execute(function(response, raw) {
-            appendResults(response.result.items.length + " meetings today");
+        }).execute(function(resp, raw) {
+            appendResults(resp.result.items.length + " meetings today");
             prettyPrintJson(raw);
         });
+    }
+    function makeOAuthCall(){
+    	var request = gapi.client.oauth2.userinfo.get({ 
+            'fields': 'email'
+         });
+    	
+    	request.execute(function(resp, raw) {
+           appendResults(resp.result.email + " is your email");
+           prettyPrintJson(raw);
+         });
     }
     function makeRestRequest(){
         gapi.client.request({
