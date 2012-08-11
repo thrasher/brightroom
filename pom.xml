@@ -72,7 +72,7 @@
 				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
 					documentation at codehaus.org -->
 				<configuration>
-					<runTarget>Rooms.html</runTarget>
+					<runTarget>index.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<i18nMessagesBundle>com.btrll.rooms.client.Messages</i18nMessagesBundle>
 				</configuration>
@@ -81,6 +81,7 @@
 			<!-- Copy static web files before executing gwt:run -->
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
 				<executions>
 					<execution>
 						<phase>compile</phase>
@@ -95,6 +96,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>

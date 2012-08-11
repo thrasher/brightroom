@@ -33,61 +33,65 @@ import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
  */
 public class ShowCaseListActivity extends MGWTAbstractActivity {
 
-  private final ClientFactory clientFactory;
+	private final ClientFactory clientFactory;
 
-  public ShowCaseListActivity(ClientFactory clientFactory) {
-    this.clientFactory = clientFactory;
+	public ShowCaseListActivity(ClientFactory clientFactory) {
+		this.clientFactory = clientFactory;
 
-  }
+	}
 
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-    ShowCaseListView view = clientFactory.getHomeView();
+	@Override
+	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		ShowCaseListView view = clientFactory.getHomeView();
 
-    view.setTitle("BrightRoom");
-    view.setRightButtonText("about");
+		view.setTitle("BrightRoom");
+		view.setRightButtonText("about");
 
-    view.getFirstHeader().setText("Location");
+		view.getFirstHeader().setText("Location");
 
-    view.setTopics(createTopicsList());
+		view.setTopics(createTopicsList());
 
-    addHandlerRegistration(view.getCellSelectedHandler().addCellSelectedHandler(
-        new CellSelectedHandler() {
+		addHandlerRegistration(view.getCellSelectedHandler()
+				.addCellSelectedHandler(new CellSelectedHandler() {
 
-          @Override
-          public void onCellSelected(CellSelectedEvent event) {
-            int index = event.getIndex();
-            if (index == 0) {
-              clientFactory.getPlaceController().goTo(new AnimationPlace());
-              return;
-            }
-            if (index == 1) {
-              clientFactory.getPlaceController().goTo(new UIPlace());
+					@Override
+					public void onCellSelected(CellSelectedEvent event) {
+						int index = event.getIndex();
+						if (index == 0) {
+							clientFactory.getPlaceController().goTo(
+									new AnimationPlace());
+							return;
+						}
+						if (index == 1) {
+							clientFactory.getPlaceController().goTo(
+									new UIPlace());
 
-              return;
-            }
+							return;
+						}
 
-          }
-        }));
+					}
+				}));
 
-    addHandlerRegistration(view.getAboutButton().addTapHandler(new TapHandler() {
+		addHandlerRegistration(view.getAboutButton().addTapHandler(
+				new TapHandler() {
 
-      @Override
-      public void onTap(TapEvent event) {
-        clientFactory.getPlaceController().goTo(new AboutPlace());
+					@Override
+					public void onTap(TapEvent event) {
+						clientFactory.getPlaceController().goTo(
+								new AboutPlace());
 
-      }
-    }));
+					}
+				}));
 
-    panel.setWidget(view);
-  }
+		panel.setWidget(view);
+	}
 
-  private List<Topic> createTopicsList() {
-    ArrayList<Topic> list = new ArrayList<Topic>();
-    list.add(new Topic("Animations", 5));
-    list.add(new Topic("UI", 5));
+	private List<Topic> createTopicsList() {
+		ArrayList<Topic> list = new ArrayList<Topic>();
+		list.add(new Topic("San Francisco", 5));
+		list.add(new Topic("New York", 5));
 
-    return list;
-  }
+		return list;
+	}
 
 }
