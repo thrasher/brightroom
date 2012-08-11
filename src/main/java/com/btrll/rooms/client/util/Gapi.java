@@ -1,30 +1,94 @@
 package com.btrll.rooms.client.util;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.ScriptInjector;
-import com.google.gwt.user.client.Window;
+import java.util.logging.Logger;
 
+import com.google.gwt.user.client.Timer;
+
+/**
+ * <a href="http://code.google.com/p/google-api-javascript-client/wiki/Samples">
+ * samples</a>
+ * 
+ * @author jthrasher
+ * 
+ */
 public class Gapi {
-	String URL = "https://apis.google.com/js/client.js";
-	String clientId = "706281234659.apps.googleusercontent.com";
-	String apiKey = "AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q";
-	String scopes = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email";
+	private static final String URL = "https://apis.google.com/js/client.js";
+	private String clientId = "706281234659.apps.googleusercontent.com";
+	private String apiKey = "AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q";
+	private String scopes = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email";
 
-	private void bind() {
-		ScriptInjector.fromUrl(URL)
-				.setCallback(new Callback<Void, Exception>() {
-					public void onFailure(Exception reason) {
-						Window.alert("Script load failed.");
-					}
+	static final Logger logger = Logger.getLogger("Gapi");
 
-					public void onSuccess(Void result) {
-						Window.alert("Script load success.");
-					}
-				}).inject();
+	public Gapi() {
+		exportStaticMethods(this);
+		Timer t = new Timer() {
+			@Override
+			public void run() {
+				init();
+			}
+		};
+		t.schedule(1);
 	}
 
-	private static native void init() /*-{
-        wnd.gapi.client.setApiKey(apiKey);
-        wnd.setTimeout(checkAuth, 1);
+	native void init() /*-{
+		$wnd.__btrll_init();
 	}-*/;
+
+	native void handleAuthClick() /*-{
+		$wnd.__btrll_handleAuthClick();
+	}-*/;
+
+	void doAuthRequired() {
+		logger.fine("log auth required");
+	}
+
+	void doAuthComplete() {
+		logger.fine("log auth complete");
+	}
+
+	native void exportStaticMethods(final Gapi x) /*-{
+		//$wnd.__btrll_checkAuth = $entry(@com.btrll.rooms.client.util.Gapi::checkAuth());
+
+		$wnd.__btrll_init = function() {
+			if ($wnd.gapi === undefined || $wnd.gapi.client === undefined) {
+				$wnd.alert('Unable to load Google API');
+				return;
+			}
+			$wnd.gapi.client
+					.setApiKey(x.@com.btrll.rooms.client.util.Gapi::apiKey);
+			$wnd.setTimeout($wnd.__btrll_checkAuth, 1);
+		}
+		$wnd.__btrll_checkAuth = function() {
+			$wnd.gapi.auth.authorize({
+				client_id : x.@com.btrll.rooms.client.util.Gapi::clientId,
+				scope : x.@com.btrll.rooms.client.util.Gapi::scopes,
+				immediate : true
+			}, $wnd.__btrll_handleAuthResult);
+		}
+		$wnd.__btrll_handleAuthClick = function(event) {
+			$wnd.gapi.auth.authorize({
+				client_id : x.@com.btrll.rooms.client.util.Gapi::clientId,
+				scope : x.@com.btrll.rooms.client.util.Gapi::scopes,
+				immediate : false
+			}, $wnd.__btrll_handleAuthResult);
+		}
+		$wnd.__btrll_handleAuthResult = function(authResult) {
+			//$wnd.alert('handleAuthResult');
+			if (authResult && !authResult.error) {
+				// Subtract five minutes from expires_in to ensure timely refresh
+				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
+				$wnd.setTimeout($wnd.__btrll_checkAuth, authTimeout);
+				$wnd.gapi.client.load('calendar', 'v3');
+				$wnd.gapi.client.load('oauth2', 'v1');
+				$wnd.alert('Google Authorization Complete');
+				$entry(x.@com.btrll.rooms.client.util.Gapi::doAuthComplete()());
+			} else {
+				// $wnd.alert('Google Authorization Required');
+				// must be initiated in user thread
+				//$wnd.__btrll_handleAuthClick();
+				$entry(x.@com.btrll.rooms.client.util.Gapi::doAuthRequired()());
+			}
+		}
+	}-*/;
+
 }

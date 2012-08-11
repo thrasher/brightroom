@@ -2,6 +2,7 @@ package com.btrll.rooms.client;
 
 import com.btrll.rooms.client.css.AppBundle;
 import com.btrll.rooms.client.places.HomePlace;
+import com.btrll.rooms.client.util.Gapi;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -33,6 +34,8 @@ public class Rooms implements EntryPoint {
 
 	private void start() {
 		SuperDevModeUtil.showDevMode();
+		
+		Gapi gapi = new Gapi();
 		
 		ViewPort viewPort = new MGWTSettings.ViewPort();
 		viewPort.setTargetDensity(DENSITY.MEDIUM);

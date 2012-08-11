@@ -51,44 +51,6 @@
 'brightroll.com_36343134373931352d353037@resource.calendar.google.com'                             
                              ]};
     
-    // http://code.google.com/p/google-api-javascript-client/wiki/Samples
-    var clientId = '706281234659.apps.googleusercontent.com';
-    var apiKey = 'AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q';
-    var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email';
-    // 'https://www.googleapis.com/auth/calendar.readonly'
-    // https://www.googleapis.com/auth/userinfo.profile
-    
-    function init() {
-        //alert('we are in init');
-        gapi.client.setApiKey(apiKey);
-        window.setTimeout(checkAuth, 1);
-    }
-    function checkAuth() {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-    }
-    function handleAuthResult(authResult) {
-        //alert('we are in handleAuthResult');
-        
-        var authorizeButton = document.getElementById('authorize-button');
-        if (authResult && !authResult.error) {
-            // Subtract five minutes from expires_in to ensure timely refresh
-            var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
-            setTimeout(checkAuth, authTimeout);
-            
-            authorizeButton.style.visibility = 'hidden';
-//            gapi.client.load('calendar', 'v3', makeApiCall);
-//            gapi.client.load('oauth2','v1', makeOAuthCall);
-        } else {
-            authorizeButton.style.visibility = '';
-            authorizeButton.onclick = handleAuthClick;
-        }
-    }
-    function handleAuthClick(event) {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-    }
-    function makeApiCall() {
-        doListTodaysMeetings();
-    }
     function doListEventsPrimary() {
         var request = gapi.client.calendar.events.list({
           'calendarId': 'primary'
@@ -223,7 +185,9 @@
         createCookie(name,"",-1);
     }    
     </script>
+    <!--
     <script type="text/javascript" src='https://apis.google.com/js/client.js?onload=init'></script>
+     -->
     
   </head>
 
@@ -234,7 +198,6 @@
   <!--                                           -->
   <body>
   
-  <button id='authorize-button'>Authorize</button>
   <div id='results'></div>
 
     <!-- OPTIONAL: include this if you want history support -->
