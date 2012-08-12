@@ -5,10 +5,14 @@
 	<!-- POM file generated with GWT webAppCreator -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.btrll</groupId>
-	<artifactId>rooms</artifactId>
+	<artifactId>brightroom</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>GWT Maven Archetype</name>
+	<name>BrightRoom</name>
+
+	<scm>
+		<developerConnection>scm:git:git://github.com/thrasher/brightroom.git</developerConnection>
+	</scm>
 
 	<repositories>
 		<repository>
@@ -25,6 +29,19 @@
 			</resource> </resources> -->
 
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Add source folders to test classpath in order to run gwt-tests as 
 				normal junit-tests <plugin> <artifactId>maven-surefire-plugin</artifactId> 
 				<version>2.5</version> <configuration> <additionalClasspathElements> <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement> 
@@ -38,7 +55,7 @@
 				<version>2.8</version>
 				<configuration>
 					<downloadSources>true</downloadSources>
-					<downloadJavadocs>false</downloadJavadocs>
+					<downloadJavadocs>true</downloadJavadocs>
 					<wtpversion>2.0</wtpversion>
 					<additionalBuildcommands>
 						<buildCommand>
@@ -92,6 +109,23 @@
 				</executions>
 				<configuration>
 					<webappDirectory>${webappDirectory}</webappDirectory>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<git-SHA-1>${buildNumber}</git-SHA-1>
+						</manifestEntries>
+					</archive>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>**/appengine-web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -101,6 +135,32 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<!-- The actual maven-gae-plugin. Type "mvn gae:run" to run project, "mvn 
+				gae:deploy" to upload to GAE. -->
+			<!-- configure the settings.xml with: <server> <id>appengine.google.com</id> 
+				<username>jthrasher@brightroll.com</username> <password>secret</password> 
+				</server> -->
+			<plugin>
+				<groupId>net.kindleit</groupId>
+				<artifactId>maven-gae-plugin</artifactId>
+				<version>0.9.4</version>
+				<configuration>
+					<serverId>appengine.google.com</serverId>
+				</configuration>
+				<executions>
+					<!-- This execution isn't needed if you run gae:unpack to place the 
+						AppEngine SDK in your maven repo (needed one time per dev environment) <execution> 
+						<id /> <phase>validate</phase> <goals> <goal>unpack</goal> </goals> </execution> -->
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>net.kindleit</groupId>
+						<artifactId>gae-runtime</artifactId>
+						<version>${gae.version}</version>
+						<type>pom</type>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
@@ -152,6 +212,13 @@
 		<!-- GWT needs at least java 1.6 -->
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
+		<gae.version>1.7.0</gae.version>
+		<!-- identifier from the GAE dashboard, selects which app is deployed -->
+		<gae.application.identifier>btrllroom</gae.application.identifier>
+		<!-- Upload to http://test.<applicationName>.appspot.com by default -->
+		<gae.application.version>test</gae.application.version>
+		<!-- GAE logging -->
+		<java.util.logging.config.file>WEB-INF/logging.properties</java.util.logging.config.file>
 
 	</properties>
 

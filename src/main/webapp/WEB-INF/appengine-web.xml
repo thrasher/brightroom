@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://appengine.google.com/ns/1.0 http://googleappengine.googlecode.com/svn/trunk/java/src/main/com/google/appengine/tools/development/appengine-web.xsd">
+
+	<application>${gae.application.identifier}</application>
+	<version>${gae.application.version}</version>
+
+	<system-properties>
+		<property name="java.util.logging.config.file" value="${java.util.logging.config.file}" />
+		<property name="app.version"
+			value="${project.version}.r${buildNumber} (Built: ${timestamp})" />
+	</system-properties>
+
+	<!-- Because App Engine stores session data in the datastore and memcache, 
+		all values stored in the session must implement the java.io.Serializable 
+		interface. -->
+	<sessions-enabled>true</sessions-enabled>
+
+	<!-- By default, App Engine sends requests serially to a given web server. -->
+	<threadsafe>true</threadsafe>
+</appengine-web-app>
