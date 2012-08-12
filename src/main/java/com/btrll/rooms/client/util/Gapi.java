@@ -2,7 +2,11 @@ package com.btrll.rooms.client.util;
 
 import java.util.logging.Logger;
 
+import com.btrll.rooms.client.activities.gauth.GauthEvent;
 import com.google.gwt.user.client.Timer;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.googlecode.mgwt.mvp.client.history.HistoryHandler;
 
 /**
  * <a href="http://code.google.com/p/google-api-javascript-client/wiki/Samples">
@@ -19,8 +23,14 @@ public class Gapi {
 
 	static final Logger logger = Logger.getLogger("Gapi");
 
-	public Gapi() {
+	private EventBus eventBus;
+
+	public Gapi(EventBus eventBus) {
 		exportStaticMethods(this);
+		this.eventBus = eventBus;
+	}
+
+	public void load() {
 		Timer t = new Timer() {
 			@Override
 			public void run() {
@@ -34,16 +44,18 @@ public class Gapi {
 		$wnd.__btrll_init();
 	}-*/;
 
-	native void handleAuthClick() /*-{
+	public static native void handleAuthClick() /*-{
 		$wnd.__btrll_handleAuthClick();
 	}-*/;
 
 	void doAuthRequired() {
 		logger.fine("log auth required");
+		GauthEvent.fire(eventBus, true);
 	}
 
 	void doAuthComplete() {
 		logger.fine("log auth complete");
+		GauthEvent.fire(eventBus, false);
 	}
 
 	native void exportStaticMethods(final Gapi x) /*-{
@@ -80,7 +92,7 @@ public class Gapi {
 				$wnd.setTimeout($wnd.__btrll_checkAuth, authTimeout);
 				$wnd.gapi.client.load('calendar', 'v3');
 				$wnd.gapi.client.load('oauth2', 'v1');
-				$wnd.alert('Google Authorization Complete');
+				//				$wnd.alert('Google Authorization Complete');
 				$entry(x.@com.btrll.rooms.client.util.Gapi::doAuthComplete()());
 			} else {
 				// $wnd.alert('Google Authorization Required');

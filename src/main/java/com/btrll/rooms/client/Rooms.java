@@ -34,9 +34,7 @@ public class Rooms implements EntryPoint {
 
 	private void start() {
 		SuperDevModeUtil.showDevMode();
-		
-		Gapi gapi = new Gapi();
-		
+
 		ViewPort viewPort = new MGWTSettings.ViewPort();
 		viewPort.setTargetDensity(DENSITY.MEDIUM);
 		viewPort.setUserScaleAble(false).setMinimumScale(1.0)
@@ -62,7 +60,6 @@ public class Rooms implements EntryPoint {
 			// very nasty workaround because GWT does not corretly support
 			// @media
 			StyleInjector.inject(AppBundle.INSTANCE.css().getText());
-
 			createTabletDisplay(clientFactory);
 		} else {
 
@@ -78,6 +75,9 @@ public class Rooms implements EntryPoint {
 		historyHandler.register(clientFactory.getPlaceController(),
 				clientFactory.getEventBus(), new HomePlace());
 		historyHandler.handleCurrentHistory();
+
+		Gapi gapi = new Gapi(clientFactory.getEventBus());
+		gapi.load();
 
 	}
 

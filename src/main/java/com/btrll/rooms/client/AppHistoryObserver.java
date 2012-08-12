@@ -1,8 +1,9 @@
 package com.btrll.rooms.client;
 
+import java.util.logging.Logger;
+
 import com.btrll.rooms.client.activities.AboutPlace;
 import com.btrll.rooms.client.activities.UIEntrySelectedEvent;
-import com.btrll.rooms.client.activities.UIEntrySelectedEvent.UIEntry;
 import com.btrll.rooms.client.activities.UIPlace;
 import com.btrll.rooms.client.activities.animation.Animation;
 import com.btrll.rooms.client.activities.animation.Animation.AnimationNames;
@@ -15,7 +16,8 @@ import com.btrll.rooms.client.activities.animationdone.AnimationPopPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlidePlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlideUpPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSwapPlace;
-import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshPlace;
+import com.btrll.rooms.client.activities.gauth.GauthEvent;
+import com.btrll.rooms.client.activities.gauth.GauthPlace;
 import com.btrll.rooms.client.event.ActionEvent;
 import com.btrll.rooms.client.event.ActionNames;
 import com.btrll.rooms.client.places.HomePlace;
@@ -29,6 +31,7 @@ import com.googlecode.mgwt.mvp.client.history.HistoryObserver;
 import com.googlecode.mgwt.ui.client.MGWT;
 
 public class AppHistoryObserver implements HistoryObserver {
+	static final Logger logger = Logger.getLogger("AppHistoryObserver");
 
 	@Override
 	public void onPlaceChange(Place place, HistoryHandler handler) {
@@ -122,64 +125,64 @@ public class AppHistoryObserver implements HistoryObserver {
 					@Override
 					public void onAnimationSelected(UIEntrySelectedEvent event) {
 
-//						UIEntry entry = event.getEntry();
-//
-//						Place place = null;
-//
-//						switch (entry) {
-//						case BUTTON_BAR:
-//							place = new ButtonBarPlace();
-//							break;
-//						case BUTTONS:
-//							place = new ButtonPlace();
-//							break;
-//						case ELEMENTS:
-//							place = new ElementsPlace();
-//							break;
-//						case FORMS:
-//							place = new FormsPlace();
-//							break;
-//						case POPUPS:
-//							place = new PopupPlace();
-//							break;
-//						case PROGRESS_BAR:
-//							place = new ProgressBarPlace();
-//							break;
-//						case PROGRESS_INDICATOR:
-//							place = new ProgressIndicatorPlace();
-//							break;
-//						case PULL_TO_REFRESH:
-//							place = new PullToRefreshPlace();
-//							break;
-//						case SCROLL_WIDGET:
-//							place = new ScrollWidgetPlace();
-//							break;
-//						case SEARCH_BOX:
-//							place = new SearchBoxPlace();
-//							break;
-//						case SLIDER:
-//							place = new SliderPlace();
-//							break;
-//						case TABBAR:
-//							place = new TabBarPlace();
-//							break;
-//						case CAROUSEL:
-//							place = new CarouselPlace();
-//							break;
-//						case GROUP_LIST:
-//							place = new GroupedCellListPlace();
-//							break;
-//						default:
-//							break;
-//						}
-//
-//						if (MGWT.getOsDetection().isTablet()) {
-//
-//							historyHandler.replaceCurrentPlace(place);
-//							historyHandler.goTo(place, true);
-//						} else {
-//							historyHandler.goTo(place);
-//						}
+						// UIEntry entry = event.getEntry();
+						//
+						// Place place = null;
+						//
+						// switch (entry) {
+						// case BUTTON_BAR:
+						// place = new ButtonBarPlace();
+						// break;
+						// case BUTTONS:
+						// place = new ButtonPlace();
+						// break;
+						// case ELEMENTS:
+						// place = new ElementsPlace();
+						// break;
+						// case FORMS:
+						// place = new FormsPlace();
+						// break;
+						// case POPUPS:
+						// place = new PopupPlace();
+						// break;
+						// case PROGRESS_BAR:
+						// place = new ProgressBarPlace();
+						// break;
+						// case PROGRESS_INDICATOR:
+						// place = new ProgressIndicatorPlace();
+						// break;
+						// case PULL_TO_REFRESH:
+						// place = new PullToRefreshPlace();
+						// break;
+						// case SCROLL_WIDGET:
+						// place = new ScrollWidgetPlace();
+						// break;
+						// case SEARCH_BOX:
+						// place = new SearchBoxPlace();
+						// break;
+						// case SLIDER:
+						// place = new SliderPlace();
+						// break;
+						// case TABBAR:
+						// place = new TabBarPlace();
+						// break;
+						// case CAROUSEL:
+						// place = new CarouselPlace();
+						// break;
+						// case GROUP_LIST:
+						// place = new GroupedCellListPlace();
+						// break;
+						// default:
+						// break;
+						// }
+						//
+						// if (MGWT.getOsDetection().isTablet()) {
+						//
+						// historyHandler.replaceCurrentPlace(place);
+						// historyHandler.goTo(place, true);
+						// } else {
+						// historyHandler.goTo(place);
+						// }
 
 					}
 				});
@@ -209,11 +212,23 @@ public class AppHistoryObserver implements HistoryObserver {
 					}
 				});
 
+		HandlerRegistration gauth = eventBus.addHandler(GauthEvent.getType(),
+				new GauthEvent.Handler() {
+					@Override
+					public void onGauth(GauthEvent event) {
+						logger.fine("GauthEvent: " + event.isAuthNeeded());
+						if (event.isAuthNeeded()) {
+							historyHandler.goTo(new GauthPlace());
+						}
+					}
+				});
+
 		HandlerRegistrationCollection col = new HandlerRegistrationCollection();
 		col.addHandlerRegistration(register);
 		col.addHandlerRegistration(register2);
 		col.addHandlerRegistration(register3);
 		col.addHandlerRegistration(addHandler);
+		col.addHandlerRegistration(gauth);
 		return col;
 	}
 
@@ -241,31 +256,30 @@ public class AppHistoryObserver implements HistoryObserver {
 					if (place instanceof UIPlace) {
 						historyHandler.replaceCurrentPlace(new HomePlace());
 					} else {
-//						if (place instanceof UIPlace) {
+						if (place instanceof UIPlace) {
 							historyHandler.replaceCurrentPlace(new HomePlace());
-//						} else {
-//
-//							if (place instanceof ButtonBarPlace
-//									|| place instanceof GroupedCellListPlace
-//									|| place instanceof CarouselPlace
-//									|| place instanceof ButtonPlace
-//									|| place instanceof ElementsPlace
-//									|| place instanceof FormsPlace
-//									|| place instanceof PopupPlace
-//									|| place instanceof ProgressBarPlace
-//									|| place instanceof ProgressIndicatorPlace
-//									|| place instanceof PullToRefreshPlace
-//									|| place instanceof ScrollWidgetPlace
-//									|| place instanceof SearchBoxPlace
-//									|| place instanceof SliderPlace
-//									|| place instanceof TabBarPlace) {
-//								historyHandler
-//										.replaceCurrentPlace(new HomePlace());
-//
-//								historyHandler.pushPlace(new UIPlace());
-//							}
-//
-//						}
+						} else {
+							//
+							// if (place instanceof ButtonBarPlace
+							// || place instanceof GroupedCellListPlace
+							// || place instanceof CarouselPlace
+							// || place instanceof ButtonPlace
+							// || place instanceof ElementsPlace
+							// || place instanceof FormsPlace
+							// || place instanceof PopupPlace
+							// || place instanceof ProgressBarPlace
+							// || place instanceof ProgressIndicatorPlace
+							// || place instanceof PullToRefreshPlace
+							// || place instanceof ScrollWidgetPlace
+							// || place instanceof SearchBoxPlace
+							// || place instanceof SliderPlace
+							// || place instanceof TabBarPlace) {
+							historyHandler.replaceCurrentPlace(new HomePlace());
+
+							historyHandler.pushPlace(new UIPlace());
+							// }
+
+						}
 					}
 				}
 			}
@@ -293,30 +307,29 @@ public class AppHistoryObserver implements HistoryObserver {
 					if (place instanceof UIPlace) {
 						historyHandler.replaceCurrentPlace(new HomePlace());
 					} else {
-//						if (place instanceof UIPlace) {
+						if (place instanceof UIPlace) {
 							historyHandler.replaceCurrentPlace(new HomePlace());
-//						} else {
-//
-//							if (place instanceof ButtonBarPlace
-//									|| place instanceof GroupedCellListPlace
-//									|| place instanceof CarouselPlace
-//									|| place instanceof ButtonPlace
-//									|| place instanceof ElementsPlace
-//									|| place instanceof FormsPlace
-//									|| place instanceof PopupPlace
-//									|| place instanceof ProgressBarPlace
-//									|| place instanceof ProgressIndicatorPlace
-//									|| place instanceof PullToRefreshPlace
-//									|| place instanceof ScrollWidgetPlace
-//									|| place instanceof SearchBoxPlace
-//									|| place instanceof SliderPlace
-//									|| place instanceof TabBarPlace) {
-//								historyHandler
-//										.replaceCurrentPlace(new HomePlace());
-//
-//							}
-//
-//						}
+						} else {
+
+							// if (place instanceof ButtonBarPlace
+							// || place instanceof GroupedCellListPlace
+							// || place instanceof CarouselPlace
+							// || place instanceof ButtonPlace
+							// || place instanceof ElementsPlace
+							// || place instanceof FormsPlace
+							// || place instanceof PopupPlace
+							// || place instanceof ProgressBarPlace
+							// || place instanceof ProgressIndicatorPlace
+							// || place instanceof PullToRefreshPlace
+							// || place instanceof ScrollWidgetPlace
+							// || place instanceof SearchBoxPlace
+							// || place instanceof SliderPlace
+							// || place instanceof TabBarPlace) {
+							historyHandler.replaceCurrentPlace(new HomePlace());
+
+							// }
+
+						}
 					}
 				}
 			}

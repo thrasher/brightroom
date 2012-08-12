@@ -1,5 +1,7 @@
 package com.btrll.rooms.client;
 
+import java.util.logging.Logger;
+
 import com.btrll.rooms.client.activities.AboutActivity;
 import com.btrll.rooms.client.activities.AboutPlace;
 import com.btrll.rooms.client.activities.UIPlace;
@@ -13,6 +15,8 @@ import com.btrll.rooms.client.activities.animationdone.AnimationPopPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlidePlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlideUpPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSwapPlace;
+import com.btrll.rooms.client.activities.gauth.GauthActivity;
+import com.btrll.rooms.client.activities.gauth.GauthPlace;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshActivity;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshPlace;
 import com.btrll.rooms.client.places.HomePlace;
@@ -21,6 +25,7 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 
 public class TabletMainActivityMapper implements ActivityMapper {
+	static final Logger logger = Logger.getLogger("TabletMainActivityMapper");
 
 	private final ClientFactory clientFactory;
 
@@ -133,6 +138,11 @@ public class TabletMainActivityMapper implements ActivityMapper {
 			return new AnimationDoneActivity(clientFactory);
 		}
 
+		if (newPlace instanceof GauthPlace) {
+			return new GauthActivity(clientFactory);
+		}
+
+		logger.warning(newPlace + " is not mapped to an activity");
 		return null;
 	}
 

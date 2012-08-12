@@ -25,6 +25,8 @@ import com.btrll.rooms.client.activities.animation.AnimationView;
 import com.btrll.rooms.client.activities.animation.AnimationViewGwtImpl;
 import com.btrll.rooms.client.activities.animationdone.AnimationDoneView;
 import com.btrll.rooms.client.activities.animationdone.AnimationDoneViewGwtImpl;
+import com.btrll.rooms.client.activities.gauth.GauthView;
+import com.btrll.rooms.client.activities.gauth.GauthViewImpl;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshDisplay;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshDisplayGwtImpl;
 import com.google.gwt.place.shared.PlaceController;
@@ -45,6 +47,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private AnimationView animationView;
 	private AnimationDoneView animationDoneView;
 	private PullToRefreshDisplayGwtImpl pullToRefreshView;
+	private GauthView gauthView;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -112,5 +115,14 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 		return pullToRefreshView;
 	}
+	
+	@Override
+	public GauthView getGauthView() {
+		if (gauthView == null) {
+			gauthView = new GauthViewImpl();
+		}
+		return gauthView;
+	}
+
 
 }
