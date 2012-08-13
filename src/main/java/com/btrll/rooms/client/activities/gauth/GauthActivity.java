@@ -1,16 +1,17 @@
 package com.btrll.rooms.client.activities.gauth;
 
+import java.util.logging.Logger;
+
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
 import com.btrll.rooms.client.util.Gapi;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 
 public class GauthActivity extends DetailActivity {
-
+	static final Logger logger = Logger.getLogger("GauthActivity");
 	private final ClientFactory clientFactory;
 
 	public GauthActivity(ClientFactory clientFactory) {
@@ -33,7 +34,7 @@ public class GauthActivity extends DetailActivity {
 
 					@Override
 					public void onTap(TapEvent event) {
-						Window.alert("You will be redirected to Google");
+						logger.fine("redirecting user to Google Auth");
 						Gapi.handleAuthClick();
 					}
 				}));

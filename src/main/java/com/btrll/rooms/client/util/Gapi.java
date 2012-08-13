@@ -85,7 +85,7 @@ public class Gapi {
 			}, $wnd.__btrll_handleAuthResult);
 		}
 		$wnd.__btrll_handleAuthResult = function(authResult) {
-			$wnd.alert('handleAuthResult');
+			//$wnd.alert('handleAuthResult');
 			if (authResult && !authResult.error) {
 				// Subtract five minutes from expires_in to ensure timely refresh
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;

@@ -32,6 +32,7 @@ import com.googlecode.mgwt.ui.client.MGWT;
 
 public class AppHistoryObserver implements HistoryObserver {
 	static final Logger logger = Logger.getLogger("AppHistoryObserver");
+	private boolean sentToGauth = false; // true if the user needed Gauth flow
 
 	@Override
 	public void onPlaceChange(Place place, HistoryHandler handler) {
@@ -216,9 +217,16 @@ public class AppHistoryObserver implements HistoryObserver {
 				new GauthEvent.Handler() {
 					@Override
 					public void onGauth(GauthEvent event) {
-						logger.fine("GauthEvent: " + event.isAuthNeeded());
+						logger.fine("GauthEvent auth needed: "
+								+ event.isAuthNeeded());
 						if (event.isAuthNeeded()) {
+							sentToGauth = true;
 							historyHandler.goTo(new GauthPlace());
+						} else {
+							logger.fine("sentToGauth: " + sentToGauth);
+							if (sentToGauth) {
+								History.back();
+							}
 						}
 					}
 				});
