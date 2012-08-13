@@ -48,6 +48,7 @@ public class Rooms implements EntryPoint {
 		settings.setPreventScrolling(true);
 
 		MGWT.applySettings(settings);
+		MGWT.showAddressBar(false); // hide address bar on iPhones
 
 		final ClientFactory clientFactory = new ClientFactoryImpl();
 
