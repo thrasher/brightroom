@@ -1,0 +1,191 @@
+
+{
+    "kind": "calendar#calendarList",
+    "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/zfKCjGuOQ_nB9pmPE9Pd56TJ6N0\"",
+    "items": [{
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/lxzxThuKSsVyVNdh-4eOMo4atMU\"",
+        "id": "brightroll.com_2d32323832323539362d383638@resource.calendar.google.com",
+        "summary": "CHI: Conference Room",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "13",
+        "backgroundColor": "#92e1c0",
+        "foregroundColor": "#000000",
+        "selected": true,
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/fttdxsLsix1frbHaouzkiszkxoQ\"",
+        "id": "brightroll.com_34393131343630322d373933@resource.calendar.google.com",
+        "summary": "NYC: Alaska Conf Room",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "23",
+        "backgroundColor": "#cd74e6",
+        "foregroundColor": "#000000",
+        "selected": true,
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/cctrtSsfJhtN51uB1sLuU3ZtJaE\"",
+        "id": "brightroll.com_3639343733353437313330@resource.calendar.google.com",
+        "summary": "NYC: Chicago Conf Room",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "2",
+        "backgroundColor": "#d06b64",
+        "foregroundColor": "#000000",
+        "selected": true,
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/oYGVkpwjnLxi3esSW_rkgC_w4vw\"",
+        "id": "brightroll.com_2d34353938363237303235@resource.calendar.google.com",
+        "summary": "NYC: LA Conf Room",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "1",
+        "backgroundColor": "#ac725e",
+        "foregroundColor": "#000000",
+        "selected": true,
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/a-_rTBy61cKQtBROhPspZ_NbbZQ\"",
+        "id": "brightroll.com_36343134373931352d353037@resource.calendar.google.com",
+        "summary": "NYC: San Fran Conf Room",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "17",
+        "backgroundColor": "#9a9cff",
+        "foregroundColor": "#000000",
+        "selected": true,
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/xzTgQNTZCRWFAdrxxy8EFjuqFFA\"",
+        "id": "brightroll.com_2d38333138333831362d393936@resource.calendar.google.com",
+        "summary": "Palo Alto",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "14",
+        "backgroundColor": "#9fe1e7",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/TLd-ESF3MIKhLWSX5zlbBjv8how\"",
+        "id": "brightroll.com_34313939373537382d343838@resource.calendar.google.com",
+        "summary": "SF: Castro (4)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "7",
+        "backgroundColor": "#42d692",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/i8YZJbkBBGc50Miwx73a7clYigI\"",
+        "id": "brightroll.com_2d34333237383332352d3535@resource.calendar.google.com",
+        "summary": "SF: Chinatown (6)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "9",
+        "backgroundColor": "#7bd148",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/sFhmc5BHy7ShQUoHu8LDzJfapTk\"",
+        "id": "brightroll.com_2d36363934303630302d333235@resource.calendar.google.com",
+        "summary": "SF: Diamond Heights (6)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "4",
+        "backgroundColor": "#fa573c",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/tEG4K-KPkP91sxO_-jJ8JOmSsDU\"",
+        "id": "brightroll.com_2d31393435363031362d393232@resource.calendar.google.com",
+        "summary": "SF: Golden Gate (15)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "1",
+        "backgroundColor": "#ac725e",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/WYzjmrGoW01YlGzy52O4dYsPB4A\"",
+        "id": "brightroll.com_3835383832343430323437@resource.calendar.google.com",
+        "summary": "SF: Haight (4)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "14",
+        "backgroundColor": "#9fe1e7",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/5oxiDpbnYjamIbbdDwWjlQPQ1ME\"",
+        "id": "brightroll.com_3533333139333531353330@resource.calendar.google.com",
+        "summary": "SF: Marina (4)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "16",
+        "backgroundColor": "#4986e7",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/o5uITJQQdi5hZJTY5pGo-XgPt3c\"",
+        "id": "brightroll.com_2d3430343930353038373432@resource.calendar.google.com",
+        "summary": "SF: Mission (8)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "15",
+        "backgroundColor": "#9fc6e7",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/3f7ZG1bw_tLfQhd7xT-lq8q5Ggs\"",
+        "id": "brightroll.com_3835373938343733393133@resource.calendar.google.com",
+        "summary": "SF: North Beach (6)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "5",
+        "backgroundColor": "#ff7537",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/mB9j1EfQ9jhkJLQkKjlnWYEUEUk\"",
+        "id": "brightroll.com_3436323139323534373431@resource.calendar.google.com",
+        "summary": "SF: Presidio (6)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "20",
+        "backgroundColor": "#cabdbf",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/LWxewmp_wBTf7tXrlpsJjDg11Dw\"",
+        "id": "brightroll.com_3133343633373135323233@resource.calendar.google.com",
+        "summary": "SF: Richmond (8)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "11",
+        "backgroundColor": "#fbe983",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/-5bHNE8d0y8ITxOf-2-nAOrEX2k\"",
+        "id": "brightroll.com_2d38333031373532372d333831@resource.calendar.google.com",
+        "summary": "SF: SOMA (8)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "18",
+        "backgroundColor": "#b99aff",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }, {
+        "kind": "calendar#calendarListEntry",
+        "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE/Mr3jSrWWxEifjeUvJDU7bWlN-jA\"",
+        "id": "brightroll.com_35373634313730352d313236@resource.calendar.google.com",
+        "summary": "SF: Sunset (8)",
+        "timeZone": "America/Los_Angeles",
+        "colorId": "19",
+        "backgroundColor": "#c2c2c2",
+        "foregroundColor": "#000000",
+        "accessRole": "reader"
+    }]
+}

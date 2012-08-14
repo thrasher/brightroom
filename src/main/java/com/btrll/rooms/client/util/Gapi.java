@@ -3,10 +3,10 @@ package com.btrll.rooms.client.util;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.activities.gauth.GauthEvent;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.Timer;
 import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.googlecode.mgwt.mvp.client.history.HistoryHandler;
 
 /**
  * <a href="http://code.google.com/p/google-api-javascript-client/wiki/Samples">
@@ -28,9 +28,6 @@ public class Gapi {
 	public Gapi(EventBus eventBus) {
 		exportStaticMethods(this);
 		this.eventBus = eventBus;
-	}
-
-	public void load() {
 		Timer t = new Timer() {
 			@Override
 			public void run() {
@@ -39,6 +36,53 @@ public class Gapi {
 		};
 		t.schedule(1);
 	}
+
+	/**
+	 * print out json to console for all valid conference rooms based on regex.
+	 */
+	public void getConferenceRooms() {
+		getConferenceRooms(this);
+	}
+
+	private native void getConferenceRooms(final Gapi x) /*-{
+		$wnd.gapi.client.calendar.calendarList
+				.list({})
+				.execute(
+						function(resp, raw) {
+							//$wnd.console.log(raw);
+							$entry(x.@com.btrll.rooms.client.util.Gapi::getConferenceRooms(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;)(resp, raw));
+						});
+	}-*/;
+
+	private void getConferenceRooms(JSOModel resp, String raw) {
+
+		// logger.fine(raw);
+		// logger.fine(resp.toJson());
+		// logger.fine("calendar count " + resp.getArray("items").length());
+
+		JsArray<JSOModel> entries = JSOModel.arrayFromJson("[]");
+
+		JsArray<JSOModel> a = resp.getArray("items");
+		for (int i = 0; i < a.length(); i++) {
+			if (a.get(i).get("summary").matches("SF.*|NYC.*|CHI.*|Palo Alto")) {
+				// logger.fine(i + " = " + a.get(i).get("summary"));
+				entries.push(a.get(i));
+			}
+		}
+		sortCalendarListEntry(entries);
+		resp.setArray("items", entries);
+		// this element is not in the docs
+		// https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list
+		resp.setArray("result", null);
+		logger.fine(resp.toJson());
+
+	}
+
+	private native void sortCalendarListEntry(JavaScriptObject item) /*-{
+		item.sort(function(a, b) {
+			return (a.summary < b.summary) ? -1 : 1;
+		});
+	}-*/;
 
 	native void init() /*-{
 		$wnd.__btrll_init();
