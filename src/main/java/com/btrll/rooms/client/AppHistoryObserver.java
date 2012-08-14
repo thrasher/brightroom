@@ -23,6 +23,7 @@ import com.btrll.rooms.client.event.ActionNames;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.googlecode.mgwt.dom.client.event.mouse.HandlerRegistrationCollection;
@@ -219,7 +220,9 @@ public class AppHistoryObserver implements HistoryObserver {
 					public void onGauth(GauthEvent event) {
 						logger.fine("GauthEvent auth needed: "
 								+ event.isAuthNeeded());
-						if (event.isAuthNeeded()) {
+						if (event.isAuthNeeded()
+								&& !Window.Location.getHash().contains(
+										"GauthPlace")) {
 							sentToGauth = true;
 							historyHandler.goTo(new GauthPlace());
 						} else {
