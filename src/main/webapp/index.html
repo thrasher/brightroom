@@ -1,55 +1,69 @@
 <!doctype html>
 <html>
+<!-- <html manifest="Rooms/appcache.nocache.manifest"> -->
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<link rel="apple-touch-icon" href="logo.png" />
-	
-    <title>BrightRoom</title>
-    <script type="text/javascript" language="javascript" src="Rooms/Rooms.nocache.js"></script>
     
-    <style type="text/css">
-    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-    .string { color: green; }
-    .number { color: darkorange; }
-    .boolean { color: blue; }
-    .null { color: magenta; }
-    .key { color: red; }
-    ​</style>
-    <script type="text/javascript">
-    /*
-    1) check what office the user is in.  Let them specify the office location
+    <!-- optimized for mobile, zoom/scaling disabled -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    
+    <!-- hides browser chrome -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- status bar styles: default, black, or black-translucent -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+	
+    <!-- iPhone ICON -->
+	<link rel="apple-touch-icon" sizes="57x57" href="images/apple-touch-icon-57x57.png" />
+	<!-- iPad ICON -->
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png" />
+	<!-- iPhone/iPad Retina ICON -->
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png" />
+
+	<!-- iPhone SPLASHSCREEN-->
+	<link href="apple-touch-startup-image-320x460.png" media="(device-width: 320px)" rel="apple-touch-startup-image">
+	<!-- iPhone (Retina) SPLASHSCREEN-->
+	<link href="apple-touch-startup-image-640x920.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+	<!-- iPad (portrait) SPLASHSCREEN-->
+	<link href="apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image">
+	<!-- iPad (landscape) SPLASHSCREEN-->
+	<link href="apple-touch-startup-image-748x1024.png" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image">
+	<!-- iPad (Retina, portrait) SPLASHSCREEN-->
+	<link href="apple-touch-startup-image-1536x2008.png" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+	<!-- iPad (Retina, landscape) SPLASHSCREEN-->
+	<link href="apple-touch-startup-image-1496x2048.png" media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+        
+
+    <!-- traditional browser bookmark icon -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    	
+    <title>BrightRoom</title>
+    
+    <script type="text/javascript" language="javascript" src="Rooms/Rooms.nocache.js"></script>
+
+<!-- 
+    0) When a user loads the app, use GPS location info to determine what office they are in.
+    ) A user should be able to set the default office location.
+    ) When a user loads the app, rooms will be shown for their default office location.
+    1) Let them specify the office location (config screen)
     2) use the office location to verify/add access to all calendars in that office
     3) use CalendarList: get for each calendar, to see if the user has access to it
     4) add any calendars the user doesn't have access to for the given location
     5) inform the user that all calendars for the given location have been added to their calendar
+    ) store the preferred user location on the client
+    ) show a list of rooms in the current location
+    ) When a user selects a room, display the room's schedule for the current day.
+    ) When a user views a room schedule, show if the room is available or not.
+    ) When a user views an available room, let them create a reservation for 20 minutes.
+    ) When a user views an available room, show them how much time they can book it for.
     6) let the user choose a room (same url as QR code to scan a room)
     7) show schedule of events for the room for the current day
       button to allow them to navigate to the next day
       button to allow them to navigate to the previous day
       button to schedule the next available meeting in the room
       button to schedule the next available room to meet in (need to specify number of people?)
-    */
-    // all room resources
-    var rooms = {'sf':[
-'brightroll.com_2d34333237383332352d3535@resource.calendar.google.com',
-'brightroll.com_3436323139323534373431@resource.calendar.google.com',
-'brightroll.com_34313939373537382d343838@resource.calendar.google.com',
-'brightroll.com_2d38333031373532372d333831@resource.calendar.google.com',
-'brightroll.com_3835383832343430323437@resource.calendar.google.com',
-'brightroll.com_2d3430343930353038373432@resource.calendar.google.com',
-'brightroll.com_3533333139333531353330@resource.calendar.google.com',
-'brightroll.com_3835373938343733393133@resource.calendar.google.com',
-'brightroll.com_2d36363934303630302d333235@resource.calendar.google.com',
-'brightroll.com_3133343633373135323233@resource.calendar.google.com',
-'brightroll.com_35373634313730352d313236@resource.calendar.google.com',
-'brightroll.com_2d31393435363031362d393232@resource.calendar.google.com'// SF: Golden Gate (15)
-                       ],
-                       'ny':[
-'brightroll.com_3639343733353437313330@resource.calendar.google.com',
-'brightroll.com_34393131343630322d373933@resource.calendar.google.com',
-'brightroll.com_2d34353938363237303235@resource.calendar.google.com',
-'brightroll.com_36343134373931352d353037@resource.calendar.google.com'                             
-                             ]};
+ -->    
+    <script type="text/javascript">
     
     function doListEventsPrimary() {
         var request = gapi.client.calendar.events.list({
@@ -185,29 +199,17 @@
         createCookie(name,"",-1);
     }    
     </script>
-    <!--
-    <script type="text/javascript" src='https://apis.google.com/js/client.js?onload=init'></script>
-     -->
     
   </head>
 
-  <!--                                           -->
-  <!-- The body can have arbitrary html, or      -->
-  <!-- you can leave the body empty if you want  -->
-  <!-- to create a completely dynamic UI.        -->
-  <!--                                           -->
   <body>
-  
-  <div id='results'></div>
-
-    <!-- OPTIONAL: include this if you want history support -->
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
 
-    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
     <noscript>
       <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled
-        in order for this application to display correctly.
+        Your web browser must have JavaScript enabled in order for this application to display correctly.
+        <br/>
+        Please re-enable JavaScript, then reload <a href="bit.ly/BrightRoom">BrightRoom</a>.
       </div>
     </noscript>
 

@@ -42,7 +42,8 @@ public class Rooms implements EntryPoint {
 
 		MGWTSettings settings = new MGWTSettings();
 		settings.setViewPort(viewPort);
-		settings.setIconUrl("logo.png");
+		// settings.setIconUrl("images/logo.png"); // varies by device
+		// settings.setStartUrl("images/"); // varies by device
 		settings.setAddGlosToIcon(true);
 		settings.setFullscreen(true);
 		settings.setPreventScrolling(true);
@@ -77,8 +78,7 @@ public class Rooms implements EntryPoint {
 				clientFactory.getEventBus(), new HomePlace());
 		historyHandler.handleCurrentHistory();
 
-		Gapi gapi = new Gapi(clientFactory.getEventBus());
-		gapi.load();
+		final Gapi gapi = new Gapi(clientFactory.getEventBus());
 
 	}
 
