@@ -3,6 +3,7 @@ package com.btrll.rooms.client;
 import com.btrll.rooms.client.css.AppBundle;
 import com.btrll.rooms.client.places.HomePlace;
 import com.btrll.rooms.client.util.Gapi;
+import com.btrll.rooms.client.util.Geolocation;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -88,6 +89,8 @@ public class Rooms implements EntryPoint {
 		historyHandler.handleCurrentHistory();
 
 		final Gapi gapi = new Gapi(clientFactory.getEventBus());
+		
+//		Geolocation.getGeoLocationCached();
 
 //		executeQuery("calendarList-rooms.json",
 //				new AsyncCallback<JavaScriptObject>() {
