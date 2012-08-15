@@ -89,59 +89,8 @@ public class Rooms implements EntryPoint {
 		historyHandler.handleCurrentHistory();
 
 		final Gapi gapi = new Gapi(clientFactory.getEventBus());
-		
-//		Geolocation.getGeoLocationCached();
 
-//		executeQuery("calendarList-rooms.json",
-//				new AsyncCallback<JavaScriptObject>() {
-//
-//					@Override
-//					public void onFailure(Throwable arg0) {
-//						Window.alert("failure: " + arg0);
-//					}
-//
-//					@Override
-//					public void onSuccess(JavaScriptObject arg0) {
-//						Window.alert("success: " + arg0);
-//					}
-//				});
-
-	}
-
-	public void executeQuery(String query,
-			final AsyncCallback<JavaScriptObject> callback) {
-		String url = GWT.getHostPageBaseURL() + query;
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-				URL.encode(url));
-		try {
-			builder.sendRequest(null, new RequestCallback() {
-				@Override
-				public void onError(Request request, Throwable caught) {
-					callback.onFailure(caught);
-				}
-
-				@Override
-				public void onResponseReceived(Request request,
-						Response response) {
-					if (Response.SC_OK == response.getStatusCode()) {
-						try {
-							callback.onSuccess(JsonUtils.safeEval(response
-									.getText()));
-						} catch (IllegalArgumentException iax) {
-							callback.onFailure(iax);
-						}
-					} else {
-						// Better to use a typed exception here to indicate the
-						// specific
-						// cause of the failure.
-						callback.onFailure(new Exception("Bad return code: "
-								+ response.getStatusCode()));
-					}
-				}
-			});
-		} catch (RequestException e) {
-			callback.onFailure(e);
-		}
+		// Geolocation.getGeoLocationCached();
 	}
 
 	private void createPhoneDisplay(ClientFactory clientFactory) {

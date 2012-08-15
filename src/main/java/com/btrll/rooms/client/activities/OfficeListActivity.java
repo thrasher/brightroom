@@ -14,11 +14,16 @@
 package com.btrll.rooms.client.activities;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.activities.animation.AnimationPlace;
 import com.btrll.rooms.client.activities.home.Topic;
+import com.btrll.rooms.client.util.JSOModel;
+import com.btrll.rooms.client.util.JsonRequest;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -32,8 +37,10 @@ import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
  * 
  */
 public class OfficeListActivity extends MGWTAbstractActivity {
+	static final Logger logger = Logger.getLogger("OfficeListActivity");
 
 	private final ClientFactory clientFactory;
+	private EventBus eventBus;
 
 	public OfficeListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
@@ -42,14 +49,13 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		OfficeListView view = clientFactory.getHomeView();
+		this.eventBus = eventBus;
+		OfficeListView view = getOfficeListView();
 
 		view.setTitle("BrightRoom");
 		view.setRightButtonText("about");
 
 		view.getFirstHeader().setText("Location");
-
-		view.setTopics(createTopicsList());
 
 		addHandlerRegistration(view.getCellSelectedHandler()
 				.addCellSelectedHandler(new CellSelectedHandler() {
@@ -84,14 +90,54 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 				}));
 
 		panel.setWidget(view);
+
+		// refresh the office list now
+		refreshOfficeList();
 	}
 
-	private List<Topic> createTopicsList() {
-		ArrayList<Topic> list = new ArrayList<Topic>();
-		list.add(new Topic("San Franciscoz", 5));
-		list.add(new Topic("New York", 5));
+	@Override
+	public void onStop() {
+		super.onStop();
+		eventBus = null;
+	}
 
-		return list;
+	private OfficeListView getOfficeListView() {
+		return clientFactory.getOfficeListView();
+	}
+
+	private void refreshOfficeList() {
+		JsonRequest req = new JsonRequest(new AsyncCallback<JSOModel>() {
+			@Override
+			public void onFailure(Throwable t) {
+				logger.warning("failed to get office list " + t);
+				Window.alert("Unable to fetch Office list. \n"
+						+ t.getLocalizedMessage());
+			}
+
+			@Override
+			public void onSuccess(JSOModel config) {
+				// Early exit if this activity has already been
+				// canceled.
+				if (eventBus == null) {
+					return;
+				}
+
+				logger.fine("successfully requested office list");
+
+				ArrayList<Topic> list = new ArrayList<Topic>();
+				JsArray<JSOModel> o = config.getArray("offices");
+				for (int i = 0; i < o.length(); i++) {
+					list.add(new Topic(o.get(i).get("name"), 5));
+				}
+
+				setOfficeList(list);
+			}
+		});
+		req.send("config.json");
+	}
+
+	private void setOfficeList(ArrayList<Topic> officeList) {
+		getOfficeListView().setTopics(officeList);
 	}
 
 }
