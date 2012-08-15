@@ -1,8 +1,6 @@
 package com.btrll.rooms.client.util;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
@@ -37,6 +35,7 @@ public abstract class JSOModel extends JavaScriptObject {
 	 * @return a populated JSOModel object
 	 */
 	public static native JSOModel fromJson(String jsonString) /*-{
+		// TODO: look at JsonUtils.safeEval and use it's internals here
 		return eval('(' + jsonString + ')');
 	}-*/;
 
@@ -72,16 +71,6 @@ public abstract class JSOModel extends JavaScriptObject {
 		}
 		return a;
 	}-*/;
-
-	@Deprecated
-	public final Set<String> keySet() {
-		JsArrayString array = keys();
-		Set<String> set = new HashSet<String>();
-		for (int i = 0; i < array.length(); i++) {
-			set.add(array.get(i));
-		}
-		return set;
-	}
 
 	public final native String get(String key) /*-{
 		return "" + this[key];
