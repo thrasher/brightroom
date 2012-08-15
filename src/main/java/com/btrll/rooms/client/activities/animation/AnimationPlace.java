@@ -20,10 +20,10 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 
 /**
  * @author Daniel Kurka
- *
+ * 
  */
 public class AnimationPlace extends Place {
-	public static class AnimationPlaceTokenizer implements PlaceTokenizer<AnimationPlace> {
+	public static class Tokenizer implements PlaceTokenizer<AnimationPlace> {
 
 		@Override
 		public AnimationPlace getPlace(String token) {

@@ -62,7 +62,7 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 
 					@Override
 					public void onCellSelected(CellSelectedEvent event) {
-						int index = event.getIndex();						
+						int index = event.getIndex();
 						if (index == 0) {
 							clientFactory.getPlaceController().goTo(
 									new AnimationPlace());

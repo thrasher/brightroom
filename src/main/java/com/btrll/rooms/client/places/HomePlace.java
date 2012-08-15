@@ -9,7 +9,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
  */
 public class HomePlace extends Place {
 
-	public static class HomePlaceTokenizer implements PlaceTokenizer<HomePlace> {
+	public static class Tokenizer implements PlaceTokenizer<HomePlace> {
 
 		@Override
 		public HomePlace getPlace(String token) {
