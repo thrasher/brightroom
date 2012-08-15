@@ -41,7 +41,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private EventBus eventBus;
 	private PlaceController placeController;
-	private OfficeListView homeViewImpl;
+	private OfficeListView officeListViewImpl;
 	private UIView uiView;
 	private AboutView aboutView;
 	private AnimationView animationView;
@@ -54,15 +54,15 @@ public class ClientFactoryImpl implements ClientFactory {
 
 		placeController = new PlaceController(eventBus);
 
-		homeViewImpl = new OfficeListViewGwtImpl();
+		officeListViewImpl = new OfficeListViewGwtImpl();
 	}
 
 	@Override
-	public OfficeListView getHomeView() {
-		if (homeViewImpl == null) {
-			homeViewImpl = new OfficeListViewGwtImpl();
+	public OfficeListView getOfficeListView() {
+		if (officeListViewImpl == null) {
+			officeListViewImpl = new OfficeListViewGwtImpl();
 		}
-		return homeViewImpl;
+		return officeListViewImpl;
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 		return pullToRefreshView;
 	}
-	
+
 	@Override
 	public GauthView getGauthView() {
 		if (gauthView == null) {
@@ -123,6 +123,5 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 		return gauthView;
 	}
-
 
 }

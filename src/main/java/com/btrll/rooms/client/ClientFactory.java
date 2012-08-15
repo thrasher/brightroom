@@ -30,7 +30,7 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  */
 public interface ClientFactory {
-	public OfficeListView getHomeView();
+	public OfficeListView getOfficeListView();
 
 	public EventBus getEventBus();
 
