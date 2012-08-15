@@ -1,7 +1,34 @@
-btrll-rooms
+BrightRoom
 ===========
 
-BrightRoll Hax project to allow for easy ad-hoc meeting room utilization.
+This is a BrightRoll HAX project to allow for easy ad-hoc meeting room utilization.
+
+The current version of the app is deployed here:
+http://bit.ly/BrightRoom
+
+Which points to a Google App Engine app here:
+http://btrllroom.appspot.com/
+
+) When a user loads the app, use GPS location info to determine what office they are in.
+) A user should be able to set the default office location.
+) When a user loads the app, rooms will be shown for their default office location.
+) Let them specify the office location (config screen)
+) use the office location to verify/add access to all calendars in that office
+) use CalendarList: get for each calendar, to see if the user has access to it
+) add any calendars the user doesn't have access to for the given location
+) inform the user that all calendars for the given location have been added to their calendar
+) store the preferred user location on the client
+) show a list of rooms in the current location
+) When a user selects a room, display the room's schedule for the current day.
+) When a user views a room schedule, show if the room is available or not.
+) When a user views an available room, let them create a reservation for 20 minutes.
+) When a user views an available room, show them how much time they can book it for.
+) let the user choose a room (same url as QR code to scan a room)
+) show schedule of events for the room for the current day
+   button to allow them to navigate to the next day
+   button to allow them to navigate to the previous day
+   button to schedule the next available meeting in the room
+   button to schedule the next available room to meet in (need to specify number of people?)
 
 User can easily add all rooms to their calendar.
 - select office location
