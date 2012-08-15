@@ -17,8 +17,8 @@ package com.btrll.rooms.client;
 
 import com.btrll.rooms.client.activities.AboutView;
 import com.btrll.rooms.client.activities.AboutViewGwtImpl;
-import com.btrll.rooms.client.activities.ShowCaseListView;
-import com.btrll.rooms.client.activities.ShowCaseListViewGwtImpl;
+import com.btrll.rooms.client.activities.OfficeListView;
+import com.btrll.rooms.client.activities.OfficeListViewGwtImpl;
 import com.btrll.rooms.client.activities.UIView;
 import com.btrll.rooms.client.activities.UIViewImpl;
 import com.btrll.rooms.client.activities.animation.AnimationView;
@@ -41,7 +41,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private EventBus eventBus;
 	private PlaceController placeController;
-	private ShowCaseListView homeViewImpl;
+	private OfficeListView homeViewImpl;
 	private UIView uiView;
 	private AboutView aboutView;
 	private AnimationView animationView;
@@ -54,13 +54,13 @@ public class ClientFactoryImpl implements ClientFactory {
 
 		placeController = new PlaceController(eventBus);
 
-		homeViewImpl = new ShowCaseListViewGwtImpl();
+		homeViewImpl = new OfficeListViewGwtImpl();
 	}
 
 	@Override
-	public ShowCaseListView getHomeView() {
+	public OfficeListView getHomeView() {
 		if (homeViewImpl == null) {
-			homeViewImpl = new ShowCaseListViewGwtImpl();
+			homeViewImpl = new OfficeListViewGwtImpl();
 		}
 		return homeViewImpl;
 	}

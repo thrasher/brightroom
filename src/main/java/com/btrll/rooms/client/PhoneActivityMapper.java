@@ -17,7 +17,7 @@ package com.btrll.rooms.client;
 
 import com.btrll.rooms.client.activities.AboutActivity;
 import com.btrll.rooms.client.activities.AboutPlace;
-import com.btrll.rooms.client.activities.ShowCaseListActivity;
+import com.btrll.rooms.client.activities.OfficeListActivity;
 import com.btrll.rooms.client.activities.UIActivity;
 import com.btrll.rooms.client.activities.UIPlace;
 import com.btrll.rooms.client.activities.animation.AnimationActivity;
@@ -46,7 +46,7 @@ public class PhoneActivityMapper implements ActivityMapper {
 	@Override
 	public Activity getActivity(Place place) {
 		if (place instanceof HomePlace) {
-			return new ShowCaseListActivity(clientFactory);
+			return new OfficeListActivity(clientFactory);
 		}
 
 		if (place instanceof UIPlace) {
@@ -69,6 +69,6 @@ public class PhoneActivityMapper implements ActivityMapper {
 			return new GauthActivity(clientFactory);
 		}
 		
-		return new ShowCaseListActivity(clientFactory);
+		return new OfficeListActivity(clientFactory);
 	}
 }

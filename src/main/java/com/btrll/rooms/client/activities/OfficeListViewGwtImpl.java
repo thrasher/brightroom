@@ -34,14 +34,14 @@ import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
  * @author Daniel Kurka
  * 
  */
-public class ShowCaseListViewGwtImpl implements ShowCaseListView {
+public class OfficeListViewGwtImpl implements OfficeListView {
 
 	private LayoutPanel main;
 	private HeaderButton forwardButton;
 	private HeaderPanel headerPanel;
 	private CellListWithHeader<Topic> cellList;
 
-	public ShowCaseListViewGwtImpl() {
+	public OfficeListViewGwtImpl() {
 		main = new LayoutPanel();
 
 		headerPanel = new HeaderPanel();

@@ -1,7 +1,7 @@
 package com.btrll.rooms.client;
 
 import com.btrll.rooms.client.activities.AboutPlace;
-import com.btrll.rooms.client.activities.ShowCaseListActivity;
+import com.btrll.rooms.client.activities.OfficeListActivity;
 import com.btrll.rooms.client.activities.UIActivity;
 import com.btrll.rooms.client.activities.UIPlace;
 import com.btrll.rooms.client.activities.animation.AnimationActivity;
@@ -29,7 +29,7 @@ public class TabletNavActivityMapper implements ActivityMapper {
 	}
 
 	private UIActivity uiActivity;
-	private ShowCaseListActivity showCaseListActivity;
+	private OfficeListActivity officeListActivity;
 	private AnimationActivity animationActivity;
 
 	private Activity getUIActivity() {
@@ -40,10 +40,10 @@ public class TabletNavActivityMapper implements ActivityMapper {
 	}
 
 	private Activity getShowCaseListActivity() {
-		if (showCaseListActivity == null) {
-			showCaseListActivity = new ShowCaseListActivity(clientFactory);
+		if (officeListActivity == null) {
+			officeListActivity = new OfficeListActivity(clientFactory);
 		}
-		return showCaseListActivity;
+		return officeListActivity;
 	}
 
 	private Activity getAnimationActicity() {
@@ -92,6 +92,6 @@ public class TabletNavActivityMapper implements ActivityMapper {
 				|| place instanceof AnimationCubePlace) {
 			return getAnimationActicity();
 		}
-		return new ShowCaseListActivity(clientFactory);
+		return new OfficeListActivity(clientFactory);
 	}
 }

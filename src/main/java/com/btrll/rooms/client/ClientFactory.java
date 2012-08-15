@@ -16,7 +16,7 @@
 package com.btrll.rooms.client;
 
 import com.btrll.rooms.client.activities.AboutView;
-import com.btrll.rooms.client.activities.ShowCaseListView;
+import com.btrll.rooms.client.activities.OfficeListView;
 import com.btrll.rooms.client.activities.UIView;
 import com.btrll.rooms.client.activities.animation.AnimationView;
 import com.btrll.rooms.client.activities.animationdone.AnimationDoneView;
@@ -30,7 +30,7 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  */
 public interface ClientFactory {
-	public ShowCaseListView getHomeView();
+	public OfficeListView getHomeView();
 
 	public EventBus getEventBus();
 

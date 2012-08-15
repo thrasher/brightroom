@@ -28,7 +28,7 @@ import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
  * @author Daniel Kurka
  *
  */
-public interface ShowCaseListView extends IsWidget {
+public interface OfficeListView extends IsWidget {
 
 	public void setTitle(String text);
 

@@ -31,18 +31,18 @@ import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
  * @author Daniel Kurka
  * 
  */
-public class ShowCaseListActivity extends MGWTAbstractActivity {
+public class OfficeListActivity extends MGWTAbstractActivity {
 
 	private final ClientFactory clientFactory;
 
-	public ShowCaseListActivity(ClientFactory clientFactory) {
+	public OfficeListActivity(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		ShowCaseListView view = clientFactory.getHomeView();
+		OfficeListView view = clientFactory.getHomeView();
 
 		view.setTitle("BrightRoom");
 		view.setRightButtonText("about");
@@ -88,7 +88,7 @@ public class ShowCaseListActivity extends MGWTAbstractActivity {
 
 	private List<Topic> createTopicsList() {
 		ArrayList<Topic> list = new ArrayList<Topic>();
-		list.add(new Topic("San Francisco", 5));
+		list.add(new Topic("San Franciscoz", 5));
 		list.add(new Topic("New York", 5));
 
 		return list;
