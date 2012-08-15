@@ -16,10 +16,9 @@ public class AboutViewGwtImpl extends DetailViewGwtImpl implements AboutView {
 
 		round = new RoundPanel();
 
-		round.add(new HTML("<a href='http://bit.ly/BrightRoom'>bit.ly/BrightRoom</a><br/>"));
-		round.add(new HTML("BrightRoll HAX 8/15/2012"));
 		round.add(new HTML(
-				"Built by Jason Thrasher, <a target='_blank' href='http://www.twitter.com/thrasher'>@thrasher</a> on Twitter"));
+				"<a href='http://bit.ly/BrightRoom'>bit.ly/BrightRoom</a><br/>"));
+		round.add(new HTML("BrightRoll HAX 8/15/2012"));
 
 		if (MGWT.getOsDetection().isPhone()) {
 			button = new Button("back");
