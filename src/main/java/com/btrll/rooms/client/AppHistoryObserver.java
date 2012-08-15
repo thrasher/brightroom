@@ -23,6 +23,7 @@ import com.btrll.rooms.client.event.ActionNames;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -233,6 +234,22 @@ public class AppHistoryObserver implements HistoryObserver {
 						}
 					}
 				});
+//		HandlerRegistration mission = eventBus.addHandler(GauthEvent.getType(),
+//				new GauthEvent.Handler() {
+//					@Override
+//					public void onGauth(GauthEvent event) {
+//						if (!event.isAuthNeeded()) {
+//							Timer ttt = new Timer() {
+//
+//								@Override
+//								public void run() {
+//									doListTodaysMeetings();
+//								}
+//							};
+//							ttt.schedule(10 * 1000);
+//						}
+//					}
+//				});
 
 		HandlerRegistrationCollection col = new HandlerRegistrationCollection();
 		col.addHandlerRegistration(register);
@@ -240,8 +257,29 @@ public class AppHistoryObserver implements HistoryObserver {
 		col.addHandlerRegistration(register3);
 		col.addHandlerRegistration(addHandler);
 		col.addHandlerRegistration(gauth);
+//		col.addHandlerRegistration(mission);
 		return col;
 	}
+
+	private native void doListTodaysMeetings() /*-{
+		var d1 = new Date();
+		d1.setHours(0, 0, 0, 0);
+		var d2 = new Date();
+		d2.setHours(24, 0, 0, 0);
+		alert(d1 + "\n" + d2);
+		$wnd.gapi.client.calendar.events
+				.list(
+						{
+							'calendarId' : 'brightroll.com_2d3430343930353038373432@resource.calendar.google.com',
+							'orderBy' : 'startTime',
+							'singleEvents' : true,
+							'timeMax' : d2,
+							'timeMin' : d1
+						}).execute(function(resp, raw) {
+					$wnd.alert(raw);
+					console.log(raw);
+				});
+	}-*/;
 
 	private void onPhoneNav(Place place, HistoryHandler historyHandler) {
 		if (place instanceof AnimationDissolvePlace
