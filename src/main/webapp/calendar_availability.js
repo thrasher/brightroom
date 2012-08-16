@@ -25,9 +25,9 @@ var update_page_availability = function (calendar, description_id, image_id) {
 	console.log(image);
 	if(busy(calendar)) {
 		description.textContent = "Busy";
-		image.setAttribute("src", "busy.png");
+		image.setAttribute("src", "images/busy.png");
 	} else {
 		description.textContent = "Available";
-		image.setAttribute("src", "available.png");
+		image.setAttribute("src", "images/available.png");
 	}
 }
