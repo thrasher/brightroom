@@ -24,6 +24,8 @@ import com.btrll.rooms.client.activities.animation.AnimationActivity;
 import com.btrll.rooms.client.activities.animation.AnimationPlace;
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
 import com.btrll.rooms.client.activities.gauth.GauthPlace;
+import com.btrll.rooms.client.activities.map.MapActivity;
+import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshActivity;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshPlace;
 import com.btrll.rooms.client.places.HomePlace;
@@ -67,6 +69,10 @@ public class PhoneActivityMapper implements ActivityMapper {
 
 		if (place instanceof GauthPlace) {
 			return new GauthActivity(clientFactory);
+		}
+		
+		if (place instanceof MapPlace) {
+			return new MapActivity(clientFactory);
 		}
 		
 		return new OfficeListActivity(clientFactory);

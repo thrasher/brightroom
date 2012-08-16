@@ -14,6 +14,7 @@ import com.btrll.rooms.client.activities.animationdone.AnimationPopPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlidePlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlideUpPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSwapPlace;
+import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshPlace;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.activity.shared.Activity;
@@ -39,14 +40,14 @@ public class TabletNavActivityMapper implements ActivityMapper {
 		return uiActivity;
 	}
 
-	private Activity getShowCaseListActivity() {
+	private Activity getOfficeListActivity() {
 		if (officeListActivity == null) {
 			officeListActivity = new OfficeListActivity(clientFactory);
 		}
 		return officeListActivity;
 	}
 
-	private Activity getAnimationActicity() {
+	private Activity getAnimationActivity() {
 		if (animationActivity == null) {
 			animationActivity = new AnimationActivity(clientFactory);
 		}
@@ -55,8 +56,8 @@ public class TabletNavActivityMapper implements ActivityMapper {
 
 	@Override
 	public Activity getActivity(Place place) {
-		if (place instanceof HomePlace || place instanceof AboutPlace) {
-			return getShowCaseListActivity();
+		if (place instanceof HomePlace || place instanceof AboutPlace || place instanceof MapPlace) {
+			return getOfficeListActivity();
 		}
 
 		if (place instanceof PullToRefreshPlace
@@ -79,7 +80,7 @@ public class TabletNavActivityMapper implements ActivityMapper {
 		}
 
 		if (place instanceof AnimationPlace) {
-			return getAnimationActicity();
+			return getAnimationActivity();
 		}
 
 		if (place instanceof AnimationSlidePlace
@@ -90,7 +91,7 @@ public class TabletNavActivityMapper implements ActivityMapper {
 				|| place instanceof AnimationPopPlace
 				|| place instanceof AnimationSwapPlace
 				|| place instanceof AnimationCubePlace) {
-			return getAnimationActicity();
+			return getAnimationActivity();
 		}
 		return new OfficeListActivity(clientFactory);
 	}

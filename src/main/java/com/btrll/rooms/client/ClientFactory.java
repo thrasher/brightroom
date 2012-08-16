@@ -52,6 +52,8 @@ public interface ClientFactory {
 
 	public GauthActivity.View getGauthView();
 	
+	public com.btrll.rooms.client.activities.map.MapActivity.View getMapView();
+	
 	public Gapi getGapi();
 
 }

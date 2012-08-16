@@ -48,8 +48,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	private AnimationView animationView;
 	private AnimationDoneView animationDoneView;
 	private PullToRefreshDisplayGwtImpl pullToRefreshView;
-	private GauthActivity.View gauthView;
 	private Gapi gapi;
+	private GauthActivity.View gauthView;
+	private com.btrll.rooms.client.activities.map.MapView mapView;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -132,5 +133,13 @@ public class ClientFactoryImpl implements ClientFactory {
 			gapi = new Gapi(getEventBus());
 		}
 		return gapi;
+	}
+
+	@Override
+	public com.btrll.rooms.client.activities.map.MapActivity.View getMapView() {
+		if (mapView == null) {
+			mapView = new com.btrll.rooms.client.activities.map.MapView();
+		}
+		return mapView;
 	}
 }

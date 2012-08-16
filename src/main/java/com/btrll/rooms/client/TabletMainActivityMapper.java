@@ -17,6 +17,8 @@ import com.btrll.rooms.client.activities.animationdone.AnimationSlideUpPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSwapPlace;
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
 import com.btrll.rooms.client.activities.gauth.GauthPlace;
+import com.btrll.rooms.client.activities.map.MapActivity;
+import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshActivity;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshPlace;
 import com.btrll.rooms.client.places.HomePlace;
@@ -55,6 +57,8 @@ public class TabletMainActivityMapper implements ActivityMapper {
 	}
 
 	private Activity getActivity(Place lastPlace, Place newPlace) {
+		logger.fine(lastPlace + " to " + newPlace);
+
 		if (newPlace instanceof HomePlace) {
 			return getAboutActivity();
 		}
@@ -140,6 +144,10 @@ public class TabletMainActivityMapper implements ActivityMapper {
 
 		if (newPlace instanceof GauthPlace) {
 			return new GauthActivity(clientFactory);
+		}
+
+		if (newPlace instanceof MapPlace) {
+			return new MapActivity(clientFactory);
 		}
 
 		logger.warning(newPlace + " is not mapped to an activity");

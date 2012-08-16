@@ -1,6 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+<!-- <html manifest="Rooms/appcache.nocache.manifest"> -->
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!-- optimized for mobile, zoom/scaling disabled -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    
+    <!-- hides browser chrome -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- status bar styles: default, black, or black-translucent -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+	
+    <!-- iPhone ICON -->
+	<link href="images/apple-touch-icon-57x57.png" sizes="57x57" rel="apple-touch-icon" />
+	<!-- iPad ICON -->
+	<link href="images/apple-touch-icon-72x72.png" sizes="72x72" rel="apple-touch-icon" />
+	<!-- iPhone/iPad Retina ICON -->
+	<link href="images/apple-touch-icon-114x114.png" sizes="114x114" rel="apple-touch-icon" />
+
+	<!-- iPhone SPLASHSCREEN-->
+	<link href="images/apple-touch-startup-image-320x460.png" media="(device-width: 320px)" rel="apple-touch-startup-image">
+	<!-- iPhone (Retina) SPLASHSCREEN-->
+	<link href="images/apple-touch-startup-image-640x920.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+	<!-- iPad (portrait) SPLASHSCREEN-->
+	<link href="images/apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image">
+	<!-- iPad (landscape) SPLASHSCREEN-->
+	<link href="images/apple-touch-startup-image-748x1024.png" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image">
+	<!-- iPad (Retina, portrait) SPLASHSCREEN-->
+	<link href="images/apple-touch-startup-image-1536x2008.png" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+	<!-- iPad (Retina, landscape) SPLASHSCREEN-->
+	<link href="images/apple-touch-startup-image-1496x2048.png" media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+        
+    <!-- traditional browser bookmark icon -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    	
+    <title>BrightRoom</title>
 <script type="text/javascript" src="d3.v2.min.js"></script>
 <title>BrightRoll SF</title>
 <style type="text/css">
@@ -48,7 +84,7 @@ function toggleStatus(abbr){
     });
 }
 
-d3.xml("brightrollSF.svg", "image/svg+xml", function(xml) {
+d3.xml("/brightrollSF.svg", "image/svg+xml", function(xml) {
     var importedNode = document.importNode(xml.documentElement, true);
     d3.select("#map").node().appendChild(importedNode);
     var rect = d3.select("#map").selectAll("#rooms").selectAll("*:not(g)")
