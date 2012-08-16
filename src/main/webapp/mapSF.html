@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+<title>BrightRoll SF</title>
+<style type="text/css">
+#map {
+	-webkit-transform:scale(100%);
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+//Colors 
+var availableColor = "rgb(141, 198, 63)"
+var occupiedColor = "rgb(194, 69, 45)"
+
+function colorRoomAvalable(abbr){
+var room = d3.select("#map").select("#" + abbr).attr('fill', function(d){
+   return availableColor;
+  });
+}
+
+function colorRoomOccupied(abbr){
+  var room = d3.select("#map").select("#"+ abbr).attr('fill', function(d){
+     return occupiedColor;
+    });
+}
+
+function isRoomAvalible(abbr){
+  var color = d3.select("#map").select("#"+ abbr).attr('fill');
+  if (color == availableColor ){
+    return true;
+  }
+  else {
+    return false;}
+}
+
+function toggleStatus(abbr){
+  var room = d3.select("#map").select("#" + abbr).attr('fill', function(d){
+    if (d3.select(this).attr('fill') == availableColor) {
+      return occupiedColor;
+    }
+    else {
+      return availableColor;
+    }
+    });
+}
+
+d3.xml("brightrollSF.svg", "image/svg+xml", function(xml) {
+    var importedNode = document.importNode(xml.documentElement, true);
+    d3.select("#map").node().appendChild(importedNode);
+    var rect = d3.select("#map").selectAll("#rooms").selectAll("*:not(g)")
+      .attr('fill', availableColor) //to make sure all colors in form rgb()
+      .on("click", function(d){
+      toggleStatus(d3.select(this).attr('id'))
+    });
+
+});
+</script>
+</body>
+</html>
