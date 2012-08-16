@@ -17,7 +17,8 @@
 	<set-property name="gwt.logging.systemHandler" value="DISABLED" />
 	<set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />	
 
-	<script src="https://apis.google.com/js/client.js" />
+	<!-- loads too slow here, so added to host page -->
+	<!-- <script src="https://apis.google.com/js/client.js" /> -->
 
 
 	<!-- We need the JUnit module in the main module, -->

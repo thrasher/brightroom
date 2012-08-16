@@ -17,14 +17,11 @@ import com.btrll.rooms.client.activities.animationdone.AnimationSlidePlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlideUpPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSwapPlace;
 import com.btrll.rooms.client.activities.gauth.GauthEvent;
-import com.btrll.rooms.client.activities.gauth.GauthPlace;
 import com.btrll.rooms.client.event.ActionEvent;
 import com.btrll.rooms.client.event.ActionNames;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.googlecode.mgwt.dom.client.event.mouse.HandlerRegistrationCollection;
@@ -221,35 +218,28 @@ public class AppHistoryObserver implements HistoryObserver {
 					public void onGauth(GauthEvent event) {
 						logger.fine("GauthEvent auth needed: "
 								+ event.isAuthNeeded());
-						if (event.isAuthNeeded()
-								&& !Window.Location.getHash().contains(
-										"GauthPlace")) {
-							sentToGauth = true;
-							historyHandler.goTo(new GauthPlace());
-						} else {
-							logger.fine("sentToGauth: " + sentToGauth);
-							if (sentToGauth) {
-								History.back();
-							}
-						}
+						if (!event.isAuthNeeded())
+							historyHandler.goTo(new HomePlace());
+
 					}
 				});
-//		HandlerRegistration mission = eventBus.addHandler(GauthEvent.getType(),
-//				new GauthEvent.Handler() {
-//					@Override
-//					public void onGauth(GauthEvent event) {
-//						if (!event.isAuthNeeded()) {
-//							Timer ttt = new Timer() {
-//
-//								@Override
-//								public void run() {
-//									doListTodaysMeetings();
-//								}
-//							};
-//							ttt.schedule(10 * 1000);
-//						}
-//					}
-//				});
+		// HandlerRegistration mission =
+		// eventBus.addHandler(GauthEvent.getType(),
+		// new GauthEvent.Handler() {
+		// @Override
+		// public void onGauth(GauthEvent event) {
+		// if (!event.isAuthNeeded()) {
+		// Timer ttt = new Timer() {
+		//
+		// @Override
+		// public void run() {
+		// doListTodaysMeetings();
+		// }
+		// };
+		// ttt.schedule(10 * 1000);
+		// }
+		// }
+		// });
 
 		HandlerRegistrationCollection col = new HandlerRegistrationCollection();
 		col.addHandlerRegistration(register);
@@ -257,7 +247,7 @@ public class AppHistoryObserver implements HistoryObserver {
 		col.addHandlerRegistration(register3);
 		col.addHandlerRegistration(addHandler);
 		col.addHandlerRegistration(gauth);
-//		col.addHandlerRegistration(mission);
+		// col.addHandlerRegistration(mission);
 		return col;
 	}
 

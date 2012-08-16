@@ -1,27 +1,21 @@
 package com.btrll.rooms.client;
 
+import java.util.logging.Logger;
+
+import com.btrll.rooms.client.activities.gauth.GauthActivity;
+import com.btrll.rooms.client.activities.gauth.GauthEvent;
 import com.btrll.rooms.client.css.AppBundle;
 import com.btrll.rooms.client.places.HomePlace;
-import com.btrll.rooms.client.util.Gapi;
-import com.btrll.rooms.client.util.Geolocation;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.StyleInjector;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
 import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
@@ -39,8 +33,9 @@ import com.googlecode.mgwt.ui.client.util.SuperDevModeUtil;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Rooms implements EntryPoint {
+	static final Logger logger = Logger.getLogger("Rooms");
 
-	private final Messages messages = GWT.create(Messages.class);
+	// private final Messages messages = GWT.create(Messages.class);
 
 	private void start() {
 		SuperDevModeUtil.showDevMode();
@@ -63,20 +58,50 @@ public class Rooms implements EntryPoint {
 
 		final ClientFactory clientFactory = new ClientFactoryImpl();
 
+		if (MGWT.getOsDetection().isTablet()) {
+			// very nasty workaround because GWT does not correctly support
+			// @media
+			StyleInjector.inject(AppBundle.INSTANCE.css().getText());
+		}
+
+		final SimplePanel gPanel = new SimplePanel();
+		final GauthActivity a = new GauthActivity(clientFactory);
+
+		HandlerRegistration addHandler = clientFactory.getEventBus()
+				.addHandler(GauthEvent.getType(), new GauthEvent.Handler() {
+					@Override
+					public void onGauth(GauthEvent event) {
+						if (event.isAuthNeeded()) {
+							logger.fine("auth is needed");
+							// RootPanel.detachNow(gPanel);
+							// RootPanel.get().add(gPanel);
+						} else {
+							logger.fine("okay to detach");
+							a.onStop();
+							Timer t = new Timer() {
+								@Override
+								public void run() {
+									loadUi(clientFactory);
+								}
+							};
+							t.schedule(1);
+						}
+					}
+				});
+
+		a.start(gPanel, clientFactory.getEventBus());
+		RootPanel.get().add(gPanel);
+	}
+
+	private void loadUi(ClientFactory clientFactory) {
 		// Start PlaceHistoryHandler with our PlaceHistoryMapper
 		AppPlaceHistoryMapper historyMapper = GWT
 				.create(AppPlaceHistoryMapper.class);
 
 		if (MGWT.getOsDetection().isTablet()) {
-
-			// very nasty workaround because GWT does not corretly support
-			// @media
-			StyleInjector.inject(AppBundle.INSTANCE.css().getText());
 			createTabletDisplay(clientFactory);
 		} else {
-
 			createPhoneDisplay(clientFactory);
-
 		}
 
 		AppHistoryObserver historyObserver = new AppHistoryObserver();
@@ -87,8 +112,6 @@ public class Rooms implements EntryPoint {
 		historyHandler.register(clientFactory.getPlaceController(),
 				clientFactory.getEventBus(), new HomePlace());
 		historyHandler.handleCurrentHistory();
-
-		final Gapi gapi = new Gapi(clientFactory.getEventBus());
 
 		// Geolocation.getGeoLocationCached();
 	}

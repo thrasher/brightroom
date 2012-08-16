@@ -1,7 +1,9 @@
+var config =
 {
   "googleApiProject": {
     "clientId": "706281234659.apps.googleusercontent.com",
-    "apiKey": "AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q"
+    "apiKey": "AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q",
+    "scopes": "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email"
   },
   "offices": [
     {
@@ -45,7 +47,7 @@
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/OeAbDs"
+      "bitly_url": "http:\/\/bit.ly\/OeAbDs"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -58,7 +60,7 @@
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/Q02rK7"
+      "bitly_url": "http:\/\/bit.ly\/Q02rK7"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -71,7 +73,7 @@
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/TFq4fI"
+      "bitly_url": "http:\/\/bit.ly\/TFq4fI"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -84,7 +86,7 @@
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/OYR9qN"
+      "bitly_url": "http:\/\/bit.ly\/OYR9qN"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -97,7 +99,7 @@
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/Mz4by7"
+      "bitly_url": "http:\/\/bit.ly\/Mz4by7"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -109,7 +111,7 @@
       "backgroundColor": "#9fe1e7",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/PdxE0G"
+      "bitly_url": "http:\/\/bit.ly\/PdxE0G"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -121,7 +123,7 @@
       "backgroundColor": "#42d692",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/RWOMd3"
+      "bitly_url": "http:\/\/bit.ly\/RWOMd3"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -133,7 +135,7 @@
       "backgroundColor": "#7bd148",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/NEb2pG"
+      "bitly_url": "http:\/\/bit.ly\/NEb2pG"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -145,7 +147,7 @@
       "backgroundColor": "#fa573c",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/So85bb"
+      "bitly_url": "http:\/\/bit.ly\/So85bb"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -157,7 +159,7 @@
       "backgroundColor": "#ac725e",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/OeBu52"
+      "bitly_url": "http:\/\/bit.ly\/OeBu52"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -169,7 +171,7 @@
       "backgroundColor": "#9fe1e7",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/So8aLP"
+      "bitly_url": "http:\/\/bit.ly\/So8aLP"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -181,7 +183,7 @@
       "backgroundColor": "#4986e7",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/Oj7UOJ"
+      "bitly_url": "http:\/\/bit.ly\/Oj7UOJ"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -193,7 +195,7 @@
       "backgroundColor": "#9fc6e7",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/Ox1Chs"
+      "bitly_url": "http:\/\/bit.ly\/Ox1Chs"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -205,7 +207,7 @@
       "backgroundColor": "#ff7537",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/OYRdXB"
+      "bitly_url": "http:\/\/bit.ly\/OYRdXB"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -217,7 +219,7 @@
       "backgroundColor": "#cabdbf",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/PoDKMR"
+      "bitly_url": "http:\/\/bit.ly\/PoDKMR"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -229,7 +231,7 @@
       "backgroundColor": "#fbe983",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/R2PvYQ"
+      "bitly_url": "http:\/\/bit.ly\/R2PvYQ"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -241,7 +243,7 @@
       "backgroundColor": "#b99aff",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/Nn5woR"
+      "bitly_url": "http:\/\/bit.ly\/Nn5woR"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -253,7 +255,8 @@
       "backgroundColor": "#c2c2c2",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http://bit.ly/TFqmmI"
+      "bitly_url": "http:\/\/bit.ly\/TFqmmI"
     }
   ]
 }
+;

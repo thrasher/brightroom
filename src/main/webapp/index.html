@@ -38,6 +38,40 @@
     	
     <title>BrightRoom</title>
     
+    <script type="text/javascript">
+    gapiOnloadCallback = function() {
+    	console.log('gapiOnloadCallback');
+    	gapi.client.setApiKey(config.googleApiProject.apiKey);
+    	setTimeout(checkAuth, 1);
+    }
+    checkAuth = function() {
+		gapi.auth.authorize({
+			client_id : config.googleApiProject.clientId,
+			scope : config.googleApiProject.scopes,
+			immediate : true
+		}, handleAuthResult);
+	}
+    handleAuthClick = function(event) {
+		gapi.auth.authorize({
+			client_id : config.googleApiProject.clientId,
+			scope : config.googleApiProject.scopes,
+			immediate : false
+		}, handleAuthResult);
+	}
+    var savedAuthResult = null;
+    var handleAuthResult = function(authResult) {
+    	console.log('handleAuthResult');
+    	if (window.__btrll_handleAuthResult === undefined) {
+			console.log('gwt __btrll_handleAuthResult not loaded yet');
+			savedAuthResult = authResult;
+		} else {
+			console.log('calling gwt __btrll_handleAuthResult');
+			window.__btrll_handleAuthResult(authResult);
+		}    	
+    }
+    </script>
+    <script src="config.json"></script>
+    <script src="https://apis.google.com/js/client.js?onload=gapiOnloadCallback"></script>
     <script type="text/javascript" language="javascript" src="Rooms/Rooms.nocache.js"></script>
     <script type="text/javascript">
     

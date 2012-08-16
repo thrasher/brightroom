@@ -1,5 +1,6 @@
 package com.btrll.rooms.client;
 
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
@@ -11,7 +12,7 @@ import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 
-public abstract class DetailViewGwtImpl implements DetailView {
+public abstract class DetailViewGwtImpl extends Composite implements DetailView {
 
 	protected LayoutPanel main;
 	protected ScrollPanel scrollPanel;

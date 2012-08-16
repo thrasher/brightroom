@@ -20,8 +20,9 @@ import com.btrll.rooms.client.activities.OfficeListView;
 import com.btrll.rooms.client.activities.UIView;
 import com.btrll.rooms.client.activities.animation.AnimationView;
 import com.btrll.rooms.client.activities.animationdone.AnimationDoneView;
-import com.btrll.rooms.client.activities.gauth.GauthView;
+import com.btrll.rooms.client.activities.gauth.GauthActivity;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshDisplay;
+import com.btrll.rooms.client.util.Gapi;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -48,7 +49,9 @@ public interface ClientFactory {
 	public AnimationDoneView getAnimationDoneView();
 
 	public PullToRefreshDisplay getPullToRefreshDisplay();
+
+	public GauthActivity.View getGauthView();
 	
-	public GauthView getGauthView();
+	public Gapi getGapi();
 
 }

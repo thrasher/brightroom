@@ -1,34 +1,75 @@
 package com.btrll.rooms.client.activities.gauth;
 
-import com.btrll.rooms.client.ChromeWorkaround;
-import com.btrll.rooms.client.DetailViewGwtImpl;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.Button;
+import com.googlecode.mgwt.ui.client.widget.ProgressIndicator;
 
-public class GauthViewImpl extends DetailViewGwtImpl implements GauthView {
-	private Button authButton;
+public class GauthViewImpl extends Composite implements
+		GauthActivity.View {
+	private static final Binder binder = GWT.create(Binder.class);
+
+	interface Binder extends UiBinder<Widget, GauthViewImpl> {
+	}
+
+	@UiField
+	ProgressIndicator pi;
+	@UiField
+	VerticalPanel panel;
+
+	//
+	PopupPanel pp;
+	Button button;
 
 	public GauthViewImpl() {
+		initWidget(binder.createAndBindUi(this));
+		// popupPanel.center();
+		button = new Button("Grant via Google");
 
-		FlowPanel content = new FlowPanel();
-		// content.getElement().getStyle().setMargin(20, Unit.PX);
+		VerticalPanel v = new VerticalPanel();
+		// v.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		v.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		v.add(new Image("/images/btrll_logo_small.png"));
+		v.add(new Label("Please grant access to your calendar via Google Apps"));
+		v.add(button);
 
-		scrollPanel.setScrollingEnabledX(false);
-
-		authButton = new Button("Google Auth");
-
-		content.add(authButton);
-
-		scrollPanel.setWidget(content);
-
-		ChromeWorkaround.maybeUpdateScroller(scrollPanel);
+		pp = new PopupPanel();
+		pp.setGlassEnabled(true);
+		pp.setModal(true);
+		pp.add(v);
 
 	}
 
 	@Override
+	public Widget asWidget() {
+		return this;
+	}
+
+	@Override
 	public HasTapHandlers getAuthButton() {
-		return authButton;
+		return button;
+	}
+
+	@Override
+	public void doPopup() {
+		pi.setVisible(false);
+		pp.center();
+		pp.show();
+	}
+
+	@Override
+	public void hidePopup() {
+		pi.setVisible(false);
+		pp.hide();
 	}
 
 }
