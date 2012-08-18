@@ -72,7 +72,7 @@ public class PhoneActivityMapper implements ActivityMapper {
 		}
 		
 		if (place instanceof MapPlace) {
-			return new MapActivity(clientFactory);
+			return new MapActivity(clientFactory, (MapPlace)place);
 		}
 		
 		return new OfficeListActivity(clientFactory);

@@ -7,29 +7,37 @@ var config =
   },
   "offices": [
     {
+      "id": "1",
       "name": "San Francisco",
       "summaryPrefix": "SF:",
+      "map": "brightrollSF.svg",
       "latitude": "37.7750",
       "longitude": "122.4183",
       "video": ""
     },
     {
+      "id": "2",
       "name": "New York City",
       "summaryPrefix": "NYC:",
+      "map": "",
       "latitude": "40.7142",
       "longitude": "74.0064",
       "video": ""
     },
     {
+      "id": "3",
       "name": "Chicago",
       "summaryPrefix": "CHI:",
+      "map": "",
       "latitude": "41.8500",
       "longitude": "87.6500",
       "video": ""
     },
     {
+      "id": "4",
       "name": "Palo Alto",
       "summaryPrefix": "Palo Alto",
+      "map": "",
       "latitude": "37.4419",
       "longitude": "122.1419",
       "video": "http:\/\/www.youtube.com\/watch?v=p1kAi4Bz-R8"

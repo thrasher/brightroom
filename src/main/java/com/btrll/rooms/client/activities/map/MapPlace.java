@@ -7,16 +7,50 @@ import com.google.gwt.place.shared.Prefix;
 public class MapPlace extends Place {
 	@Prefix("map")
 	public static class Tokenizer implements PlaceTokenizer<MapPlace> {
+		private static final String NO_ID = "create";
 
 		@Override
 		public MapPlace getPlace(String token) {
-			return new MapPlace();
+			try {
+				// Parse the task ID from the URL.
+				Long officeId = Long.parseLong(token);
+				return new MapPlace(officeId);
+			} catch (NumberFormatException e) {
+				// If the ID cannot be parsed, assume we are creating a task.
+				return MapPlace.getMapCreatePlace();
+			}
 		}
 
 		@Override
 		public String getToken(MapPlace place) {
-			return "";
+			Long officeId = place.getOfficeId();
+			return (officeId == null) ? NO_ID : officeId.toString();
 		}
-
 	}
+
+	private static MapPlace singleton;
+
+	/**
+	 * Get the singleton instance of the {@link TaskPlace} used to create a new
+	 * task.
+	 * 
+	 * @return the place
+	 */
+	public static MapPlace getMapCreatePlace() {
+		if (singleton == null) {
+			singleton = new MapPlace(null);
+		}
+		return singleton;
+	}
+
+	private final Long officeId;
+
+	public MapPlace(Long officeId) {
+		this.officeId = officeId;
+	}
+
+	public Long getOfficeId() {
+		return officeId;
+	}
+
 }

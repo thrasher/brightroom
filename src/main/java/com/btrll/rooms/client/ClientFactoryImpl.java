@@ -27,6 +27,8 @@ import com.btrll.rooms.client.activities.animationdone.AnimationDoneView;
 import com.btrll.rooms.client.activities.animationdone.AnimationDoneViewGwtImpl;
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
 import com.btrll.rooms.client.activities.gauth.GauthViewImpl;
+import com.btrll.rooms.client.activities.map.MapActivity;
+import com.btrll.rooms.client.activities.map.MapView;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshDisplay;
 import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshDisplayGwtImpl;
 import com.btrll.rooms.client.util.Gapi;
@@ -136,9 +138,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 
 	@Override
-	public com.btrll.rooms.client.activities.map.MapActivity.View getMapView() {
+	public MapActivity.View getMapView() {
 		if (mapView == null) {
-			mapView = new com.btrll.rooms.client.activities.map.MapView();
+			mapView = new MapView();
 		}
 		return mapView;
 	}

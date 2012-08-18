@@ -21,7 +21,9 @@ public class MapView extends Composite implements MapActivity.View {
 
 		// add the floorplan per Jessie's JS
 		panel.getElement().setId("map");
-		inject();
+
+		// TODO: figure out how to load the specific mapfile
+		inject("brightrollSF.svg");
 	}
 
 	@Override
@@ -29,8 +31,8 @@ public class MapView extends Composite implements MapActivity.View {
 		return this;
 	}
 
-	private native void inject() /*-{
-		$wnd.showOffice();
+	private native void inject(String map) /*-{
+		$wnd.showOffice(map);
 	}-*/;
 
 }

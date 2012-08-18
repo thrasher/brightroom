@@ -147,7 +147,7 @@ public class TabletMainActivityMapper implements ActivityMapper {
 		}
 
 		if (newPlace instanceof MapPlace) {
-			return new MapActivity(clientFactory);
+			return new MapActivity(clientFactory, (MapPlace) newPlace);
 		}
 
 		logger.warning(newPlace + " is not mapped to an activity");
