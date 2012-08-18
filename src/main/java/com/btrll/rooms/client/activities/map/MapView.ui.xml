@@ -4,7 +4,11 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m='urn:import:com.googlecode.mgwt.ui.client.widget'>
 	<ui:style>
 		.container {
-			-webkit-transform: scale(100%);
+			transform: scale(1, 1);
+			-ms-transform: scale(1, 1); /* IE 9 */
+			-webkit-transform: scale(1, 1); /* Safari and Chrome */
+			-o-transform: scale(1, 1); /* Opera */
+			-moz-transform: scale(1, 1); /* Firefox */
 		}
 	</ui:style>
 
