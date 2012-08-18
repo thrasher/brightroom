@@ -1,314 +1,270 @@
 <!doctype html>
 <html>
 <!-- <html manifest="Rooms/appcache.nocache.manifest"> -->
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    
-    <!-- optimized for mobile, zoom/scaling disabled -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-    
-    <!-- hides browser chrome -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <!-- status bar styles: default, black, or black-translucent -->
-	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-	
-    <!-- iPhone ICON -->
-	<link href="images/apple-touch-icon-57x57.png" sizes="57x57" rel="apple-touch-icon" />
-	<!-- iPad ICON -->
-	<link href="images/apple-touch-icon-72x72.png" sizes="72x72" rel="apple-touch-icon" />
-	<!-- iPhone/iPad Retina ICON -->
-	<link href="images/apple-touch-icon-114x114.png" sizes="114x114" rel="apple-touch-icon" />
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-	<!-- iPhone SPLASHSCREEN-->
-	<link href="images/apple-touch-startup-image-320x460.png" media="(device-width: 320px)" rel="apple-touch-startup-image">
-	<!-- iPhone (Retina) SPLASHSCREEN-->
-	<link href="images/apple-touch-startup-image-640x920.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-	<!-- iPad (portrait) SPLASHSCREEN-->
-	<link href="images/apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image">
-	<!-- iPad (landscape) SPLASHSCREEN-->
-	<link href="images/apple-touch-startup-image-748x1024.png" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image">
-	<!-- iPad (Retina, portrait) SPLASHSCREEN-->
-	<link href="images/apple-touch-startup-image-1536x2008.png" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-	<!-- iPad (Retina, landscape) SPLASHSCREEN-->
-	<link href="images/apple-touch-startup-image-1496x2048.png" media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-        
-    <!-- traditional browser bookmark icon -->
-    <link rel="shortcut icon" href="favicon.ico" />
-    	
-    <title>BrightRoom</title>
-    
-    <script type="text/javascript">
-    gapiOnloadCallback = function() {
-    	console.log('gapiOnloadCallback');
-    	gapi.client.setApiKey(config.googleApiProject.apiKey);
-    	setTimeout(checkAuth, 1);
-    }
-    checkAuth = function() {
+<!-- optimized for mobile, zoom/scaling disabled -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+
+<!-- hides browser chrome -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- status bar styles: default, black, or black-translucent -->
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+<!-- iPhone ICON -->
+<link href="images/apple-touch-icon-57x57.png" sizes="57x57"
+	rel="apple-touch-icon" />
+<!-- iPad ICON -->
+<link href="images/apple-touch-icon-72x72.png" sizes="72x72"
+	rel="apple-touch-icon" />
+<!-- iPhone/iPad Retina ICON -->
+<link href="images/apple-touch-icon-114x114.png" sizes="114x114"
+	rel="apple-touch-icon" />
+
+<!-- iPhone SPLASHSCREEN-->
+<link href="images/apple-touch-startup-image-320x460.png"
+	media="(device-width: 320px)" rel="apple-touch-startup-image">
+<!-- iPhone (Retina) SPLASHSCREEN-->
+<link href="images/apple-touch-startup-image-640x920.png"
+	media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)"
+	rel="apple-touch-startup-image">
+<!-- iPad (portrait) SPLASHSCREEN-->
+<link href="images/apple-touch-startup-image-768x1004.png"
+	media="(device-width: 768px) and (orientation: portrait)"
+	rel="apple-touch-startup-image">
+<!-- iPad (landscape) SPLASHSCREEN-->
+<link href="images/apple-touch-startup-image-748x1024.png"
+	media="(device-width: 768px) and (orientation: landscape)"
+	rel="apple-touch-startup-image">
+<!-- iPad (Retina, portrait) SPLASHSCREEN-->
+<link href="images/apple-touch-startup-image-1536x2008.png"
+	media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)"
+	rel="apple-touch-startup-image">
+<!-- iPad (Retina, landscape) SPLASHSCREEN-->
+<link href="images/apple-touch-startup-image-1496x2048.png"
+	media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)"
+	rel="apple-touch-startup-image">
+
+<!-- traditional browser bookmark icon -->
+<link rel="shortcut icon" href="favicon.ico" />
+
+<title>BrightRoom</title>
+
+<script type="text/javascript">
+	gapiOnloadCallback = function() {
+		console.log('gapiOnloadCallback');
+		gapi.client.setApiKey(config.googleApiProject.apiKey);
+		setTimeout(checkAuth, 1);
+	}
+	checkAuth = function() {
 		gapi.auth.authorize({
 			client_id : config.googleApiProject.clientId,
 			scope : config.googleApiProject.scopes,
 			immediate : true
 		}, handleAuthResult);
 	}
-    handleAuthClick = function(event) {
+	handleAuthClick = function(event) {
 		gapi.auth.authorize({
 			client_id : config.googleApiProject.clientId,
 			scope : config.googleApiProject.scopes,
 			immediate : false
 		}, handleAuthResult);
 	}
-    var savedAuthResult = null;
-    var handleAuthResult = function(authResult) {
-    	console.log('handleAuthResult');
-    	if (window.__btrll_handleAuthResult === undefined) {
+	var savedAuthResult = null;
+	var handleAuthResult = function(authResult) {
+		console.log('handleAuthResult');
+		if (window.__btrll_handleAuthResult === undefined) {
 			console.log('gwt __btrll_handleAuthResult not loaded yet');
 			savedAuthResult = authResult;
 		} else {
 			console.log('calling gwt __btrll_handleAuthResult');
 			window.__btrll_handleAuthResult(authResult);
-		}    	
-    }
-    
-    // map functions
-var availableColor = "rgb(141, 198, 63)"
-var occupiedColor = "rgb(194, 69, 45)"
-
-function colorRoomAvalable(abbr){
-var room = d3.select("#map").select("#" + abbr).attr('fill', function(d){
-   return availableColor;
-  });
-}
-
-function colorRoomOccupied(abbr){
-  var room = d3.select("#map").select("#"+ abbr).attr('fill', function(d){
-     return occupiedColor;
-    });
-}
-
-function isRoomAvalible(abbr){
-  var color = d3.select("#map").select("#"+ abbr).attr('fill');
-  if (color == availableColor ){
-    return true;
-  }
-  else {
-    return false;}
-}
-
-function toggleStatus(abbr){
-  var room = d3.select("#map").select("#" + abbr).attr('fill', function(d){
-    if (d3.select(this).attr('fill') == availableColor) {
-      return occupiedColor;
-    }
-    else {
-      return availableColor;
-    }
-    });
-}
-
-function showOffice(map){
-	d3.xml("/" + map, "image/svg+xml", function(xml) {
-	    var importedNode = document.importNode(xml.documentElement, true);
-	    d3.select("#map").node().appendChild(importedNode);
-	    var rect = d3.select("#map").selectAll("#rooms").selectAll("*:not(g)")
-	      .attr('fill', availableColor) //to make sure all colors in form rgb()
-	      .on("click", function(d){
-	      toggleStatus(d3.select(this).attr('id'))
-	    });
-	
-	});
-	getRoomSchedules();
-}
-// see: http://code.google.com/p/google-api-javascript-client/wiki/RpcBatch
-function getRoomSchedules() {
-	var rpcBatch = gapi.client.newRpcBatch();
-	for (var i = 0; i < config.rooms.length; i++) {
-		var id = config.rooms[i].id;
-		// for each room
-        var d1 = new Date();
-        d1.setHours(0, 0, 0, 0);
-        var d2 = new Date();
-        d2.setHours(24, 0, 0, 0);
-        //alert(d1 + "\n" + d2);
-        var req = gapi.client.calendar.events.list({
-            'calendarId': id,
-            'orderBy': 'startTime',
-            'singleEvents': true,
-            'timeMax': d2,
-            'timeMin': d1
-        });
-        rpcBatch.add(req);
-        rpcBatch.execute(function(jsonResponse, rawResponse) {
-    	  for (var id in jsonResponse) {
-    		// Logs each individual response
-    	    console.log(jsonResponse[id]);
-    		
-    		// TODO: udpate the map to show usage
-    	  }
-    	  // Logs the raw string response, a JSON-string representing the id-response map
-    	  //console.log(rawResponse);
-    	  
-      	  // TODO: set timer to repeat the batch call
-      	});
+		}
 	}
-}
 
-	
-	
-    </script>
-    <script src="config.json"></script>
-    <script src="https://apis.google.com/js/client.js?onload=gapiOnloadCallback"></script>
-    <script type="text/javascript" src="d3.v2.min.js"></script>
-    <script type="text/javascript" language="javascript" src="Rooms/Rooms.nocache.js"></script>
-    <script type="text/javascript">
-    
-    function doListEventsPrimary() {
-        var request = gapi.client.calendar.events.list({
-          'calendarId': 'primary'
-        });
-        request.execute(function(resp, raw) {
-            appendResults(resp.result.items.length);
-            prettyPrintJson(raw);
-        });
-    }
-    function doListAllMeetingRooms() {
-        gapi.client.calendar.calendarList.list({
-        }).execute(function(resp, raw) {
-            var slist = {};
-            slist.sf = [];
-            slist.ny = [];
-            for (var i=0; i < resp.result.items.length; i++) {
-                if (resp.result.items[i].summary.indexOf('NY') >= 0) {
-                    appendResults("'"+resp.result.items[i].id+"',");
-                    slist.sf[slist.sf.length] = resp.result.items[i].id;
-                }
-            }
-            
-            //appendResults(slist.sf.length);
-            prettyPrintJson(raw);
-        });
-    }
-    function doListAllUserCalendars() {
-        gapi.client.calendar.calendarList.list({
-        }).execute(function(resp, raw) {
-            appendResults(resp.result.items.length);
-            prettyPrintJson(raw);
-        });
-    }
-    // get all events for the meeting room today
-    function doListTodaysMeetings() {
-        var d1 = new Date();
-        d1.setHours(0, 0, 0, 0);
-        var d2 = new Date();
-        d2.setHours(24, 0, 0, 0);
-        //alert(d1 + "\n" + d2);
-        gapi.client.calendar.events.list({
-            'calendarId': rooms.sf[0],
-            'orderBy': 'startTime',
-            'singleEvents': true,
-            'timeMax': d2,
-            'timeMin': d1
-        }).execute(function(resp, raw) {
-            appendResults(resp.result.items.length + " meetings today");
-            prettyPrintJson(raw);
-        });
-    }
-    function makeOAuthCall(){
-    	var request = gapi.client.oauth2.userinfo.get({ 
-            'fields': 'email'
-         });
-    	
-    	request.execute(function(resp, raw) {
-           appendResults(resp.result.email + " is your email");
-           prettyPrintJson(raw);
-         });
-    }
-    function makeRestRequest(){
-        gapi.client.request({
-            'path': '/calendar/v3/users/me/calendarList',
-            'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/json' // This is the default
-            },
-            'body': JSON.stringify({
-                'id': 'jthrasher@brightroll.com',
-                'selected': true
-            }),
-            'callback': function(jsonResponse, rawResponse) {
-                // Response is inserted Calendar
-                alert('response callback: '+jsonResponse+"\nrawResponse: "+rawResponse);
-            }
-        });
-    }
-    function appendResults(text) {
-           var results = document.getElementById('results');
-           results.appendChild(document.createElement('p'));
-           results.appendChild(document.createTextNode(text));
-    }
-    function prettyPrintJson(text) {
-        var print = document.createElement('pre');
-        print.innerHTML = syntaxHighlight(text);
-        
-        var results = document.getElementById('results');
-        results.appendChild(print);
-    }
+	// map functions
+	var availableColor = "rgb(141, 198, 63)"
+	var occupiedColor = "rgb(194, 69, 45)"
 
-    function syntaxHighlight(json) {
-        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'number';
-            if (/^"/.test(match)) {
-                if (/:$/.test(match)) {
-                    cls = 'key';
-                } else {
-                    cls = 'string';
-                }
-            } else if (/true|false/.test(match)) {
-                cls = 'boolean';
-            } else if (/null/.test(match)) {
-                cls = 'null';
-            }
-            return '<span class="' + cls + '">' + match + '</span>';
-        });
-    }
-    function createCookie(name,value,days) {
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime()+(days*24*60*60*1000));
-            var expires = "; expires="+date.toGMTString();
-        }
-        else var expires = "";
-        document.cookie = name+"="+value+expires+"; path=/";
-    }
+	function colorRoomAvalable(abbr) {
+		var room = d3.select("#map").select("#" + abbr).attr('fill',
+				function(d) {
+					return availableColor;
+				});
+	}
 
-    function readCookie(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for(var i=0;i < ca.length;i++) {
-            var c = ca[i];
-            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-        }
-        return null;
-    }
+	function colorRoomOccupied(abbr) {
+		var room = d3.select("#map").select("#" + abbr).attr('fill',
+				function(d) {
+					return occupiedColor;
+				});
+	}
 
-    function eraseCookie(name) {
-        createCookie(name,"",-1);
-    }    
-    </script>
-    
-  </head>
+	function isRoomAvalible(abbr) {
+		var color = d3.select("#map").select("#" + abbr).attr('fill');
+		if (color == availableColor) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-  <body>
-    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+	function toggleStatus(abbr) {
+		var room = d3.select("#map").select("#" + abbr).attr('fill',
+				function(d) {
+					if (d3.select(this).attr('fill') == availableColor) {
+						return occupiedColor;
+					} else {
+						return availableColor;
+					}
+				});
+	}
 
-    <noscript>
-      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled in order for this application to display correctly.
-        <br/>
-        Please re-enable JavaScript, then reload <a href="bit.ly/BrightRoom">BrightRoom</a>.
-      </div>
-    </noscript>
+	function showOffice(map) {
+		d3.xml("/" + map, "image/svg+xml", function(xml) {
+			var importedNode = document.importNode(xml.documentElement, true);
+			d3.select("#map").node().appendChild(importedNode);
+			var rect = d3.select("#map").selectAll("#rooms").selectAll(
+					"*:not(g)").attr('fill', availableColor) //to make sure all colors in form rgb()
+			.on("click", function(d) {
+				toggleStatus(d3.select(this).attr('id'))
+			});
 
-  </body>
+		});
+		getRoomSchedules();
+	}
+	// see: http://code.google.com/p/google-api-javascript-client/wiki/RpcBatch
+	function getRoomSchedules() {
+		var rpcBatch = gapi.client.newRpcBatch();
+		for ( var i = 0; i < config.rooms.length; i++) {
+			var id = config.rooms[i].id;
+			// for each room
+			var d1 = new Date();
+			d1.setHours(0, 0, 0, 0);
+			var d2 = new Date();
+			d2.setHours(24, 0, 0, 0);
+			//alert(d1 + "\n" + d2);
+			var req = gapi.client.calendar.events.list({
+				'calendarId' : id,
+				'orderBy' : 'startTime',
+				'singleEvents' : true,
+				'timeMax' : d2,
+				'timeMin' : d1
+			});
+			rpcBatch.add(req);
+			rpcBatch.execute(function(jsonResponse, rawResponse) {
+				for ( var id in jsonResponse) {
+					// Logs each individual response
+					console.log(jsonResponse[id]);
+
+					// TODO: udpate the map to show usage
+				}
+				// Logs the raw string response, a JSON-string representing the id-response map
+				//console.log(rawResponse);
+
+				// TODO: set timer to repeat the batch call every 1 minute
+			});
+		}
+	}
+
+	// sample GAPI requsts
+
+	function doListEventsPrimary() {
+		var request = gapi.client.calendar.events.list({
+			'calendarId' : 'primary'
+		});
+		request.execute(function(resp, raw) {
+			console.log(resp);
+		});
+	}
+	function doListAllMeetingRooms() {
+		gapi.client.calendar.calendarList.list({}).execute(function(resp, raw) {
+			var slist = {};
+			slist.sf = [];
+			slist.ny = [];
+			for ( var i = 0; i < resp.result.items.length; i++) {
+				if (resp.result.items[i].summary.indexOf('NY') >= 0) {
+					appendResults("'" + resp.result.items[i].id + "',");
+					slist.sf[slist.sf.length] = resp.result.items[i].id;
+				}
+			}
+
+			//appendResults(slist.sf.length);
+			prettyPrintJson(raw);
+		});
+	}
+	function doListAllUserCalendars() {
+		gapi.client.calendar.calendarList.list({}).execute(function(resp, raw) {
+			console.log(resp);
+		});
+	}
+	// get all events for the meeting room today
+	function doListTodaysMeetings() {
+		var d1 = new Date();
+		d1.setHours(0, 0, 0, 0);
+		var d2 = new Date();
+		d2.setHours(24, 0, 0, 0);
+		//alert(d1 + "\n" + d2);
+		gapi.client.calendar.events.list({
+			'calendarId' : rooms.sf[0],
+			'orderBy' : 'startTime',
+			'singleEvents' : true,
+			'timeMax' : d2,
+			'timeMin' : d1
+		}).execute(function(resp, raw) {
+			console.log(resp);
+		});
+	}
+	function makeOAuthCall() {
+		var request = gapi.client.oauth2.userinfo.get({
+			'fields' : 'email'
+		});
+
+		request.execute(function(resp, raw) {
+			console.log(resp);
+		});
+	}
+	function makeRestRequest() {
+		gapi.client.request({
+			'path' : '/calendar/v3/users/me/calendarList',
+			'method' : 'POST',
+			'headers' : {
+				'Content-Type' : 'application/json' // This is the default
+			},
+			'body' : JSON.stringify({
+				'id' : 'jthrasher@brightroll.com',
+				'selected' : true
+			}),
+			'callback' : function(resp, raw) {
+				console.log(resp);
+			}
+		});
+	}
+</script>
+<script src="config.json"></script>
+<script
+	src="https://apis.google.com/js/client.js?onload=gapiOnloadCallback"></script>
+<script type="text/javascript" src="d3.v2.min.js"></script>
+<script type="text/javascript" language="javascript"
+	src="Rooms/Rooms.nocache.js"></script>
+
+</head>
+
+<body>
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly. <br /> Please re-enable
+			JavaScript, then reload <a href="bit.ly/BrightRoom">BrightRoom</a>.
+		</div>
+	</noscript>
+
+</body>
 </html>
