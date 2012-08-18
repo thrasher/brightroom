@@ -17,12 +17,14 @@ package com.btrll.rooms.client.activities;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
+import com.google.gwt.place.shared.Prefix;
 
 /**
  * @author Daniel Kurka
  * 
  */
 public class AboutPlace extends Place {
+	@Prefix("about")
 	public static class Tokenizer implements PlaceTokenizer<AboutPlace> {
 
 		@Override
