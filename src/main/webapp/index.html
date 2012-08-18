@@ -119,6 +119,7 @@ function showOffice(map){
 	});
 	getRoomSchedules();
 }
+// see: http://code.google.com/p/google-api-javascript-client/wiki/RpcBatch
 function getRoomSchedules() {
 	var rpcBatch = gapi.client.newRpcBatch();
 	for (var i = 0; i < config.rooms.length; i++) {
