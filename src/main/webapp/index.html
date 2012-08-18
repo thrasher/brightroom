@@ -105,6 +105,20 @@ function toggleStatus(abbr){
     }
     });
 }
+
+function showOffice(){
+d3.xml("/brightrollSF.svg", "image/svg+xml", function(xml) {
+    var importedNode = document.importNode(xml.documentElement, true);
+    d3.select("#map").node().appendChild(importedNode);
+    var rect = d3.select("#map").selectAll("#rooms").selectAll("*:not(g)")
+      .attr('fill', availableColor) //to make sure all colors in form rgb()
+      .on("click", function(d){
+      toggleStatus(d3.select(this).attr('id'))
+    });
+
+});
+}
+
     </script>
     <script src="config.json"></script>
     <script src="https://apis.google.com/js/client.js?onload=gapiOnloadCallback"></script>

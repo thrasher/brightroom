@@ -18,10 +18,10 @@ public class MapView extends Composite implements MapActivity.View {
 
 	public MapView() {
 		initWidget(binder.createAndBindUi(this));
-		panel.getElement().setId("map");
 
+		// add the floorplan per Jessie's JS
+		panel.getElement().setId("map");
 		inject();
-		// panel.add(new Label("hello world"));
 	}
 
 	@Override
@@ -30,17 +30,7 @@ public class MapView extends Composite implements MapActivity.View {
 	}
 
 	private native void inject() /*-{
-		$wnd.d3.xml("/brightrollSF.svg", "image/svg+xml", function(xml) {
-			var importedNode = $doc.importNode(xml.documentElement, true);
-			$wnd.d3.select("#map").node().appendChild(importedNode);
-			var rect = $wnd.d3.select("#map").selectAll("#rooms").selectAll(
-					"*:not(g)").attr('fill', $wnd.availableColor) //to make sure all colors in form rgb()
-			.on("click", function(d) {
-				$wnd.toggleStatus($wnd.d3.select(this).attr('id'))
-			});
-
-		});
-
+		$wnd.showOffice();
 	}-*/;
 
 }
