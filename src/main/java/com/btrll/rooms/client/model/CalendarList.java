@@ -15,19 +15,19 @@ public class CalendarList extends JSOModel {
 	protected CalendarList() {
 	}
 
-	public native String getKind()/*-{
+	public final native String getKind()/*-{
 		return this.kind;
 	}-*/;
 
-	public native String getEtag()/*-{
+	public final native String getEtag()/*-{
 		return this.etag;
 	}-*/;
 
-	public native String getNextPageToken()/*-{
+	public final native String getNextPageToken()/*-{
 		return this.nextPageToken;
 	}-*/;
 
-	public native JsArray<CalendarListResource> getItems()/*-{
+	public final native JsArray<CalendarListResource> getItems()/*-{
 		return this.items;
 	}-*/;
 

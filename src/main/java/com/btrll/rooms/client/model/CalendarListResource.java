@@ -15,23 +15,23 @@ public class CalendarListResource extends JSOModel {
 	protected CalendarListResource() {
 	}
 
-	public native String getKind()/*-{
+	public final native String getKind()/*-{
 		return this.kind;
 	}-*/;
 
-	public native String getId()/*-{
+	public final native String getId()/*-{
 		return this.id;
 	}-*/;
 
-	public native String getSummary()/*-{
+	public final native String getSummary()/*-{
 		return this.summary;
 	}-*/;
 
-	public native String getLocation()/*-{
+	public final native String getLocation()/*-{
 		return this.location;
 	}-*/;
 
-	public native String getTimeZone()/*-{
+	public final native String getTimeZone()/*-{
 		return this.timeZone;
 	}-*/;
 
