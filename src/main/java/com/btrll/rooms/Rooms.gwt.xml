@@ -6,6 +6,8 @@
 	<inherits name="com.googlecode.mgwt.linker.Linker" />
 	<!-- for inline images -->
 	<inherits name="com.google.gwt.resources.Resources" />
+	<!-- for JSOModel -->
+	<inherits name="com.google.gwt.json.JSON" />
 
 	<!-- for logging -->
 	<inherits name="com.google.gwt.logging.Logging" />
@@ -17,12 +19,12 @@
 	<set-property name="gwt.logging.hasWidgetsHandler" value="DISABLED" />
 	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
 	<set-property name="gwt.logging.systemHandler" value="DISABLED" />
-	<set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />	
+	<set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
 
-	<!-- all script src are loaded before the module -->
-	<script src="/config.json"></script>
+	<!-- all scripts are loaded before onModuleLoad -->
 	<!-- NOTE: gapi.load calls window.gapi_onload, if no callback is supplied -->
 	<script src="https://apis.google.com/js/client.js"></script>
+	<script src="/config.json"></script>
 	<script src="/d3.v2.min.js"></script>
 
 	<!-- We need the JUnit module in the main module, -->
@@ -54,6 +56,11 @@
 		/> <extend-configuration-property name="html5manifestlinker_files" value="index.html" 
 		/> <extend-configuration-property name="html5manifestlinker_files" value="logo.png" 
 		/> -->
+		
+	<!-- creates HTML5 cache manifest -->
+	<define-linker name="appcachelinker" class="com.btrll.rooms.linker.AppCacheLinker" />
+	<add-linker name="appcachelinker" />
+		
 
 	<!-- Specify the paths for translatable code -->
 	<source path='client' />

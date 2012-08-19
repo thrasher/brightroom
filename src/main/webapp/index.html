@@ -1,6 +1,5 @@
 <!doctype html>
-<html>
-<!-- <html manifest="Rooms/appcache.nocache.manifest"> -->
+<html manifest="Rooms/appcache.nocache.manifest">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
@@ -115,9 +114,7 @@
 		    
 		    99.91% { -webkit-transform: rotate(360deg); }
 		    100% { -webkit-transform: rotate(360deg); }
-		
-	    
-	
+
 		}
 </style>
 
@@ -322,7 +319,10 @@
 </head>
 
 <body>
-	<div id="spinner" class="mgwt-ProgressIndicator centered"></div>
+	<div id="spinner" class="mgwt-ProgressIndicator centered">
+		<!-- this spinner will render before the app is loaded,
+	and thus give the user feedback that somthing's happening -->
+	</div>
 
 	<script type="text/javascript" language="javascript"
 		src="Rooms/Rooms.nocache.js"></script>
