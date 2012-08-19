@@ -4,6 +4,8 @@
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name="com.googlecode.mgwt.MGWT" />
 	<inherits name="com.googlecode.mgwt.linker.Linker" />
+	<!-- for inline images -->
+	<inherits name="com.google.gwt.resources.Resources" />
 
 	<!-- for logging -->
 	<inherits name="com.google.gwt.logging.Logging" />

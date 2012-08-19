@@ -55,7 +55,7 @@ public class GauthActivity extends MGWTAbstractActivity {
 							view.doPopup();
 						} else {
 							logger.fine("hidePopup");
-							clientFactory.getGauthView().hidePopup();
+//							clientFactory.getGauthView().hidePopup();
 						}
 					}
 				}));

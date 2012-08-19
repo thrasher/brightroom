@@ -1,6 +1,8 @@
 package com.btrll.rooms.client.activities.gauth;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -12,19 +14,27 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.Button;
+import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.ProgressIndicator;
 
-public class GauthViewImpl extends Composite implements
-		GauthActivity.View {
+public class GauthViewImpl extends Composite implements GauthActivity.View {
 	private static final Binder binder = GWT.create(Binder.class);
 
 	interface Binder extends UiBinder<Widget, GauthViewImpl> {
 	}
 
+	interface Resources extends ClientBundle {
+		public static final Resources INSTANCE = GWT.create(Resources.class);
+
+		@Source("btrll_logo_small.png")
+		public ImageResource btrll_logo_small();
+
+	}
+
 	@UiField
 	ProgressIndicator pi;
-	@UiField
-	VerticalPanel panel;
+//	@UiField
+//	LayoutPanel panel;
 
 	//
 	PopupPanel pp;
@@ -34,16 +44,20 @@ public class GauthViewImpl extends Composite implements
 		initWidget(binder.createAndBindUi(this));
 		// popupPanel.center();
 		button = new Button("Grant via Google");
+		
+		ImageResource ir = Resources.INSTANCE.btrll_logo_small();
+		Image img = new Image(ir);
 
 		VerticalPanel v = new VerticalPanel();
 		// v.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		v.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		v.add(new Image("/images/btrll_logo_small.png"));
+		// v.add(new Image("/images/btrll_logo_small.png"));
+		v.add(img);
 		v.add(new Label("Please grant access to your calendar via Google Apps"));
 		v.add(button);
 
 		pp = new PopupPanel();
-		pp.setGlassEnabled(true);
+//		pp.setGlassEnabled(true);
 		pp.setModal(true);
 		pp.add(v);
 

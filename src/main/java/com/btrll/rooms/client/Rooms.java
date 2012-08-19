@@ -11,8 +11,10 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.dom.client.StyleInjector;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -73,11 +75,12 @@ public class Rooms implements EntryPoint {
 					public void onGauth(GauthEvent event) {
 						if (event.isAuthNeeded()) {
 							logger.fine("auth is needed");
-							// RootPanel.detachNow(gPanel);
-							// RootPanel.get().add(gPanel);
 						} else {
-							logger.fine("okay to detach");
+							logger.fine("auth is done, loading the ui");
+							// TODO: a.mayStop() ???
 							a.onStop();
+							RootPanel.get().remove(gPanel);
+							// gPanel.remove(clientFactory.getGauthView());
 							Timer t = new Timer() {
 								@Override
 								public void run() {
@@ -89,8 +92,14 @@ public class Rooms implements EntryPoint {
 					}
 				});
 
+		// start Gauth, assuming we need to test the auth
 		a.start(gPanel, clientFactory.getEventBus());
-		RootPanel.get().add(gPanel);
+
+		HasWidgets container = RootPanel.get();
+		container.add(gPanel);
+
+		// remove host page spinner after ours is added
+		DOM.getElementById("spinner").removeFromParent();
 	}
 
 	private void loadUi(ClientFactory clientFactory) {

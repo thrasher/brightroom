@@ -2,12 +2,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m='urn:import:com.googlecode.mgwt.ui.client.widget'>
+	<ui:style>
+		.centered {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			margin-top: -25px;
+			margin-left: -25px;
+		}
+	</ui:style>
 
-	<g:VerticalPanel ui:field='panel' verticalAlignment='ALIGN_MIDDLE'
-		horizontalAlignment='ALIGN_CENTER' width="100%">
-		<g:cell>
-			<m:ProgressIndicator ui:field='pi' />
-		</g:cell>
-	</g:VerticalPanel>
+	<g:SimplePanel styleName='{style.centered}'>
+		<m:ProgressIndicator ui:field='pi' />
+	</g:SimplePanel>
 
 </ui:UiBinder>
