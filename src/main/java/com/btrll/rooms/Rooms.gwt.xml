@@ -17,9 +17,11 @@
 	<set-property name="gwt.logging.systemHandler" value="DISABLED" />
 	<set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />	
 
-	<!-- loads too slow here, so added to host page -->
-	<!-- <script src="https://apis.google.com/js/client.js" /> -->
-
+	<!-- all script src are loaded before the module -->
+	<script src="/config.json"></script>
+	<!-- NOTE: gapi.load calls window.gapi_onload, if no callback is supplied -->
+	<script src="https://apis.google.com/js/client.js"></script>
+	<script src="/d3.v2.min.js"></script>
 
 	<!-- We need the JUnit module in the main module, -->
 	<!-- otherwise eclipse complains (Google plugin bug?) <inherits name='com.google.gwt.junit.JUnit' 

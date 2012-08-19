@@ -7,7 +7,6 @@ import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.ScriptInjector;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -20,11 +19,6 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class Gapi {
 	// https://apis.google.com/js/client.js?onload=OnLoadCallback
-	private static final String URL = "https://apis.google.com/js/client.js";
-	private String clientId = "706281234659.apps.googleusercontent.com";
-	private String apiKey = "AIzaSyCs-pmSKuF0S9HPGzOVKLhFO9pzm4_Lp8Q";
-	private String scopes = "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email";
-
 	static final Logger logger = Logger.getLogger("Gapi");
 
 	private EventBus eventBus;
@@ -33,8 +27,9 @@ public class Gapi {
 	private boolean isCalendarLoaded = false;
 
 	public Gapi(EventBus eventBus) {
-		exportStaticMethods(this);
 		this.eventBus = eventBus;
+
+		exportStaticMethods(this);
 	}
 
 	/**
@@ -113,6 +108,7 @@ public class Gapi {
 	}
 
 	native void exportStaticMethods(final Gapi x) /*-{
+		$wnd.console.log('exportStaticMethods');
 		$wnd.__btrll_handleAuthResult = function(authResult) {
 			//$wnd.alert('__btrll_handleAuthResult');
 			if (authResult && !authResult.error) {
@@ -145,7 +141,7 @@ public class Gapi {
 		if ($wnd.savedAuthResult != null) {
 			$wnd.__btrll_handleAuthResult($wnd.savedAuthResult);
 		}
-		$wnd.console.log('exportStaticMethods');
+		$wnd.gapi_onload();
 	}-*/;
 
 }
