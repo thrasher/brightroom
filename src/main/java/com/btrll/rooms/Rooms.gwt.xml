@@ -3,7 +3,9 @@
 	<!-- Inherit the core Web Toolkit stuff. -->
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name="com.googlecode.mgwt.MGWT" />
+	<!-- for per-permutation html5 cache.manifest -->
 	<inherits name="com.googlecode.mgwt.linker.Linker" />
+	
 	<!-- for inline images -->
 	<inherits name="com.google.gwt.resources.Resources" />
 	<!-- for JSOModel -->
@@ -52,14 +54,23 @@
 	<entry-point class='com.btrll.rooms.client.Rooms' />
 
 	<add-linker name="permutationmaplinker" />
-	<!-- <extend-configuration-property name="html5manifestlinker_files" value="./" 
-		/> <extend-configuration-property name="html5manifestlinker_files" value="index.html" 
-		/> <extend-configuration-property name="html5manifestlinker_files" value="logo.png" 
-		/> -->
+	<extend-configuration-property name="html5manifestlinker_files"
+		value="index.html" />
+	<extend-configuration-property name="html5manifestlinker_files"
+		value="images/spinner.png" />
+	<extend-configuration-property name="html5manifestlinker_files"
+		value="favicon.ico" />
+	<extend-configuration-property name="html5manifestlinker_files"
+		value="config.json" />
+	<extend-configuration-property name="html5manifestlinker_files"
+		value="d3.v2.min.js" />
+	<extend-configuration-property name="html5manifestlinker_files"
+		value="brightrollSF.svg" />
 		
-	<!-- creates HTML5 cache manifest -->
+	<!-- creates HTML5 cache manifest
 	<define-linker name="appcachelinker" class="com.btrll.rooms.linker.AppCacheLinker" />
 	<add-linker name="appcachelinker" />
+	 -->
 		
 
 	<!-- Specify the paths for translatable code -->
