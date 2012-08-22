@@ -3,22 +3,21 @@ package com.btrll.rooms.client.activities.map;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
+import com.btrll.rooms.client.DetailActivity;
 import com.btrll.rooms.client.DetailView;
 import com.btrll.rooms.client.model.Config;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.ui.client.widget.base.HasRefresh;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowStandardHandler;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowStandardHandler.PullActionHandler;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowWidget;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel.Pullhandler;
 
-public class MapActivity extends MGWTAbstractActivity {
+public class MapActivity extends DetailActivity {
 	public interface View extends DetailView {
 		public void setHeaderPullHandler(Pullhandler pullHandler);
 
@@ -40,14 +39,16 @@ public class MapActivity extends MGWTAbstractActivity {
 	private final MapPlace place;
 
 	public MapActivity(ClientFactory clientFactory, MapPlace place) {
-		super();
+		super(clientFactory.getMapView(), "nav");
 		this.clientFactory = clientFactory;
 		this.place = place;
 	}
 
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
 		logger.fine("MapActivity start");
+		super.start(panel, eventBus);
+
 		Office office = getOffice(place.getOfficeId());
 
 		final View view = clientFactory.getMapView();
@@ -93,6 +94,7 @@ public class MapActivity extends MGWTAbstractActivity {
 				new Timer() {
 					@Override
 					public void run() {
+						// TODO: refresh display data
 						// callback.onFailure(null);
 						// display.render(list);
 						view.refresh();
@@ -104,20 +106,9 @@ public class MapActivity extends MGWTAbstractActivity {
 		});
 		view.setFooterPullHandler(footerHandler);
 
-		if (place.getOfficeId() == null) {
-			Window.alert("TODO: support adding new office maps.");
-			// presenter = startCreate();
-		} else {
-			// TODO: select the office map
-			logger.fine("Load the office map for id: " + place.getOfficeId());
-		}
-
 		view.setMap(office.getMap());
 
 		panel.setWidget(view);
-
-		// load gapi
-		clientFactory.getGapi();
 	}
 
 	private static Office getOffice(long id) {
