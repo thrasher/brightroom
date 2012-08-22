@@ -61,7 +61,7 @@
 	<extend-configuration-property name="html5manifestlinker_files"
 		value="favicon.ico" />
 	<extend-configuration-property name="html5manifestlinker_files"
-		value="config.json" />
+		value="config.jsonp" />
 	<extend-configuration-property name="html5manifestlinker_files"
 		value="d3.v2.min.js" />
 	<extend-configuration-property name="html5manifestlinker_files"
