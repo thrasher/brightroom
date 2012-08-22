@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.google.web.bindery.event.shared.UmbrellaException;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
 import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
@@ -197,6 +198,7 @@ public class Rooms implements EntryPoint {
 			public void onUncaughtException(Throwable e) {
 				Window.alert("uncaught: " + e.getMessage());
 				String s = buildStackTrace(e, "RuntimeExceotion:\n");
+				logger.severe(s);
 				Window.alert(s);
 				e.printStackTrace();
 
@@ -213,30 +215,33 @@ public class Rooms implements EntryPoint {
 	}
 
 	private String buildStackTrace(Throwable t, String log) {
-
 		if (t != null) {
 			log += t.getClass().toString();
+			log += ": ";
 			log += t.getMessage();
-			//
-			StackTraceElement[] stackTrace = t.getStackTrace();
-			if (stackTrace != null) {
-				StringBuffer trace = new StringBuffer();
 
-				for (int i = 0; i < stackTrace.length; i++) {
-					trace.append(stackTrace[i].getClassName() + "."
-							+ stackTrace[i].getMethodName() + "("
-							+ stackTrace[i].getFileName() + ":"
-							+ stackTrace[i].getLineNumber());
+			// umbrella exception stack is not useful, so skip
+			if (!(t instanceof UmbrellaException)) {
+				StackTraceElement[] stackTrace = t.getStackTrace();
+				if (stackTrace != null) {
+					StringBuffer trace = new StringBuffer();
+
+					for (int i = 0; i < stackTrace.length; i++) {
+						trace.append("\n");
+						trace.append(stackTrace[i].getClassName() + "."
+								+ stackTrace[i].getMethodName() + "("
+								+ stackTrace[i].getFileName() + ":"
+								+ stackTrace[i].getLineNumber() + ")");
+					}
+
+					log += trace.toString();
 				}
-
-				log += trace.toString();
 			}
 			//
 			Throwable cause = t.getCause();
 			if (cause != null && cause != t) {
-
+				log += "\n";
 				log += buildStackTrace(cause, "CausedBy:\n");
-
 			}
 		}
 		return log;
