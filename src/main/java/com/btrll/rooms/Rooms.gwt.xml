@@ -26,7 +26,7 @@
 	<!-- all scripts are loaded before onModuleLoad -->
 	<!-- NOTE: gapi.load calls window.gapi_onload, if no callback is supplied -->
 	<script src="https://apis.google.com/js/client.js"></script>
-	<script src="/config.json"></script>
+	<script src="/config.jsonp"></script>
 	<script src="/d3.v2.min.js"></script>
 
 	<!-- We need the JUnit module in the main module, -->
