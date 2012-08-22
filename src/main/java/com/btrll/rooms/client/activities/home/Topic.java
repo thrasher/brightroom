@@ -7,31 +7,23 @@ public class Topic implements Serializable {
 
 	private String name;
 
-	private int count;
+	private String key;
 
 	public Topic() {
 
 	}
 
-	public Topic(String name, int count) {
+	public Topic(String name, String key) {
 		this.name = name;
-		this.count = count;
+		this.key = key;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
+	public String getKey() {
+		return key;
 	}
 
 }

@@ -26,7 +26,7 @@ public class PullToRefreshActivity extends DetailActivity {
 
 		list = new LinkedList<Topic>();
 		while (counter < 20) {
-			list.add(new Topic("Topic " + (counter + 1), counter));
+			list.add(new Topic("Topic " + (counter + 1), counter+""));
 			counter++;
 		}
 
@@ -72,7 +72,7 @@ public class PullToRefreshActivity extends DetailActivity {
 
 						} else {
 							for (int i = 0; i < 5; i++) {
-								list.add(0, new Topic("generated Topic " + (counter + 1), counter));
+								list.add(0, new Topic("generated Topic " + (counter + 1), counter+""));
 								counter++;
 							}
 							display.render(list);
@@ -111,7 +111,7 @@ public class PullToRefreshActivity extends DetailActivity {
 
 						} else {
 							for (int i = 0; i < 5; i++) {
-								list.add(list.size(), new Topic("generated Topic " + (counter + 1), counter));
+								list.add(list.size(), new Topic("generated Topic " + (counter + 1), counter+""));
 								counter++;
 							}
 							display.render(list);

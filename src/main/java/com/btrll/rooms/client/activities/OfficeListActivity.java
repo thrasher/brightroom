@@ -115,7 +115,7 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 
 		ArrayList<Topic> list = new ArrayList<Topic>();
 		for (int i = 0; i < o.length(); i++) {
-			list.add(new Topic(o.get(i).get("name"), 5));
+			list.add(new Topic(o.get(i).get("name"), o.get(i).get("id")));
 		}
 
 		setOfficeList(list);
