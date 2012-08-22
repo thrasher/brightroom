@@ -25,6 +25,11 @@
 	</mime-mapping>
 	<mime-mapping>
 		<extension>json</extension>
-		<mime-type>text/javascript</mime-type>
+		<mime-type>application/json</mime-type>
 	</mime-mapping>
+	<mime-mapping>
+		<extension>jsonp</extension>
+		<mime-type>application/javascript</mime-type>
+	</mime-mapping>
+
 </web-app>
