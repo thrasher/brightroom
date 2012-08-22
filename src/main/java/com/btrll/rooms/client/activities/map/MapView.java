@@ -1,34 +1,96 @@
 package com.btrll.rooms.client.activities.map;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
+import com.btrll.rooms.client.ChromeWorkaround;
+import com.btrll.rooms.client.DetailViewGwtImpl;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
+import com.googlecode.mgwt.ui.client.widget.base.HasRefresh;
+import com.googlecode.mgwt.ui.client.widget.base.PullArrowFooter;
+import com.googlecode.mgwt.ui.client.widget.base.PullArrowHeader;
+import com.googlecode.mgwt.ui.client.widget.base.PullArrowWidget;
+import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
+import com.googlecode.mgwt.ui.client.widget.base.PullPanel.Pullhandler;
 
-public class MapView extends Composite implements MapActivity.View {
-	private static final Binder binder = GWT.create(Binder.class);
+public class MapView extends DetailViewGwtImpl implements MapActivity.View {
+	// private static final Binder binder = GWT.create(Binder.class);
+	//
+	// interface Binder extends UiBinder<Widget, MapView> {
+	// }
+	//
+	// @UiField
+	// FlowPanel flow;
 
-	interface Binder extends UiBinder<Widget, MapView> {
-	}
+	private PullPanel pullToRefresh;
 
-	@UiField
+	private PullArrowHeader pullArrowHeader;
+	private PullArrowFooter pullArrowFooter;
 	LayoutPanel panel;
 
 	public MapView() {
-		initWidget(binder.createAndBindUi(this));
 
-		// add the floorplan per Jessie's JS
+		// initWidget(binder.createAndBindUi(this));
+
+		main.remove(scrollPanel);
+
+		pullToRefresh = new PullPanel();
+
+		pullArrowHeader = new PullArrowHeader();
+
+		pullToRefresh.setHeader(pullArrowHeader);
+
+		pullArrowFooter = new PullArrowFooter();
+		pullToRefresh.setFooter(pullArrowFooter);
+
+		panel = new LayoutPanel();
 		panel.getElement().setId("map");
+		pullToRefresh.add(panel);
 
-		// TODO: figure out how to load the specific mapfile
-		inject("brightrollSF.svg");
+		main.add(pullToRefresh);
+
+		ChromeWorkaround.maybeUpdateScroller(scrollPanel);
 	}
 
 	@Override
-	public Widget asWidget() {
-		return this;
+	public void setHeaderPullHandler(Pullhandler pullHandler) {
+		pullToRefresh.setHeaderPullhandler(pullHandler);
+
+	}
+
+	@Override
+	public PullArrowWidget getPullHeader() {
+		return pullArrowHeader;
+	}
+
+	@Override
+	public void refresh() {
+		pullToRefresh.refresh();
+
+	}
+
+	@Override
+	public void setFooterPullHandler(Pullhandler pullHandler) {
+		pullToRefresh.setFooterPullHandler(pullHandler);
+
+	}
+
+	@Override
+	public PullArrowWidget getPullFooter() {
+		return pullArrowFooter;
+	}
+
+	@Override
+	public HasRefresh getPullPanel() {
+		return pullToRefresh;
+	}
+
+	@Override
+	public void setMap(String svg) {
+		panel.removeFromParent();
+
+		panel = new LayoutPanel();
+		panel.getElement().setId("map");
+		pullToRefresh.add(panel);
+
+		inject(svg);
 	}
 
 	private native void inject(String map) /*-{
