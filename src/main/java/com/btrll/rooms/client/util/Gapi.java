@@ -3,11 +3,8 @@ package com.btrll.rooms.client.util;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.activities.gauth.GauthEvent;
-import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.ScriptInjector;
-import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**

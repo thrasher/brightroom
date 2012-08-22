@@ -19,8 +19,6 @@ import com.btrll.rooms.client.activities.gauth.GauthActivity;
 import com.btrll.rooms.client.activities.gauth.GauthPlace;
 import com.btrll.rooms.client.activities.map.MapActivity;
 import com.btrll.rooms.client.activities.map.MapPlace;
-import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshActivity;
-import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshPlace;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -71,65 +69,9 @@ public class TabletMainActivityMapper implements ActivityMapper {
 			return getAboutActivity();
 		}
 
-		// if (newPlace instanceof ScrollWidgetPlace) {
-		// return new ScrollWidgetActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof ElementsPlace) {
-		// return new ElementsActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof FormsPlace) {
-		// return new FormsActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof ButtonBarPlace) {
-		// return new ButtonBarActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof SearchBoxPlace) {
-		// return new SearchBoxActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof TabBarPlace) {
-		// return new TabBarActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof ButtonPlace) {
-		// return new ButtonActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof PopupPlace) {
-		// return new PopupActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof ProgressBarPlace) {
-		// return new ProgressBarActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof ProgressIndicatorPlace) {
-		// return new ProgressIndicatorActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof SliderPlace) {
-		// return new SliderActivity(clientFactory);
-		// }
-
 		if (newPlace instanceof AnimationPlace) {
 			return new AboutActivity(clientFactory);
 		}
-
-		if (newPlace instanceof PullToRefreshPlace) {
-			return new PullToRefreshActivity(clientFactory);
-		}
-
-		// if (newPlace instanceof CarouselPlace) {
-		// return new CarouselActivity(clientFactory);
-		// }
-		//
-		// if (newPlace instanceof GroupedCellListPlace) {
-		// return new GroupedCellListActivity(clientFactory);
-		// }
 
 		if (newPlace instanceof AnimationSlidePlace
 				|| newPlace instanceof AnimationSlideUpPlace

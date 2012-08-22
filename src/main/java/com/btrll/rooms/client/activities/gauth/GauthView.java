@@ -14,13 +14,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.widget.Button;
-import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.ProgressIndicator;
 
-public class GauthViewImpl extends Composite implements GauthActivity.View {
+public class GauthView extends Composite implements GauthActivity.View {
 	private static final Binder binder = GWT.create(Binder.class);
 
-	interface Binder extends UiBinder<Widget, GauthViewImpl> {
+	interface Binder extends UiBinder<Widget, GauthView> {
 	}
 
 	interface Resources extends ClientBundle {
@@ -33,18 +32,18 @@ public class GauthViewImpl extends Composite implements GauthActivity.View {
 
 	@UiField
 	ProgressIndicator pi;
-//	@UiField
-//	LayoutPanel panel;
+	// @UiField
+	// LayoutPanel panel;
 
 	//
 	PopupPanel pp;
 	Button button;
 
-	public GauthViewImpl() {
+	public GauthView() {
 		initWidget(binder.createAndBindUi(this));
 		// popupPanel.center();
 		button = new Button("Grant via Google");
-		
+
 		ImageResource ir = Resources.INSTANCE.btrll_logo_small();
 		Image img = new Image(ir);
 
@@ -57,7 +56,7 @@ public class GauthViewImpl extends Composite implements GauthActivity.View {
 		v.add(button);
 
 		pp = new PopupPanel();
-//		pp.setGlassEnabled(true);
+		// pp.setGlassEnabled(true);
 		pp.setModal(true);
 		pp.add(v);
 

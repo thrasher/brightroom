@@ -15,7 +15,6 @@ import com.btrll.rooms.client.activities.animationdone.AnimationSlidePlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSlideUpPlace;
 import com.btrll.rooms.client.activities.animationdone.AnimationSwapPlace;
 import com.btrll.rooms.client.activities.map.MapPlace;
-import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshPlace;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -56,26 +55,12 @@ public class TabletNavActivityMapper implements ActivityMapper {
 
 	@Override
 	public Activity getActivity(Place place) {
-		if (place instanceof HomePlace || place instanceof AboutPlace || place instanceof MapPlace) {
+		if (place instanceof HomePlace || place instanceof AboutPlace
+				|| place instanceof MapPlace) {
 			return getOfficeListActivity();
 		}
 
-		if (place instanceof PullToRefreshPlace
-//				|| place instanceof GroupedCellListPlace
-//				|| place instanceof CarouselPlace
-				|| place instanceof UIPlace
-//				|| place instanceof ScrollWidgetPlace
-//				|| place instanceof ElementsPlace
-//				|| place instanceof FormsPlace
-//				|| place instanceof ButtonBarPlace
-//				|| place instanceof SearchBoxPlace
-//				|| place instanceof TabBarPlace
-//				|| place instanceof ButtonPlace
-//				|| place instanceof PopupPlace
-//				|| place instanceof ProgressBarPlace
-//				|| place instanceof SliderPlace
-//				|| place instanceof ProgressIndicatorPlace
-				) {
+		if (place instanceof UIPlace) {
 			return getUIActivity();
 		}
 

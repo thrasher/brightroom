@@ -1,18 +1,3 @@
-/*
- * Copyright 2010 Daniel Kurka
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.btrll.rooms.client;
 
 import com.btrll.rooms.client.activities.AboutView;
@@ -26,20 +11,14 @@ import com.btrll.rooms.client.activities.animation.AnimationViewGwtImpl;
 import com.btrll.rooms.client.activities.animationdone.AnimationDoneView;
 import com.btrll.rooms.client.activities.animationdone.AnimationDoneViewGwtImpl;
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
-import com.btrll.rooms.client.activities.gauth.GauthViewImpl;
+import com.btrll.rooms.client.activities.gauth.GauthView;
 import com.btrll.rooms.client.activities.map.MapActivity;
 import com.btrll.rooms.client.activities.map.MapView;
-import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshDisplay;
-import com.btrll.rooms.client.activities.pulltorefresh.PullToRefreshDisplayGwtImpl;
 import com.btrll.rooms.client.util.Gapi;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
-/**
- * @author Daniel Kurka
- * 
- */
 public class ClientFactoryImpl implements ClientFactory {
 
 	private EventBus eventBus;
@@ -49,7 +28,6 @@ public class ClientFactoryImpl implements ClientFactory {
 	private AboutView aboutView;
 	private AnimationView animationView;
 	private AnimationDoneView animationDoneView;
-	private PullToRefreshDisplayGwtImpl pullToRefreshView;
 	private Gapi gapi;
 	private GauthActivity.View gauthView;
 	private com.btrll.rooms.client.activities.map.MapView mapView;
@@ -114,17 +92,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 
 	@Override
-	public PullToRefreshDisplay getPullToRefreshDisplay() {
-		if (pullToRefreshView == null) {
-			pullToRefreshView = new PullToRefreshDisplayGwtImpl();
-		}
-		return pullToRefreshView;
-	}
-
-	@Override
 	public GauthActivity.View getGauthView() {
 		if (gauthView == null) {
-			gauthView = new GauthViewImpl();
+			gauthView = new GauthView();
 		}
 		return gauthView;
 	}
