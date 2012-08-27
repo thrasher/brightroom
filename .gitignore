@@ -6,5 +6,7 @@
 *.ear
 target
 
-# mvn cruft #
+# mvn/eclipse cruft #
 .settings
+.classpath
+.project
