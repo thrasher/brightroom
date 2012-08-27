@@ -177,13 +177,6 @@
 			<version>${gwtVersion}</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- gwt-dev supports the AppCacheLinker -->
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>${gwtVersion}</version>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
