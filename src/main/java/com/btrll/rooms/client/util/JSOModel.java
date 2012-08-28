@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.json.client.JSONObject;
 
 /**
@@ -34,10 +35,9 @@ public abstract class JSOModel extends JavaScriptObject {
 	 * 
 	 * @return a populated JSOModel object
 	 */
-	public static native JSOModel fromJson(String jsonString) /*-{
-		// TODO: look at JsonUtils.safeEval and use it's internals here
-		return eval('(' + jsonString + ')');
-	}-*/;
+	public static JSOModel fromJson(String jsonString) {
+		return JsonUtils.safeEval(jsonString);
+	}
 
 	/**
 	 * Create a well-formed JSON string representing this object.
@@ -56,9 +56,9 @@ public abstract class JSOModel extends JavaScriptObject {
 	 * 
 	 * @return a populated JsArray
 	 */
-	public static native JsArray<JSOModel> arrayFromJson(String jsonString) /*-{
-		return eval('(' + jsonString + ')');
-	}-*/;
+	public static JsArray<JSOModel> arrayFromJson(String jsonString) {
+		return JsonUtils.safeEval(jsonString);
+	}
 
 	public final native boolean hasKey(String key) /*-{
 		return this[key] != undefined;
