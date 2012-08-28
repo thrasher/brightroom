@@ -17,7 +17,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.web.bindery.event.shared.UmbrellaException;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
 import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
@@ -70,25 +69,27 @@ public class Rooms implements EntryPoint {
 		final SimplePanel gPanel = new SimplePanel();
 		final GauthActivity a = new GauthActivity(clientFactory);
 
-		HandlerRegistration addHandler = clientFactory.getEventBus()
-				.addHandler(GauthEvent.getType(), new GauthEvent.Handler() {
+		// HandlerRegistration addHandler =
+		clientFactory.getEventBus().addHandler(GauthEvent.getType(),
+				new GauthEvent.Handler() {
 					@Override
 					public void onGauth(GauthEvent event) {
 						if (event.isAuthNeeded()) {
 							logger.fine("auth is needed");
 						} else {
 							logger.fine("auth is done, loading the ui");
-							// TODO: a.mayStop() ???
-							a.onStop();
-							RootPanel.get().remove(gPanel);
-							// gPanel.remove(clientFactory.getGauthView());
-							Timer t = new Timer() {
-								@Override
-								public void run() {
-									loadUi(clientFactory);
-								}
-							};
-							t.schedule(1);
+							if (null == a.mayStop()) {
+								a.onStop();
+								RootPanel.get().remove(gPanel);
+								// gPanel.remove(clientFactory.getGauthView());
+								Timer t = new Timer() {
+									@Override
+									public void run() {
+										loadUi(clientFactory);
+									}
+								};
+								t.schedule(1);
+							}
 						}
 					}
 				});
