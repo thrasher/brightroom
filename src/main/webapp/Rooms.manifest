@@ -1,0 +1,2 @@
+# this file exists to avoid 404 errors when running in gwt:run dev mode
+# the servlet mapping in web.xml services requests for this file when deployed to GAE
