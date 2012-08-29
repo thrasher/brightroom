@@ -62,9 +62,9 @@ public class MapActivity extends DetailActivity {
 		PullArrowStandardHandler headerHandler = new PullArrowStandardHandler(
 				view.getPullHeader(), view.getPullPanel());
 		headerHandler.setErrorText("Error");
-		headerHandler.setLoadingText("Loading avaiable rooms");
-		headerHandler.setNormalText("pull down");
-		headerHandler.setPulledText("release to refresh rooms");
+		headerHandler.setLoadingText("Loading " + office.getName());
+		headerHandler.setNormalText("pull to update " + office.getName());
+		headerHandler.setPulledText("release to refresh " + office.getName());
 		headerHandler.setPullActionHandler(new PullActionHandler() {
 			@Override
 			public void onPullAction(final AsyncCallback<Void> callback) {
@@ -85,9 +85,9 @@ public class MapActivity extends DetailActivity {
 		PullArrowStandardHandler footerHandler = new PullArrowStandardHandler(
 				view.getPullFooter(), view.getPullPanel());
 		footerHandler.setErrorText("Error");
-		footerHandler.setLoadingText("Loading avaiable rooms");
-		footerHandler.setNormalText("pull up");
-		footerHandler.setPulledText("release to refresh rooms");
+		footerHandler.setLoadingText("Loading " + office.getName());
+		footerHandler.setNormalText("pull to update " + office.getName());
+		footerHandler.setPulledText("release to refresh " + office.getName());
 		footerHandler.setPullActionHandler(new PullActionHandler() {
 			@Override
 			public void onPullAction(final AsyncCallback<Void> callback) {

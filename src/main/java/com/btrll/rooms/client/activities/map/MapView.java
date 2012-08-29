@@ -29,6 +29,8 @@ public class MapView extends DetailViewGwtImpl implements MapActivity.View {
 
 		// initWidget(binder.createAndBindUi(this));
 
+		// TODO: show headerPanel if mouse comes to edge of screen
+		main.remove(headerPanel);
 		main.remove(scrollPanel);
 
 		pullToRefresh = new PullPanel();
