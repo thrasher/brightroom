@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
-import com.btrll.rooms.client.activities.home.Topic;
 import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.util.JSOModel;
 import com.google.gwt.core.client.JsArray;
@@ -36,7 +35,8 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 
 		public HasText getFirstHeader();
 
-	}	
+	}
+
 	static final Logger logger = Logger.getLogger("OfficeListActivity");
 
 	private final ClientFactory clientFactory;

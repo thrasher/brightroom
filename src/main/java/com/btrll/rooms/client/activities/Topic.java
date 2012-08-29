@@ -1,4 +1,4 @@
-package com.btrll.rooms.client.activities.home;
+package com.btrll.rooms.client.activities;
 
 import java.io.Serializable;
 

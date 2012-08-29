@@ -2,7 +2,6 @@ package com.btrll.rooms.client.activities;
 
 import java.util.List;
 
-import com.btrll.rooms.client.activities.home.Topic;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
