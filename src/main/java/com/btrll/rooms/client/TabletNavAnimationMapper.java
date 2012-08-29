@@ -1,6 +1,6 @@
 package com.btrll.rooms.client;
 
-import com.btrll.rooms.client.activities.UIPlace;
+import com.btrll.rooms.client.activities.RoomListPlace;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.place.shared.Place;
 import com.googlecode.mgwt.mvp.client.Animation;
@@ -14,11 +14,11 @@ public class TabletNavAnimationMapper implements AnimationMapper {
 			return Animation.FADE;
 		}
 
-		if (oldPlace instanceof HomePlace && newPlace instanceof UIPlace) {
+		if (oldPlace instanceof HomePlace && newPlace instanceof RoomListPlace) {
 			return Animation.SLIDE;
 		}
 
-		if (oldPlace instanceof UIPlace && newPlace instanceof HomePlace) {
+		if (oldPlace instanceof RoomListPlace && newPlace instanceof HomePlace) {
 			return Animation.SLIDE_REVERSE;
 		}
 

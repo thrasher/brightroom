@@ -4,21 +4,21 @@ import com.google.web.bindery.event.shared.Event;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-public class UIEntrySelectedEvent extends Event<UIEntrySelectedEvent.Handler> {
+public class RoomListEntrySelectedEvent extends Event<RoomListEntrySelectedEvent.Handler> {
 
 	public enum UIEntry {
 		BUTTON_BAR, BUTTONS, ELEMENTS, POPUPS, PROGRESS_BAR, PROGRESS_INDICATOR, PULL_TO_REFRESH, SCROLL_WIDGET, SEARCH_BOX, SLIDER, TABBAR, FORMS, CAROUSEL, CAROUSEL_VERT, GROUP_LIST
 	}
 
 	public interface Handler {
-		void onAnimationSelected(UIEntrySelectedEvent event);
+		void onAnimationSelected(RoomListEntrySelectedEvent event);
 	}
 
-	private static final Type<UIEntrySelectedEvent.Handler> TYPE = new Type<UIEntrySelectedEvent.Handler>();
+	private static final Type<RoomListEntrySelectedEvent.Handler> TYPE = new Type<RoomListEntrySelectedEvent.Handler>();
 	private final UIEntry entry;
 
 	public static void fire(EventBus eventBus, UIEntry entry) {
-		eventBus.fireEvent(new UIEntrySelectedEvent(entry));
+		eventBus.fireEvent(new RoomListEntrySelectedEvent(entry));
 	}
 
 	public static HandlerRegistration register(EventBus eventBus, Handler handler) {
@@ -30,7 +30,7 @@ public class UIEntrySelectedEvent extends Event<UIEntrySelectedEvent.Handler> {
 		return TYPE;
 	}
 
-	protected UIEntrySelectedEvent(UIEntry entry) {
+	protected RoomListEntrySelectedEvent(UIEntry entry) {
 		this.entry = entry;
 
 	}
@@ -41,7 +41,7 @@ public class UIEntrySelectedEvent extends Event<UIEntrySelectedEvent.Handler> {
 
 	}
 
-	public static Type<UIEntrySelectedEvent.Handler> getType() {
+	public static Type<RoomListEntrySelectedEvent.Handler> getType() {
 		return TYPE;
 	}
 

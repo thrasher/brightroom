@@ -3,20 +3,10 @@ package com.btrll.rooms.client;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.activities.AboutPlace;
-import com.btrll.rooms.client.activities.UIEntrySelectedEvent;
-import com.btrll.rooms.client.activities.UIPlace;
-import com.btrll.rooms.client.activities.animation.Animation;
-import com.btrll.rooms.client.activities.animation.Animation.AnimationNames;
-import com.btrll.rooms.client.activities.animation.AnimationPlace;
-import com.btrll.rooms.client.activities.animation.AnimationSelectedEvent;
-import com.btrll.rooms.client.activities.animationdone.AnimationDissolvePlace;
-import com.btrll.rooms.client.activities.animationdone.AnimationFadePlace;
-import com.btrll.rooms.client.activities.animationdone.AnimationFlipPlace;
-import com.btrll.rooms.client.activities.animationdone.AnimationPopPlace;
-import com.btrll.rooms.client.activities.animationdone.AnimationSlidePlace;
-import com.btrll.rooms.client.activities.animationdone.AnimationSlideUpPlace;
-import com.btrll.rooms.client.activities.animationdone.AnimationSwapPlace;
+import com.btrll.rooms.client.activities.RoomListEntrySelectedEvent;
+import com.btrll.rooms.client.activities.RoomListPlace;
 import com.btrll.rooms.client.activities.gauth.GauthEvent;
+import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.event.ActionEvent;
 import com.btrll.rooms.client.event.ActionNames;
 import com.btrll.rooms.client.places.HomePlace;
@@ -59,71 +49,12 @@ public class AppHistoryObserver implements HistoryObserver {
 	public HandlerRegistration bind(EventBus eventBus,
 			final HistoryHandler historyHandler) {
 
-		HandlerRegistration addHandler = eventBus.addHandler(
-				AnimationSelectedEvent.getType(),
-				new AnimationSelectedEvent.Handler() {
+		HandlerRegistration register3 = RoomListEntrySelectedEvent.register(
+				eventBus, new RoomListEntrySelectedEvent.Handler() {
 
 					@Override
-					public void onAnimationSelected(AnimationSelectedEvent event) {
-
-						Animation animation = event.getAnimation();
-
-						AnimationNames animationName = animation
-								.getAnimationName();
-
-						Place place = null;
-
-						switch (animationName) {
-						case SLIDE:
-							place = new AnimationSlidePlace();
-
-							break;
-						case SLIDE_UP:
-							place = new AnimationSlideUpPlace();
-
-							break;
-						case DISSOLVE:
-							place = new AnimationDissolvePlace();
-
-							break;
-						case FADE:
-							place = new AnimationFadePlace();
-
-							break;
-						case FLIP:
-							place = new AnimationFlipPlace();
-
-							break;
-						case POP:
-							place = new AnimationPopPlace();
-
-							break;
-						case SWAP:
-							place = new AnimationSwapPlace();
-
-							break;
-
-						default:
-							// TODO log
-							place = new AnimationSlidePlace();
-							break;
-						}
-
-						if (MGWT.getOsDetection().isTablet()) {
-
-							historyHandler.replaceCurrentPlace(place);
-							historyHandler.goTo(place, true);
-						} else {
-							historyHandler.goTo(place);
-						}
-
-					}
-				});
-		HandlerRegistration register3 = UIEntrySelectedEvent.register(eventBus,
-				new UIEntrySelectedEvent.Handler() {
-
-					@Override
-					public void onAnimationSelected(UIEntrySelectedEvent event) {
+					public void onAnimationSelected(
+							RoomListEntrySelectedEvent event) {
 
 						// UIEntry entry = event.getEntry();
 						//
@@ -198,20 +129,6 @@ public class AppHistoryObserver implements HistoryObserver {
 					}
 				});
 
-		HandlerRegistration register = ActionEvent.register(eventBus,
-				ActionNames.ANIMATION_END, new ActionEvent.Handler() {
-
-					@Override
-					public void onAction(ActionEvent event) {
-						if (MGWT.getOsDetection().isPhone()) {
-							History.back();
-						} else {
-							historyHandler.goTo(new AnimationPlace(), true);
-						}
-
-					}
-				});
-
 		HandlerRegistration gauth = eventBus.addHandler(GauthEvent.getType(),
 				new GauthEvent.Handler() {
 					@Override
@@ -242,10 +159,8 @@ public class AppHistoryObserver implements HistoryObserver {
 		// });
 
 		HandlerRegistrationCollection col = new HandlerRegistrationCollection();
-		col.addHandlerRegistration(register);
 		col.addHandlerRegistration(register2);
 		col.addHandlerRegistration(register3);
-		col.addHandlerRegistration(addHandler);
 		col.addHandlerRegistration(gauth);
 		// col.addHandlerRegistration(mission);
 		return col;
@@ -272,107 +187,31 @@ public class AppHistoryObserver implements HistoryObserver {
 	}-*/;
 
 	private void onPhoneNav(Place place, HistoryHandler historyHandler) {
-		if (place instanceof AnimationDissolvePlace
-				|| place instanceof AnimationFadePlace
-				|| place instanceof AnimationFlipPlace
-				|| place instanceof AnimationPopPlace
-				|| place instanceof AnimationSlidePlace
-				|| place instanceof AnimationSlideUpPlace
-				|| place instanceof AnimationSwapPlace) {
-
+		if (place instanceof AboutPlace) {
 			historyHandler.replaceCurrentPlace(new HomePlace());
-
-			historyHandler.pushPlace(new AnimationPlace());
-
 		} else {
-			if (place instanceof AboutPlace) {
+			if (place instanceof RoomListPlace) {
 				historyHandler.replaceCurrentPlace(new HomePlace());
-
 			} else {
-				if (place instanceof AnimationPlace) {
+				if (place instanceof RoomPlace) {
 					historyHandler.replaceCurrentPlace(new HomePlace());
-				} else {
-					if (place instanceof UIPlace) {
-						historyHandler.replaceCurrentPlace(new HomePlace());
-					} else {
-						if (place instanceof UIPlace) {
-							historyHandler.replaceCurrentPlace(new HomePlace());
-						} else {
-							//
-							// if (place instanceof ButtonBarPlace
-							// || place instanceof GroupedCellListPlace
-							// || place instanceof CarouselPlace
-							// || place instanceof ButtonPlace
-							// || place instanceof ElementsPlace
-							// || place instanceof FormsPlace
-							// || place instanceof PopupPlace
-							// || place instanceof ProgressBarPlace
-							// || place instanceof ProgressIndicatorPlace
-							// || place instanceof PullToRefreshPlace
-							// || place instanceof ScrollWidgetPlace
-							// || place instanceof SearchBoxPlace
-							// || place instanceof SliderPlace
-							// || place instanceof TabBarPlace) {
-							historyHandler.replaceCurrentPlace(new HomePlace());
-
-							historyHandler.pushPlace(new UIPlace());
-							// }
-
-						}
-					}
+					historyHandler.pushPlace(new RoomListPlace());
 				}
 			}
 		}
 	}
 
 	private void onTabletNav(Place place, HistoryHandler historyHandler) {
-		if (place instanceof AnimationDissolvePlace
-				|| place instanceof AnimationFadePlace
-				|| place instanceof AnimationFlipPlace
-				|| place instanceof AnimationPopPlace
-				|| place instanceof AnimationSlidePlace
-				|| place instanceof AnimationSlideUpPlace
-				|| place instanceof AnimationSwapPlace) {
-
+		if (place instanceof AboutPlace) {
 			historyHandler.replaceCurrentPlace(new HomePlace());
-
 		} else {
-			if (place instanceof AboutPlace) {
+			if (place instanceof RoomListPlace) {
 				historyHandler.replaceCurrentPlace(new HomePlace());
 			} else {
-				if (place instanceof AnimationPlace) {
+				if (place instanceof RoomPlace) {
 					historyHandler.replaceCurrentPlace(new HomePlace());
-				} else {
-					if (place instanceof UIPlace) {
-						historyHandler.replaceCurrentPlace(new HomePlace());
-					} else {
-						if (place instanceof UIPlace) {
-							historyHandler.replaceCurrentPlace(new HomePlace());
-						} else {
-
-							// if (place instanceof ButtonBarPlace
-							// || place instanceof GroupedCellListPlace
-							// || place instanceof CarouselPlace
-							// || place instanceof ButtonPlace
-							// || place instanceof ElementsPlace
-							// || place instanceof FormsPlace
-							// || place instanceof PopupPlace
-							// || place instanceof ProgressBarPlace
-							// || place instanceof ProgressIndicatorPlace
-							// || place instanceof PullToRefreshPlace
-							// || place instanceof ScrollWidgetPlace
-							// || place instanceof SearchBoxPlace
-							// || place instanceof SliderPlace
-							// || place instanceof TabBarPlace) {
-							historyHandler.replaceCurrentPlace(new HomePlace());
-
-							// }
-
-						}
-					}
 				}
 			}
 		}
 	}
-
 }

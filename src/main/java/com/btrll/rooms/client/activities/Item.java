@@ -15,7 +15,7 @@
  */
 package com.btrll.rooms.client.activities;
 
-import com.btrll.rooms.client.activities.UIEntrySelectedEvent.UIEntry;
+import com.btrll.rooms.client.activities.RoomListEntrySelectedEvent.UIEntry;
 
 /**
  * @author Daniel Kurka
