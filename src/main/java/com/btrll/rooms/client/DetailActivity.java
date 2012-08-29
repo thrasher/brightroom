@@ -3,18 +3,32 @@ package com.btrll.rooms.client;
 import com.btrll.rooms.client.event.ActionEvent;
 import com.btrll.rooms.client.event.ActionNames;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.ui.client.event.ShowMasterEvent;
 
 public class DetailActivity extends MGWTAbstractActivity {
+	public interface View extends IsWidget {
+		public HasText getHeader();
 
-	private final DetailView detailView;
+		public HasText getBackbuttonText();
+
+		public HasTapHandlers getBackbutton();
+
+		public HasText getMainButtonText();
+
+		public HasTapHandlers getMainButton();
+	}
+
+	private final View detailView;
 	private final String eventId;
 
-	public DetailActivity(DetailView detailView, String eventId) {
+	public DetailActivity(View detailView, String eventId) {
 		this.detailView = detailView;
 		this.eventId = eventId;
 

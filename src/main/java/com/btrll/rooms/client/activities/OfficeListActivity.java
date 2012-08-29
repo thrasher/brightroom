@@ -1,6 +1,7 @@
 package com.btrll.rooms.client.activities;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
@@ -9,14 +10,33 @@ import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.util.JSOModel;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedHandler;
+import com.googlecode.mgwt.ui.client.widget.celllist.HasCellSelectedHandler;
 
 public class OfficeListActivity extends MGWTAbstractActivity {
+	public interface View extends IsWidget {
+
+		public void setTitle(String text);
+
+		public void setRightButtonText(String text);
+
+		public HasTapHandlers getAboutButton();
+
+		public HasCellSelectedHandler getCellSelectedHandler();
+
+		public void setTopics(List<Topic> createTopicsList);
+
+		public HasText getFirstHeader();
+
+	}	
 	static final Logger logger = Logger.getLogger("OfficeListActivity");
 
 	private final ClientFactory clientFactory;
@@ -29,7 +49,7 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		this.eventBus = eventBus;
-		OfficeListView view = getOfficeListView();
+		View view = getOfficeListView();
 
 		view.setTitle("BrightRoom");
 		view.setRightButtonText("about");
@@ -72,7 +92,7 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 		eventBus = null;
 	}
 
-	private OfficeListView getOfficeListView() {
+	private View getOfficeListView() {
 		return clientFactory.getOfficeListView();
 	}
 

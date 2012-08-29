@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
-import com.btrll.rooms.client.DetailView;
 import com.btrll.rooms.client.model.Config;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.user.client.Timer;
@@ -18,7 +17,7 @@ import com.googlecode.mgwt.ui.client.widget.base.PullArrowWidget;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel.Pullhandler;
 
 public class MapActivity extends DetailActivity {
-	public interface View extends DetailView {
+	public interface View extends DetailActivity.View {
 		public void setHeaderPullHandler(Pullhandler pullHandler);
 
 		public void setFooterPullHandler(Pullhandler pullHandler);

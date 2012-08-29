@@ -1,9 +1,9 @@
 package com.btrll.rooms.client;
 
+import com.btrll.rooms.client.activities.AboutActivity;
 import com.btrll.rooms.client.activities.AboutView;
-import com.btrll.rooms.client.activities.AboutViewGwtImpl;
+import com.btrll.rooms.client.activities.OfficeListActivity;
 import com.btrll.rooms.client.activities.OfficeListView;
-import com.btrll.rooms.client.activities.OfficeListViewGwtImpl;
 import com.btrll.rooms.client.activities.RoomListActivity;
 import com.btrll.rooms.client.activities.RoomListView;
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
@@ -21,9 +21,9 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private EventBus eventBus;
 	private PlaceController placeController;
-	private OfficeListView officeListViewImpl;
+	private OfficeListActivity.View officeListViewImpl;
 	private RoomListActivity.View uiView;
-	private AboutView aboutView;
+	private AboutActivity.View aboutView;
 	private Gapi gapi;
 	private GauthActivity.View gauthView;
 	private RoomActivity.View roomView;
@@ -34,13 +34,13 @@ public class ClientFactoryImpl implements ClientFactory {
 
 		placeController = new PlaceController(eventBus);
 
-		officeListViewImpl = new OfficeListViewGwtImpl();
+		officeListViewImpl = new OfficeListView();
 	}
 
 	@Override
-	public OfficeListView getOfficeListView() {
+	public OfficeListActivity.View getOfficeListView() {
 		if (officeListViewImpl == null) {
-			officeListViewImpl = new OfficeListViewGwtImpl();
+			officeListViewImpl = new OfficeListView();
 		}
 		return officeListViewImpl;
 	}
@@ -64,9 +64,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 
 	@Override
-	public AboutView getAboutView() {
+	public AboutActivity.View getAboutView() {
 		if (aboutView == null) {
-			aboutView = new AboutViewGwtImpl();
+			aboutView = new AboutView();
 		}
 
 		return aboutView;
@@ -95,7 +95,7 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 		return mapView;
 	}
-	
+
 	@Override
 	public RoomActivity.View getRoomView() {
 		if (roomView == null) {
@@ -103,5 +103,5 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 		return roomView;
 	}
-	
+
 }

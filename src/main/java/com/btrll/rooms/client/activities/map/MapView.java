@@ -1,7 +1,7 @@
 package com.btrll.rooms.client.activities.map;
 
 import com.btrll.rooms.client.ChromeWorkaround;
-import com.btrll.rooms.client.DetailViewGwtImpl;
+import com.btrll.rooms.client.DetailView;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.base.HasRefresh;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowFooter;
@@ -10,7 +10,7 @@ import com.googlecode.mgwt.ui.client.widget.base.PullArrowWidget;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel.Pullhandler;
 
-public class MapView extends DetailViewGwtImpl implements MapActivity.View {
+public class MapView extends DetailView implements MapActivity.View {
 	// private static final Binder binder = GWT.create(Binder.class);
 	//
 	// interface Binder extends UiBinder<Widget, MapView> {

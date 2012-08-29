@@ -29,6 +29,8 @@ import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
  * 
  */
 public class AboutActivity extends DetailActivity {
+	public interface View extends DetailActivity.View {
+	}
 
 	private final ClientFactory clientFactory;
 
@@ -41,7 +43,7 @@ public class AboutActivity extends DetailActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
 		super.start(panel, eventBus);
-		AboutView aboutView = clientFactory.getAboutView();
+		View aboutView = clientFactory.getAboutView();
 
 		aboutView.getBackbuttonText().setText("Home");
 

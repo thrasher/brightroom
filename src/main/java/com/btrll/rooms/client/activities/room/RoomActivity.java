@@ -4,14 +4,13 @@ import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
-import com.btrll.rooms.client.DetailView;
 import com.btrll.rooms.client.model.Config;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 
 public class RoomActivity extends DetailActivity {
-	public interface View extends DetailView {
+	public interface View extends DetailActivity.View {
 		public void setRoom(String svg);
 	}
 

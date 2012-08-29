@@ -1,7 +1,7 @@
 package com.btrll.rooms.client;
 
-import com.btrll.rooms.client.activities.AboutView;
-import com.btrll.rooms.client.activities.OfficeListView;
+import com.btrll.rooms.client.activities.AboutActivity;
+import com.btrll.rooms.client.activities.OfficeListActivity;
 import com.btrll.rooms.client.activities.RoomListActivity;
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
 import com.btrll.rooms.client.activities.map.MapActivity;
@@ -11,7 +11,7 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 
 public interface ClientFactory {
-	public OfficeListView getOfficeListView();
+	public OfficeListActivity.View getOfficeListView();
 
 	public EventBus getEventBus();
 
@@ -22,7 +22,7 @@ public interface ClientFactory {
 	 */
 	public RoomListActivity.View getUIView();
 
-	public AboutView getAboutView();
+	public AboutActivity.View getAboutView();
 
 	public GauthActivity.View getGauthView();
 
