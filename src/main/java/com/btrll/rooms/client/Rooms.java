@@ -66,21 +66,21 @@ public class Rooms implements EntryPoint {
 			StyleInjector.inject(AppBundle.INSTANCE.css().getText());
 		}
 
-		final SimplePanel gPanel = new SimplePanel();
-		final GauthActivity a = new GauthActivity(clientFactory);
-
-		// HandlerRegistration addHandler =
-		clientFactory.getEventBus().addHandler(GauthEvent.getType(),
-				new GauthEvent.Handler() {
-					@Override
-					public void onGauth(GauthEvent event) {
-						if (event.isAuthNeeded()) {
-							logger.fine("auth is needed");
-						} else {
-							logger.fine("auth is done, loading the ui");
-							if (null == a.mayStop()) {
-								a.onStop();
-								RootPanel.get().remove(gPanel);
+//		final SimplePanel gPanel = new SimplePanel();
+//		final GauthActivity a = new GauthActivity(clientFactory);
+//
+//		// HandlerRegistration addHandler =
+//		clientFactory.getEventBus().addHandler(GauthEvent.getType(),
+//				new GauthEvent.Handler() {
+//					@Override
+//					public void onGauth(GauthEvent event) {
+//						if (event.isAuthNeeded()) {
+//							logger.fine("auth is needed");
+//						} else {
+//							logger.fine("auth is done, loading the ui");
+//							if (null == a.mayStop()) {
+//								a.onStop();
+//								RootPanel.get().remove(gPanel);
 								// gPanel.remove(clientFactory.getGauthView());
 								Timer t = new Timer() {
 									@Override
@@ -89,17 +89,17 @@ public class Rooms implements EntryPoint {
 									}
 								};
 								t.schedule(1);
-							}
-						}
-					}
-				});
-
-		// start Gauth, assuming we need to test the auth
-		a.start(gPanel, clientFactory.getEventBus());
-
-		HasWidgets container = RootPanel.get();
-		container.add(gPanel);
-
+//							}
+//						}
+//					}
+//				});
+//
+//		// start Gauth, assuming we need to test the auth
+//		a.start(gPanel, clientFactory.getEventBus());
+//
+//		HasWidgets container = RootPanel.get();
+//		container.add(gPanel);
+//
 		// remove host page spinner after ours is added
 		DOM.getElementById("spinner").removeFromParent();
 	}

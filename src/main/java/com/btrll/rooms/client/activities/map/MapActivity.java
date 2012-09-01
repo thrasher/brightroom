@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
-import com.btrll.rooms.client.model.Config;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -48,7 +47,8 @@ public class MapActivity extends DetailActivity {
 		logger.fine("MapActivity start");
 		super.start(panel, eventBus);
 
-		Office office = getOffice(place.getOfficeId());
+		Office office = clientFactory.getModelDao().getOfficeById(
+				place.getOfficeId());
 
 		final View view = clientFactory.getMapView();
 		view.getHeader().setText(office.getName());
@@ -109,13 +109,4 @@ public class MapActivity extends DetailActivity {
 
 		panel.setWidget(view);
 	}
-
-	private static Office getOffice(long id) {
-		return getConfig().getOffices().get((int) id - 1);
-	}
-
-	private static native Config getConfig() /*-{
-		return $wnd.config;
-	}-*/;
-
 }

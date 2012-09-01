@@ -45,7 +45,7 @@ public class RoomListActivity extends MGWTAbstractActivity {
 
 	public RoomListActivity(ClientFactory clientFactory, MapPlace place) {
 		this.clientFactory = clientFactory;
-		this.office = clientFactory.getModelDao().getOffice(
+		this.office = clientFactory.getModelDao().getOfficeById(
 				place.getOfficeId().toString());
 	}
 

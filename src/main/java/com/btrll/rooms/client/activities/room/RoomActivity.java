@@ -38,7 +38,8 @@ public class RoomActivity extends DetailActivity {
 	}
 
 	private void refreshRoom() {
-		CalendarListResource room = clientFactory.getModelDao().getRoom(roomId);
+		CalendarListResource room = clientFactory.getModelDao().getRoomById(
+				roomId);
 
 		setRoom(room);
 

@@ -8,7 +8,6 @@ import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -62,11 +61,12 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 
 					@Override
 					public void onCellSelected(CellSelectedEvent event) {
-						int index = event.getIndex();
+						// int index = event.getIndex();
+						String name = event.getTargetElement().getInnerHTML();
+						Office office = clientFactory.getModelDao()
+								.getOfficeByName(name);
 						clientFactory.getPlaceController().goTo(
-								new MapPlace((long) clientFactory
-										.getModelDao().getOffices().get(index)
-										.getInt("id")));
+								new MapPlace(office.getId()));
 						return;
 					}
 				}));
@@ -134,7 +134,7 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 
 		ArrayList<Topic> list = new ArrayList<Topic>();
 		for (int i = 0; i < o.length(); i++) {
-			list.add(new Topic(o.get(i).get("name"), o.get(i).get("id")));
+			list.add(new Topic(o.get(i).getName(), o.get(i).getId()));
 		}
 
 		setOfficeList(list);

@@ -13,7 +13,7 @@ public class MapPlace extends Place {
 		public MapPlace getPlace(String token) {
 			try {
 				// Parse the task ID from the URL.
-				Long officeId = Long.parseLong(token);
+				String officeId = token;
 				return new MapPlace(officeId);
 			} catch (NumberFormatException e) {
 				// If the ID cannot be parsed, assume we are creating a task.
@@ -23,7 +23,7 @@ public class MapPlace extends Place {
 
 		@Override
 		public String getToken(MapPlace place) {
-			Long officeId = place.getOfficeId();
+			String officeId = place.getOfficeId();
 			return (officeId == null) ? NO_ID : officeId.toString();
 		}
 	}
@@ -43,13 +43,13 @@ public class MapPlace extends Place {
 		return singleton;
 	}
 
-	private final Long officeId;
+	private final String officeId;
 
-	public MapPlace(Long officeId) {
+	public MapPlace(String officeId) {
 		this.officeId = officeId;
 	}
 
-	public Long getOfficeId() {
+	public String getOfficeId() {
 		return officeId;
 	}
 
