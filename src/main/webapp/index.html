@@ -205,9 +205,11 @@
 			});
 
 		});
-		getRoomSchedules();
+		//getRoomSchedules();
 	}
 	// see: http://code.google.com/p/google-api-javascript-client/wiki/RpcBatch
+	// TODO: only batch-request for a specific office
+	// NOTE: each item in a batch counts against the quota (10k/day)!
 	function getRoomSchedules() {
 		var rpcBatch = gapi.client.newRpcBatch();
 		for ( var i = 0; i < config.rooms.length; i++) {
