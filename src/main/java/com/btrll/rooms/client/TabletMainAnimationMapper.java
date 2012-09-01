@@ -2,6 +2,7 @@ package com.btrll.rooms.client;
 
 import com.btrll.rooms.client.activities.RoomListPlace;
 import com.btrll.rooms.client.activities.map.MapPlace;
+import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.place.shared.Place;
 import com.googlecode.mgwt.mvp.client.Animation;
@@ -27,6 +28,18 @@ public class TabletMainAnimationMapper implements AnimationMapper {
 
 		if (oldPlace instanceof MapPlace && newPlace instanceof RoomListPlace) {
 			return Animation.SWAP_REVERSE;
+		}
+
+		if (oldPlace instanceof MapPlace && newPlace instanceof RoomPlace) {
+			return Animation.FLIP;
+		}
+
+		if (oldPlace instanceof RoomPlace && newPlace instanceof MapPlace) {
+			return Animation.FLIP_REVERSE;
+		}
+
+		if (oldPlace instanceof RoomPlace && newPlace instanceof RoomPlace) {
+			return Animation.SLIDE_UP;
 		}
 
 		return Animation.SLIDE;
