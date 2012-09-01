@@ -13,7 +13,6 @@ import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.googlecode.mgwt.dom.client.event.mouse.HandlerRegistrationCollection;
@@ -58,7 +57,7 @@ public class AppHistoryObserver implements HistoryObserver {
 					@Override
 					public void onRoomSelected(RoomListEntrySelectedEvent event) {
 						CalendarListResource resourceId = event.getResourceId();
-						Window.alert("going to: " + resourceId.getSummary());
+						logger.fine("going to: " + resourceId.getSummary());
 						Place place = new RoomPlace(resourceId.getId());
 
 						if (MGWT.getOsDetection().isTablet()) {
