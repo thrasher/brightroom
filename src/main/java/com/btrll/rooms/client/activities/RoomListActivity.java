@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.btrll.rooms.client.ClientFactory;
-import com.btrll.rooms.client.activities.RoomListEntrySelectedEvent.UIEntry;
+import com.btrll.rooms.client.activities.map.MapPlace;
+import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.event.ActionEvent;
 import com.btrll.rooms.client.event.ActionNames;
+import com.btrll.rooms.client.model.CalendarListResource;
+import com.btrll.rooms.client.model.Office;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -28,28 +33,52 @@ public class RoomListActivity extends MGWTAbstractActivity {
 
 		public HasCellSelectedHandler getList();
 
-		public void renderItems(List<Item> items);
+		public void renderTopics(List<Topic> Topics);
 
 		public void setSelectedIndex(int index, boolean selected);
 	}
 
 	private final ClientFactory clientFactory;
-
+	// private final MapPlace place;
 	private int oldIndex;
+	private final Office office;
 
-	private List<Item> items;
-
-	public RoomListActivity(ClientFactory clientFactory) {
+	public RoomListActivity(ClientFactory clientFactory, MapPlace place) {
 		this.clientFactory = clientFactory;
+		this.office = clientFactory.getModelDao().getOffice(
+				place.getOfficeId().toString());
+	}
 
+	public RoomListActivity(ClientFactory clientFactory, RoomPlace place) {
+		this.clientFactory = clientFactory;
+		this.office = clientFactory.getModelDao().getOfficeByRoomId(
+				place.getResourceId());
+	}
+
+	public boolean isCurrent(Place place) {
+		if (place instanceof MapPlace) {
+			MapPlace mapPlace = (MapPlace) place;
+			return mapPlace.getOfficeId().toString().equals(office.getId());
+		} else if (place instanceof RoomPlace) {
+			RoomPlace rp = (RoomPlace) place;
+			JsArray<CalendarListResource> rooms = clientFactory.getModelDao()
+					.getRooms(office);
+			for (int i = 0; i < rooms.length(); i++) {
+				CalendarListResource room = rooms.get(i);
+				if (room.getId().equals(rp.getResourceId())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
-		final View view = clientFactory.getUIView();
+		final View view = clientFactory.getRoomListView();
 
 		view.setBackButtonText("Home");
-		view.setTitle("San Francisco");
+		view.setTitle(office.getName());
 
 		addHandlerRegistration(view.getBackButton().addTapHandler(
 				new TapHandler() {
@@ -60,8 +89,6 @@ public class RoomListActivity extends MGWTAbstractActivity {
 
 					}
 				}));
-		items = createItems();
-		view.renderItems(items);
 
 		addHandlerRegistration(view.getList().addCellSelectedHandler(
 				new CellSelectedHandler() {
@@ -74,26 +101,38 @@ public class RoomListActivity extends MGWTAbstractActivity {
 						view.setSelectedIndex(index, true);
 						oldIndex = index;
 
-						RoomListEntrySelectedEvent.fire(eventBus,
-								items.get(index).getEntry());
+						// TODO: avoid re-query by storing model better
+						String summary = event.getTargetElement()
+								.getInnerText();
+						CalendarListResource room = clientFactory.getModelDao()
+								.getRoomBySummary(summary);
+						RoomListEntrySelectedEvent.fire(eventBus, room);
 
 					}
 				}));
 
 		panel.setWidget(view);
 
+		refreshRoomList();
 	}
 
-	/**
-	 * @return
-	 */
-	private List<Item> createItems() {
-		ArrayList<Item> list = new ArrayList<Item>();
-		list.add(new Item("Golden Gate", UIEntry.BUTTON_BAR));
-		list.add(new Item("Chinatown", UIEntry.BUTTONS));
-		list.add(new Item("Nob Hill", UIEntry.CAROUSEL));
-		list.add(new Item("Presidio", UIEntry.ELEMENTS));
-		return list;
+	private void refreshRoomList() {
+		JsArray<CalendarListResource> rooms = clientFactory.getModelDao()
+				.getRooms(office);
+
+		ArrayList<Topic> list = new ArrayList<Topic>();
+		for (int i = 0; i < rooms.length(); i++) {
+			CalendarListResource room = rooms.get(i);
+			list.add(new Topic(room.getSummary(), room.getId()));
+		}
+
+		setRoomList(list);
+	}
+
+	private void setRoomList(List<Topic> roomList) {
+		clientFactory.getRoomListView().renderTopics(roomList);
+		// eventBus.fireEventFromSource(new RoomListUpdateEvent(roomList),
+		// this);
 	}
 
 }

@@ -28,6 +28,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private GauthActivity.View gauthView;
 	private RoomActivity.View roomView;
 	private MapActivity.View mapView;
+	private ModelDao modelDao;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -56,7 +57,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 
 	@Override
-	public RoomListActivity.View getUIView() {
+	public RoomListActivity.View getRoomListView() {
 		if (uiView == null) {
 			uiView = new RoomListView();
 		}
@@ -102,6 +103,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			roomView = new RoomView();
 		}
 		return roomView;
+	}
+
+	@Override
+	public ModelDao getModelDao() {
+		if (modelDao == null) {
+			modelDao = new ModelDao();
+		}
+		return modelDao;
 	}
 
 }

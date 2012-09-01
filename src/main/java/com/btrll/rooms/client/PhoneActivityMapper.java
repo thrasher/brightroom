@@ -7,6 +7,7 @@ import com.btrll.rooms.client.activities.RoomListActivity;
 import com.btrll.rooms.client.activities.RoomListPlace;
 import com.btrll.rooms.client.activities.map.MapActivity;
 import com.btrll.rooms.client.activities.map.MapPlace;
+import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -15,9 +16,22 @@ import com.google.gwt.place.shared.Place;
 public class PhoneActivityMapper implements ActivityMapper {
 
 	private final ClientFactory clientFactory;
+	private RoomListActivity roomListActivity;
 
 	public PhoneActivityMapper(ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
+	}
+
+	private RoomListActivity getRoomListActivity(Place place) {
+		if (roomListActivity == null || !roomListActivity.isCurrent(place)) {
+			if (place instanceof MapPlace)
+				roomListActivity = new RoomListActivity(clientFactory,
+						(MapPlace) place);
+			else if (place instanceof RoomPlace)
+				roomListActivity = new RoomListActivity(clientFactory,
+						(RoomPlace) place);
+		}
+		return roomListActivity;
 	}
 
 	@Override
@@ -27,7 +41,7 @@ public class PhoneActivityMapper implements ActivityMapper {
 		}
 
 		if (place instanceof RoomListPlace) {
-			return new RoomListActivity(clientFactory);
+			return getRoomListActivity(place);
 		}
 
 		if (place instanceof AboutPlace) {

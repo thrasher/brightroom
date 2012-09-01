@@ -5,6 +5,7 @@ import com.btrll.rooms.client.activities.OfficeListActivity;
 import com.btrll.rooms.client.activities.RoomListActivity;
 import com.btrll.rooms.client.activities.RoomListPlace;
 import com.btrll.rooms.client.activities.map.MapPlace;
+import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -18,15 +19,8 @@ public class TabletNavActivityMapper implements ActivityMapper {
 		this.clientFactory = clientFactory;
 	}
 
-	private RoomListActivity roomListActivity;
 	private OfficeListActivity officeListActivity;
-
-	private Activity getRoomListActivity() {
-		if (roomListActivity == null) {
-			roomListActivity = new RoomListActivity(clientFactory);
-		}
-		return roomListActivity;
-	}
+	private RoomListActivity roomListActivity;
 
 	private Activity getOfficeListActivity() {
 		if (officeListActivity == null) {
@@ -35,14 +29,29 @@ public class TabletNavActivityMapper implements ActivityMapper {
 		return officeListActivity;
 	}
 
+	private RoomListActivity getRoomListActivity(Place place) {
+		if (roomListActivity == null || !roomListActivity.isCurrent(place)) {
+			if (place instanceof MapPlace)
+				roomListActivity = new RoomListActivity(clientFactory,
+						(MapPlace) place);
+			else if (place instanceof RoomPlace)
+				roomListActivity = new RoomListActivity(clientFactory,
+						(RoomPlace) place);
+		}
+		return roomListActivity;
+	}
+
 	@Override
 	public Activity getActivity(Place place) {
 		if (place instanceof HomePlace || place instanceof AboutPlace) {
 			return getOfficeListActivity();
 		}
 
-		if (place instanceof RoomListPlace || place instanceof MapPlace) {
-			return getRoomListActivity();
+		if (place instanceof MapPlace || place instanceof RoomPlace// || place
+																	// instanceof
+																	// RoomListPlace
+		) {
+			return getRoomListActivity(place);
 		}
 
 		return new OfficeListActivity(clientFactory);

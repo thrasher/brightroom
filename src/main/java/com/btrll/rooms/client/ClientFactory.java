@@ -11,16 +11,18 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 
 public interface ClientFactory {
-	public OfficeListActivity.View getOfficeListView();
 
 	public EventBus getEventBus();
 
 	public PlaceController getPlaceController();
 
-	/**
-	 * @return
-	 */
-	public RoomListActivity.View getUIView();
+	public Gapi getGapi();
+
+	// views
+
+	public OfficeListActivity.View getOfficeListView();
+
+	public RoomListActivity.View getRoomListView();
 
 	public AboutActivity.View getAboutView();
 
@@ -30,6 +32,5 @@ public interface ClientFactory {
 
 	public RoomActivity.View getRoomView();
 
-	public Gapi getGapi();
-
+	public ModelDao getModelDao();
 }

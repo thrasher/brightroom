@@ -6,8 +6,9 @@ import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.activities.map.MapPlace;
-import com.btrll.rooms.client.util.JSOModel;
+import com.btrll.rooms.client.model.Office;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -63,7 +64,8 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 					public void onCellSelected(CellSelectedEvent event) {
 						int index = event.getIndex();
 						clientFactory.getPlaceController().goTo(
-								new MapPlace((long) getOffices().get(index)
+								new MapPlace((long) clientFactory
+										.getModelDao().getOffices().get(index)
 										.getInt("id")));
 						return;
 					}
@@ -126,12 +128,9 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 	// });
 	// req.send("config.json");
 	// }
-	private native JsArray<JSOModel> getOffices() /*-{
-		return $wnd.config.offices;
-	}-*/;
 
 	private void refreshOfficeList() {
-		JsArray<JSOModel> o = getOffices();
+		JsArray<Office> o = clientFactory.getModelDao().getOffices();
 
 		ArrayList<Topic> list = new ArrayList<Topic>();
 		for (int i = 0; i < o.length(); i++) {
@@ -139,11 +138,12 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 		}
 
 		setOfficeList(list);
-
 	}
 
 	private void setOfficeList(ArrayList<Topic> officeList) {
 		getOfficeListView().setTopics(officeList);
+		// eventBus.fireEventFromSource(new OfficeListUpdateEvent(officeList),
+		// this);
 	}
 
 }

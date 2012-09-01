@@ -18,7 +18,7 @@ public class RoomListView implements RoomListActivity.View {
 	private LayoutPanel main;
 	private HeaderPanel headerPanel;
 	private HeaderButton headerBackButton;
-	private CellList<Item> cellListWithHeader;
+	private CellList<Topic> cellListWithHeader;
 
 	public RoomListView() {
 		main = new LayoutPanel();
@@ -35,15 +35,15 @@ public class RoomListView implements RoomListActivity.View {
 
 		ScrollPanel scrollPanel = new ScrollPanel();
 
-		cellListWithHeader = new CellList<Item>(new BasicCell<Item>() {
+		cellListWithHeader = new CellList<Topic>(new BasicCell<Topic>() {
 
 			@Override
-			public String getDisplayString(Item model) {
-				return model.getDisplayString();
+			public String getDisplayString(Topic model) {
+				return model.getName();
 			}
 
 			@Override
-			public boolean canBeSelected(Item model) {
+			public boolean canBeSelected(Topic model) {
 				return true;
 			}
 		});
@@ -63,7 +63,6 @@ public class RoomListView implements RoomListActivity.View {
 	@Override
 	public void setBackButtonText(String text) {
 		headerBackButton.setText(text);
-
 	}
 
 	@Override
@@ -74,7 +73,6 @@ public class RoomListView implements RoomListActivity.View {
 	@Override
 	public void setTitle(String title) {
 		headerPanel.setCenter(title);
-
 	}
 
 	@Override
@@ -83,15 +81,13 @@ public class RoomListView implements RoomListActivity.View {
 	}
 
 	@Override
-	public void renderItems(List<Item> items) {
-		cellListWithHeader.render(items);
-
+	public void renderTopics(List<Topic> Topics) {
+		cellListWithHeader.render(Topics);
 	}
 
 	@Override
 	public void setSelectedIndex(int index, boolean selected) {
 		cellListWithHeader.setSelectedIndex(index, selected);
-
 	}
 
 }

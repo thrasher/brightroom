@@ -9,9 +9,11 @@ import com.btrll.rooms.client.activities.gauth.GauthEvent;
 import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.event.ActionEvent;
 import com.btrll.rooms.client.event.ActionNames;
+import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.googlecode.mgwt.dom.client.event.mouse.HandlerRegistrationCollection;
@@ -48,77 +50,27 @@ public class AppHistoryObserver implements HistoryObserver {
 	@Override
 	public HandlerRegistration bind(EventBus eventBus,
 			final HistoryHandler historyHandler) {
+		HandlerRegistrationCollection col = new HandlerRegistrationCollection();
 
-		HandlerRegistration register3 = RoomListEntrySelectedEvent.register(
+		col.addHandlerRegistration(RoomListEntrySelectedEvent.register(
 				eventBus, new RoomListEntrySelectedEvent.Handler() {
 
 					@Override
-					public void onAnimationSelected(
-							RoomListEntrySelectedEvent event) {
+					public void onRoomSelected(RoomListEntrySelectedEvent event) {
+						CalendarListResource resourceId = event.getResourceId();
+						Window.alert("going to: " + resourceId.getSummary());
+						Place place = new RoomPlace(resourceId.getId());
 
-						// UIEntry entry = event.getEntry();
-						//
-						// Place place = null;
-						//
-						// switch (entry) {
-						// case BUTTON_BAR:
-						// place = new ButtonBarPlace();
-						// break;
-						// case BUTTONS:
-						// place = new ButtonPlace();
-						// break;
-						// case ELEMENTS:
-						// place = new ElementsPlace();
-						// break;
-						// case FORMS:
-						// place = new FormsPlace();
-						// break;
-						// case POPUPS:
-						// place = new PopupPlace();
-						// break;
-						// case PROGRESS_BAR:
-						// place = new ProgressBarPlace();
-						// break;
-						// case PROGRESS_INDICATOR:
-						// place = new ProgressIndicatorPlace();
-						// break;
-						// case PULL_TO_REFRESH:
-						// place = new PullToRefreshPlace();
-						// break;
-						// case SCROLL_WIDGET:
-						// place = new ScrollWidgetPlace();
-						// break;
-						// case SEARCH_BOX:
-						// place = new SearchBoxPlace();
-						// break;
-						// case SLIDER:
-						// place = new SliderPlace();
-						// break;
-						// case TABBAR:
-						// place = new TabBarPlace();
-						// break;
-						// case CAROUSEL:
-						// place = new CarouselPlace();
-						// break;
-						// case GROUP_LIST:
-						// place = new GroupedCellListPlace();
-						// break;
-						// default:
-						// break;
-						// }
-						//
-						// if (MGWT.getOsDetection().isTablet()) {
-						//
-						// historyHandler.replaceCurrentPlace(place);
-						// historyHandler.goTo(place, true);
-						// } else {
-						// historyHandler.goTo(place);
-						// }
-
+						if (MGWT.getOsDetection().isTablet()) {
+							historyHandler.replaceCurrentPlace(place);
+							historyHandler.goTo(place, true);
+						} else {
+							historyHandler.goTo(place);
+						}
 					}
-				});
+				}));
 
-		HandlerRegistration register2 = ActionEvent.register(eventBus,
+		col.addHandlerRegistration(ActionEvent.register(eventBus,
 				ActionNames.BACK, new ActionEvent.Handler() {
 
 					@Override
@@ -127,9 +79,9 @@ public class AppHistoryObserver implements HistoryObserver {
 						History.back();
 
 					}
-				});
+				}));
 
-		HandlerRegistration gauth = eventBus.addHandler(GauthEvent.getType(),
+		col.addHandlerRegistration(eventBus.addHandler(GauthEvent.getType(),
 				new GauthEvent.Handler() {
 					@Override
 					public void onGauth(GauthEvent event) {
@@ -139,7 +91,7 @@ public class AppHistoryObserver implements HistoryObserver {
 							historyHandler.goTo(new HomePlace());
 
 					}
-				});
+				}));
 		// HandlerRegistration mission =
 		// eventBus.addHandler(GauthEvent.getType(),
 		// new GauthEvent.Handler() {
@@ -158,11 +110,6 @@ public class AppHistoryObserver implements HistoryObserver {
 		// }
 		// });
 
-		HandlerRegistrationCollection col = new HandlerRegistrationCollection();
-		col.addHandlerRegistration(register2);
-		col.addHandlerRegistration(register3);
-		col.addHandlerRegistration(gauth);
-		// col.addHandlerRegistration(mission);
 		return col;
 	}
 
@@ -187,31 +134,28 @@ public class AppHistoryObserver implements HistoryObserver {
 	}-*/;
 
 	private void onPhoneNav(Place place, HistoryHandler historyHandler) {
-		if (place instanceof AboutPlace) {
+		if (place instanceof RoomPlace) { // detail view
 			historyHandler.replaceCurrentPlace(new HomePlace());
-		} else {
-			if (place instanceof RoomListPlace) {
-				historyHandler.replaceCurrentPlace(new HomePlace());
-			} else {
-				if (place instanceof RoomPlace) {
-					historyHandler.replaceCurrentPlace(new HomePlace());
-					historyHandler.pushPlace(new RoomListPlace());
-				}
-			}
+			historyHandler.pushPlace(new RoomListPlace());
+		} else if (place instanceof RoomListPlace) {
+			historyHandler.replaceCurrentPlace(new HomePlace());
+		} else if (place instanceof AboutPlace) {
+			historyHandler.replaceCurrentPlace(new HomePlace());
+		} else if (!(place instanceof HomePlace)) {
+			logger.warning("unhandled nav place: " + place);
 		}
+
 	}
 
 	private void onTabletNav(Place place, HistoryHandler historyHandler) {
 		if (place instanceof AboutPlace) {
 			historyHandler.replaceCurrentPlace(new HomePlace());
-		} else {
-			if (place instanceof RoomListPlace) {
-				historyHandler.replaceCurrentPlace(new HomePlace());
-			} else {
-				if (place instanceof RoomPlace) {
-					historyHandler.replaceCurrentPlace(new HomePlace());
-				}
-			}
+		} else if (place instanceof RoomListPlace) {
+			historyHandler.replaceCurrentPlace(new HomePlace());
+		} else if (place instanceof RoomPlace) {
+			historyHandler.replaceCurrentPlace(new HomePlace());
+		} else if (!(place instanceof HomePlace)) {
+			logger.warning("unhandled nav place: " + place);
 		}
 	}
 }
