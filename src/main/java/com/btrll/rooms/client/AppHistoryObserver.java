@@ -22,7 +22,6 @@ import com.googlecode.mgwt.ui.client.MGWT;
 
 public class AppHistoryObserver implements HistoryObserver {
 	static final Logger logger = Logger.getLogger("AppHistoryObserver");
-	private boolean sentToGauth = false; // true if the user needed Gauth flow
 
 	@Override
 	public void onPlaceChange(Place place, HistoryHandler handler) {
@@ -91,46 +90,9 @@ public class AppHistoryObserver implements HistoryObserver {
 
 					}
 				}));
-		// HandlerRegistration mission =
-		// eventBus.addHandler(GauthEvent.getType(),
-		// new GauthEvent.Handler() {
-		// @Override
-		// public void onGauth(GauthEvent event) {
-		// if (!event.isAuthNeeded()) {
-		// Timer ttt = new Timer() {
-		//
-		// @Override
-		// public void run() {
-		// doListTodaysMeetings();
-		// }
-		// };
-		// ttt.schedule(10 * 1000);
-		// }
-		// }
-		// });
 
 		return col;
 	}
-
-	private native void doListTodaysMeetings() /*-{
-		var d1 = new Date();
-		d1.setHours(0, 0, 0, 0);
-		var d2 = new Date();
-		d2.setHours(24, 0, 0, 0);
-		alert(d1 + "\n" + d2);
-		$wnd.gapi.client.calendar.events
-				.list(
-						{
-							'calendarId' : 'brightroll.com_2d3430343930353038373432@resource.calendar.google.com',
-							'orderBy' : 'startTime',
-							'singleEvents' : true,
-							'timeMax' : d2,
-							'timeMin' : d1
-						}).execute(function(resp, raw) {
-					$wnd.alert(raw);
-					console.log(raw);
-				});
-	}-*/;
 
 	private void onPhoneNav(Place place, HistoryHandler historyHandler) {
 		if (place instanceof RoomPlace) { // detail view

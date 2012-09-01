@@ -4,6 +4,8 @@ import com.btrll.rooms.client.DetailView;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.googlecode.mgwt.ui.client.widget.ProgressBar;
 
 public class RoomView extends DetailView implements RoomActivity.View {
@@ -24,9 +26,18 @@ public class RoomView extends DetailView implements RoomActivity.View {
 
 		content.add(new ProgressBar());
 
-		HTML html = new HTML("animation is purely done with css");
-		html.getElement().setAttribute("style", "text-align: center; padding: 20px;");
-		content.add(html);
+//		HTML html = new HTML("animation is purely done with css");
+//		html.getElement().setAttribute("style", "text-align: center; padding: 20px;");
+//		content.add(html);
+		
+		Label status = new Label("status");
+		Image image = new Image("images/busy.png");
+		
+		content.add(status);
+		content.add(image);
+		status.getElement().setId("availability-description");
+		image.getElement().setId("availability-image");
+
 
 		scrollPanel.setWidget(content);
 	}
