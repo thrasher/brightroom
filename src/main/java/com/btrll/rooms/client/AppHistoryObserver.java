@@ -96,8 +96,9 @@ public class AppHistoryObserver implements HistoryObserver {
 
 	private void onPhoneNav(Place place, HistoryHandler historyHandler) {
 		if (place instanceof RoomPlace) { // detail view
+			RoomPlace rp = (RoomPlace) place;
 			historyHandler.replaceCurrentPlace(new HomePlace());
-			historyHandler.pushPlace(new RoomListPlace());
+			historyHandler.pushPlace(new RoomListPlace(rp.getResourceId()));
 		} else if (place instanceof RoomListPlace) {
 			historyHandler.replaceCurrentPlace(new HomePlace());
 		} else if (place instanceof AboutPlace) {

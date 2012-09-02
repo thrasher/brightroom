@@ -65,8 +65,11 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 						String name = event.getTargetElement().getInnerHTML();
 						Office office = clientFactory.getModelDao()
 								.getOfficeByName(name);
+						// clientFactory.getPlaceController().goTo(
+						// new MapPlace(office.getId()));
 						clientFactory.getPlaceController().goTo(
-								new MapPlace(office.getId()));
+								new RoomListPlace(office.getId()));
+
 						return;
 					}
 				}));

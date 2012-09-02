@@ -46,7 +46,13 @@ public class RoomListActivity extends MGWTAbstractActivity {
 	public RoomListActivity(ClientFactory clientFactory, MapPlace place) {
 		this.clientFactory = clientFactory;
 		this.office = clientFactory.getModelDao().getOfficeById(
-				place.getOfficeId().toString());
+				place.getOfficeId());
+	}
+
+	public RoomListActivity(ClientFactory clientFactory, RoomListPlace place) {
+		this.clientFactory = clientFactory;
+		this.office = clientFactory.getModelDao().getOfficeById(
+				place.getOfficeId());
 	}
 
 	public RoomListActivity(ClientFactory clientFactory, RoomPlace place) {
@@ -58,7 +64,10 @@ public class RoomListActivity extends MGWTAbstractActivity {
 	public boolean isCurrent(Place place) {
 		if (place instanceof MapPlace) {
 			MapPlace mapPlace = (MapPlace) place;
-			return mapPlace.getOfficeId().toString().equals(office.getId());
+			return mapPlace.getOfficeId().equals(office.getId());
+		} else if (place instanceof RoomListPlace) {
+			RoomListPlace rlp = (RoomListPlace) place;
+			return rlp.getOfficeId().equals(office.getId());
 		} else if (place instanceof RoomPlace) {
 			RoomPlace rp = (RoomPlace) place;
 			JsArray<CalendarListResource> rooms = clientFactory.getModelDao()

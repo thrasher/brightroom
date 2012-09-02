@@ -37,6 +37,9 @@ public class TabletNavActivityMapper implements ActivityMapper {
 			else if (place instanceof RoomPlace)
 				roomListActivity = new RoomListActivity(clientFactory,
 						(RoomPlace) place);
+			else if (place instanceof RoomListPlace)
+				roomListActivity = new RoomListActivity(clientFactory,
+						(RoomListPlace) place);
 		}
 		return roomListActivity;
 	}
@@ -47,10 +50,8 @@ public class TabletNavActivityMapper implements ActivityMapper {
 			return getOfficeListActivity();
 		}
 
-		if (place instanceof MapPlace || place instanceof RoomPlace// || place
-																	// instanceof
-																	// RoomListPlace
-		) {
+		if (place instanceof MapPlace || place instanceof RoomPlace
+				|| place instanceof RoomListPlace) {
 			return getRoomListActivity(place);
 		}
 
