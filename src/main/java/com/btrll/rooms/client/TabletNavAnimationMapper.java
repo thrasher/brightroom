@@ -2,6 +2,7 @@ package com.btrll.rooms.client;
 
 import java.util.logging.Logger;
 
+import com.btrll.rooms.client.activities.RoomListPlace;
 import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.places.HomePlace;
@@ -21,8 +22,11 @@ public class TabletNavAnimationMapper implements AnimationMapper {
 			return Animation.FADE;
 		}
 
-		if (oldPlace instanceof HomePlace && newPlace instanceof MapPlace) {
+		if (oldPlace instanceof HomePlace && newPlace instanceof RoomListPlace) {
 			return Animation.SLIDE;
+		}
+		if (oldPlace instanceof RoomListPlace && newPlace instanceof HomePlace) {
+			return Animation.SLIDE_REVERSE;
 		}
 
 		if (oldPlace instanceof MapPlace && newPlace instanceof HomePlace) {
