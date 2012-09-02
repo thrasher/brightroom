@@ -12,7 +12,6 @@ import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.place.shared.Place;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -115,11 +114,9 @@ public class RoomListActivity extends MGWTAbstractActivity {
 							clientFactory.getPlaceController().goTo(
 									new MapPlace(office.getId()));
 						} else {
-							// TODO: avoid re-query by storing model better
-							String summary = event.getTargetElement()
-									.getInnerText();
 							CalendarListResource room = clientFactory
-									.getModelDao().getRoomBySummary(summary);
+									.getModelDao().getRooms(office)
+									.get(hasMap() ? index - 1 : index);
 							RoomListEntrySelectedEvent.fire(eventBus, room);
 						}
 					}

@@ -61,10 +61,9 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 
 					@Override
 					public void onCellSelected(CellSelectedEvent event) {
-						// int index = event.getIndex();
-						String name = event.getTargetElement().getInnerHTML();
+						int index = event.getIndex();
 						Office office = clientFactory.getModelDao()
-								.getOfficeByName(name);
+								.getOffices().get(index);
 						// clientFactory.getPlaceController().goTo(
 						// new MapPlace(office.getId()));
 						clientFactory.getPlaceController().goTo(
