@@ -19,7 +19,7 @@ window.config =
       "id": "2",
       "name": "New York City",
       "summaryPrefix": "NYC:",
-      "map": "newyorkcity.svg",
+      "map": null,
       "latitude": "40.7142",
       "longitude": "74.0064",
       "video": ""
@@ -28,7 +28,7 @@ window.config =
       "id": "3",
       "name": "Chicago",
       "summaryPrefix": "CHI:",
-      "map": "chicago.svg",
+      "map": null,
       "latitude": "41.8500",
       "longitude": "87.6500",
       "video": ""
@@ -37,7 +37,7 @@ window.config =
       "id": "4",
       "name": "Palo Alto",
       "summaryPrefix": "Palo Alto",
-      "map": "paloalto.svg",
+      "map": null,
       "latitude": "37.4419",
       "longitude": "122.1419",
       "video": "http:\/\/www.youtube.com\/watch?v=p1kAi4Bz-R8"

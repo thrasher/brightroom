@@ -12,6 +12,7 @@ import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -110,13 +111,17 @@ public class RoomListActivity extends MGWTAbstractActivity {
 						view.setSelectedIndex(index, true);
 						oldIndex = index;
 
-						// TODO: avoid re-query by storing model better
-						String summary = event.getTargetElement()
-								.getInnerText();
-						CalendarListResource room = clientFactory.getModelDao()
-								.getRoomBySummary(summary);
-						RoomListEntrySelectedEvent.fire(eventBus, room);
-
+						if (hasMap() && index == 0) {
+							clientFactory.getPlaceController().goTo(
+									new MapPlace(office.getId()));
+						} else {
+							// TODO: avoid re-query by storing model better
+							String summary = event.getTargetElement()
+									.getInnerText();
+							CalendarListResource room = clientFactory
+									.getModelDao().getRoomBySummary(summary);
+							RoomListEntrySelectedEvent.fire(eventBus, room);
+						}
 					}
 				}));
 
@@ -125,11 +130,19 @@ public class RoomListActivity extends MGWTAbstractActivity {
 		refreshRoomList();
 	}
 
+	private boolean hasMap() {
+		return office.getMap() != null;
+	}
+
 	private void refreshRoomList() {
 		JsArray<CalendarListResource> rooms = clientFactory.getModelDao()
 				.getRooms(office);
 
 		ArrayList<Topic> list = new ArrayList<Topic>();
+		// add linkt o map, if available
+		if (hasMap()) {
+			list.add(new Topic("Map", office.getId()));
+		}
 		for (int i = 0; i < rooms.length(); i++) {
 			CalendarListResource room = rooms.get(i);
 			list.add(new Topic(room.getSummary(), room.getId()));
