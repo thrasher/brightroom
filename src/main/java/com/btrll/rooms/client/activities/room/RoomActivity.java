@@ -71,6 +71,9 @@ public class RoomActivity extends DetailActivity {
 		};
 
 		var busy = function(calendar) {
+			if (calendar.result.items === undefined) {
+				return false;
+			}
 			for ( var i = 0; i < calendar.result.items.length; i++) {
 				if (currently_happening(calendar.result.items[i]))
 					return true;
@@ -115,6 +118,7 @@ public class RoomActivity extends DetailActivity {
 						return;
 					}
 					console.log(resp);
+					//					$wnd.alert(raw);
 					update_page_availability(resp, 'availability-description',
 							'availability-image');
 
