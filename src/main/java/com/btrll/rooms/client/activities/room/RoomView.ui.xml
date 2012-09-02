@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m='urn:import:com.googlecode.mgwt.ui.client.widget'>
+	<ui:style>
+		.centered {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			margin-top: -25px;
+			margin-left: -25px;
+		}
+	</ui:style>
+
+	<!-- Note: outermost SimplePanel is a dummy, so the next inner panel can 
+		be removed from the UiBinder and added to the scrollPanel in the non-UiBinder 
+		parent. -->
+	<g:SimplePanel>
+		<g:FlowPanel ui:field='panel' styleName='{style.centered}'>
+			<m:ProgressIndicator ui:field='pi' />
+			<g:HTML>
+				<p id='availability-description'>Checking availability...</p>
+				<img id='availability-image' src='images/busy.png' />
+			</g:HTML>
+		</g:FlowPanel>
+	</g:SimplePanel>
+
+</ui:UiBinder>
