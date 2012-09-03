@@ -183,18 +183,6 @@ window.config =
     },
     {
       "kind": "calendar#calendarListEntry",
-      "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE\/5oxiDpbnYjamIbbdDwWjlQPQ1ME\"",
-      "id": "brightroll.com_3533333139333531353330@resource.calendar.google.com",
-      "summary": "SF: Marina (4)",
-      "timeZone": "America\/Los_Angeles",
-      "colorId": "16",
-      "backgroundColor": "#4986e7",
-      "foregroundColor": "#000000",
-      "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/Oj7UOJ"
-    },
-    {
-      "kind": "calendar#calendarListEntry",
       "etag": "\"y3Ec45PWr056tgI9oyp5WeT3BzE\/o5uITJQQdi5hZJTY5pGo-XgPt3c\"",
       "id": "brightroll.com_2d3430343930353038373432@resource.calendar.google.com",
       "summary": "SF: Mission (8)",
