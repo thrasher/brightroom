@@ -1,6 +1,7 @@
 package com.btrll.rooms.client.activities.room;
 
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
@@ -60,7 +61,7 @@ public class RoomActivity extends DetailActivity {
 
 					@Override
 					public void onTap(TapEvent event) {
-						quickAdd(roomId, "Ad hoc BrightRoom");
+						quickAdd(roomId, "BrightRoom");
 					}
 				}));
 
@@ -114,7 +115,9 @@ public class RoomActivity extends DetailActivity {
 	}-*/;
 
 	private void handleCheckRoom(JSOModel resp, String raw) {
-		logger.fine(resp.toJson());
+		if (logger.isLoggable(Level.FINE)) {
+			resp.logToConsole();
+		}
 		if (resp.get("error", null) != null) {
 			logger.warning(raw);
 			Window.alert("Sorry: " + resp.get("message"));
@@ -196,7 +199,9 @@ public class RoomActivity extends DetailActivity {
 	}-*/;
 
 	private void handleQuickAdd(JSOModel resp, String raw) {
-		logger.fine(resp.toJson());
+		if (logger.isLoggable(Level.FINE)) {
+			resp.logToConsole();
+		}
 		if (resp.get("error", null) != null) {
 			logger.warning(raw);
 			Window.alert("Sorry " + resp.get("code") + ": "

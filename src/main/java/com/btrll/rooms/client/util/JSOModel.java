@@ -118,4 +118,7 @@ public abstract class JSOModel extends JavaScriptObject {
 		this[key] = values;
 	}-*/;
 
+	public final native void logToConsole() /*-{
+		console.log(this);
+	}-*/;
 }
