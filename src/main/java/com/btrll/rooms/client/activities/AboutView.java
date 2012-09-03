@@ -1,36 +1,39 @@
 package com.btrll.rooms.client.activities;
 
 import com.btrll.rooms.client.DetailView;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.HasTapHandlers;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.RoundPanel;
 
 public class AboutView extends DetailView implements AboutActivity.View {
+	private static final Binder binder = GWT.create(Binder.class);
 
-	private RoundPanel round;
+	interface Binder extends UiBinder<Widget, AboutView> {
+	}
+
+	@UiField
+	RoundPanel panel;
+
 	private Button button;
 
 	public AboutView() {
-
-		round = new RoundPanel();
-
-		round.add(new HTML(
-				"<a href='http://bit.ly/BrightRoom'>bit.ly/BrightRoom</a><br/>"));
-		round.add(new HTML("BrightRoll HAX 8/15/2012"));
+		initWidget(binder.createAndBindUi(this));
 
 		if (MGWT.getOsDetection().isPhone()) {
 			button = new Button("back");
 			button.getElement().setAttribute("style",
 					"margin:auto;width: 200px;display:block");
-			round.add(button);
+			panel.add(button);
 			headerBackButton.removeFromParent();
 		}
 
-		scrollPanel.setWidget(round);
+		scrollPanel.setWidget(panel);
 		scrollPanel.setScrollingEnabledX(false);
-
 	}
 
 	@Override
