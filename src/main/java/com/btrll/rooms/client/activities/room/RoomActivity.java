@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.googlecode.mgwt.ui.client.widget.Button;
 
 public class RoomActivity extends DetailActivity {
@@ -120,7 +121,8 @@ public class RoomActivity extends DetailActivity {
 		}
 		if (resp.get("error", null) != null) {
 			logger.warning(raw);
-			Window.alert("Sorry: " + resp.get("message"));
+			Window.alert("Sorry " + resp.get("code") + ": "
+					+ resp.get("message"));
 			return;
 		}
 
@@ -208,8 +210,8 @@ public class RoomActivity extends DetailActivity {
 					+ resp.get("message"));
 			return;
 		}
-
-		Window.alert("Success!");
+		Dialogs.alert("Success!", room.getSummary() + "\nis a BrightRoom.",
+				null);
 		refreshRoom();
 	}
 }
