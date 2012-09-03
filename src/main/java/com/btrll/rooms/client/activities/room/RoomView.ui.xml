@@ -4,11 +4,19 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m='urn:import:com.googlecode.mgwt.ui.client.widget'>
 	<ui:style>
 		.centered {
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			margin-top: -25px;
-			margin-left: -25px;
+			margin-top: 20px;
+		}
+		
+		.checkPanel {
+			
+		}
+		
+		.busyPanel {
+			
+		}
+		
+		.availablePanel {
+			
 		}
 	</ui:style>
 
@@ -17,11 +25,16 @@
 		parent. -->
 	<g:SimplePanel>
 		<g:FlowPanel ui:field='panel' styleName='{style.centered}'>
-			<m:ProgressIndicator ui:field='pi' />
-			<g:HTML>
-				<p id='availability-description'>Checking availability...</p>
-				<img id='availability-image' src='images/busy.png' />
-			</g:HTML>
+			<g:Label ui:field='roomLabel'></g:Label>
+			<g:FlowPanel ui:field='checkPanel' styleName='{style.checkPanel}'>
+				<m:ProgressIndicator ui:field='pi' />
+			</g:FlowPanel>
+			<g:FlowPanel ui:field='busyPanel' styleName='{style.busyPanel}'>
+				<m:Button ui:field='checkButton' important='true'>Check Again</m:Button>
+			</g:FlowPanel>
+			<g:FlowPanel ui:field='availablePanel' styleName='{style.availablePanel}'>
+				<m:Button ui:field='bookButton' confirm='true'>Book It</m:Button>
+			</g:FlowPanel>
 		</g:FlowPanel>
 	</g:SimplePanel>
 

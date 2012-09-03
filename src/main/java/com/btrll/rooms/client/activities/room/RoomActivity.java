@@ -1,21 +1,38 @@
 package com.btrll.rooms.client.activities.room;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
 import com.btrll.rooms.client.model.CalendarListResource;
+import com.btrll.rooms.client.util.JSOModel;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
+import com.googlecode.mgwt.ui.client.widget.Button;
 
 public class RoomActivity extends DetailActivity {
 	public interface View extends DetailActivity.View {
-		public void setRoom(String svg);
+		public Button getCheckButton();
+
+		public Button getBookButton();
+
+		public void setCheck();
+
+		public void setBusy(boolean isBusy);
+
+		public void setRoomName(String name);
 	}
 
 	static final Logger logger = Logger.getLogger("RoomActivity");
 	private final ClientFactory clientFactory;
 	private final String roomId;
+	private CalendarListResource room;
 
 	public RoomActivity(ClientFactory clientFactory, RoomPlace place) {
 		super(clientFactory.getRoomView(), "nav");
@@ -28,101 +45,124 @@ public class RoomActivity extends DetailActivity {
 		logger.fine("RoomActivity start");
 		super.start(panel, eventBus);
 
-		final View view = clientFactory.getRoomView();
-		view.getMainButtonText().setText("Nav");
-		view.getBackbuttonText().setText("UI");
+		getView().getMainButtonText().setText("Nav");
+		getView().getBackbuttonText().setText("UI");
 
-		panel.setWidget(view);
+		addHandlerRegistration(getView().getCheckButton().addTapHandler(
+				new TapHandler() {
+					@Override
+					public void onTap(TapEvent event) {
+						refreshRoom();
+					}
+				}));
+		this.addHandlerRegistration(getView().getBookButton().addTapHandler(
+				new TapHandler() {
+
+					@Override
+					public void onTap(TapEvent event) {
+						Window.alert("TODO: implement booking!");
+					}
+				}));
+
+		panel.setWidget(getView());
 
 		refreshRoom();
 	}
 
+	private View getView() {
+		return clientFactory.getRoomView();
+	}
+
 	private void refreshRoom() {
+		getView().setCheck();
 		CalendarListResource room = clientFactory.getModelDao().getRoomById(
 				roomId);
 
 		setRoom(room);
 
-		doListTodaysMeetings(roomId);
+		// doListTodaysMeetings(roomId);
+		checkRoom(roomId);
 	}
 
 	private void setRoom(CalendarListResource room) {
-		final View view = clientFactory.getRoomView();
-		view.getHeader().setText(room.getSummary());
+		this.room = room;
+		getView().getHeader().setText(room.getSummary());
+		getView().setRoomName(room.getSummary());
 		// eventBus.fireEventFromSource(new RoomListUpdateEvent(roomList),
 		// this);
 	}
 
-	/**
-	 * Fetch the list of events in the given room today.
-	 * 
-	 * @param roomId
-	 */
-	private native void doListTodaysMeetings(String roomId) /*-{
-		var is_between = function(object, before, after) {
-			return object > before && object < after
-		};
-
-		var currently_happening = function(event) {
-			var event_start = new Date(event.start.dateTime);
-			var event_end = new Date(event.end.dateTime);
-			var now = new Date();
-			return is_between(now, event_start, event_end);
-		};
-
-		var busy = function(calendar) {
-			if (calendar.result.items === undefined) {
-				return false;
-			}
-			for ( var i = 0; i < calendar.result.items.length; i++) {
-				if (currently_happening(calendar.result.items[i]))
-					return true;
-			}
-
-			return false;
-		};
-
-		var update_page_availability = function(calendar, description_id,
-				image_id) {
-			description = $doc.getElementById(description_id);
-			image = $doc.getElementById(image_id);
-			if (busy(calendar)) {
-				description.textContent = "Busy";
-				image.setAttribute("src", "images/busy.png");
-			} else {
-				description.textContent = "Available";
-				image.setAttribute("src", "images/available.png");
-			}
-		}
-
+	private native void checkRoom(String roomId) /*-{
+		var x = this;
 		var d1 = new Date();
-		d1.setHours(0, 0, 0, 0);
+		//		d1.setHours(0, 0, 0, 0);
 		var d2 = new Date(d1.getTime());
 		d2.setHours(24, 0, 0, 0);
 		// alert(d1 + "\n" + d2);
-		$wnd.gapi.client.calendar.events.list({
-			'calendarId' : roomId,
-			'orderBy' : 'startTime',
-			'singleEvents' : true,
-			'timeMax' : d2,
-			'timeMin' : d1
-		}).execute(
-				function(resp, raw) {
-					if (resp.error) {
-						console.log("error: " + resp.message);
-						$wnd.alert("Sorry: " + resp.message);
-						//												update_page_availability($wnd.mission,
-						//														'availability-description',
-						//														'availability-image');
-
-						return;
-					}
-					console.log(resp);
-					//					$wnd.alert(raw);
-					update_page_availability(resp, 'availability-description',
-							'availability-image');
-
-				});
+		$wnd.gapi.client.calendar.events
+				.list({
+					'calendarId' : roomId,
+					'orderBy' : 'startTime',
+					'singleEvents' : true,
+					'timeMax' : d2,
+					'timeMin' : d1
+				})
+				.execute(
+						function(resp, raw) {
+							x.@com.btrll.rooms.client.activities.room.RoomActivity::handleCheckRoom(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;)(resp, raw);
+						});
 	}-*/;
 
+	private void handleCheckRoom(JSOModel resp, String raw) {
+		logger.fine(resp.toJson());
+		if (resp.get("error", null) != null) {
+			logger.warning(raw);
+			Window.alert("Sorry: " + resp.get("message"));
+			return;
+		}
+
+		JSOModel event = findCurrentEvent(resp.getArray("items"));
+		boolean isBusy = resp.getArray("items") != null && event != null;
+
+		getView().setBusy(isBusy);
+		if (isBusy) {
+			// htmlsafe?
+			getView().setRoomName(
+					room.getSummary() + " in use by "
+							+ event.getObject("organizer").get("email")
+							+ " for '" + event.get("summary") + "'"
+			// + " until "
+			// + event.getObject("end").get("dateTime")
+					);
+		} else {
+			getView().setRoomName(room.getSummary() + " is available");
+		}
+	}
+
+	private JSOModel findCurrentEvent(JsArray<JSOModel> items) {
+		for (int i = 0; i < items.length(); i++) {
+			JSOModel event = items.get(i);
+			if (happeningNow(event)) {
+				return event;
+			}
+		}
+		return null;
+	}
+
+	private boolean happeningNow(JSOModel event) {
+		// sample: 2012-09-02T23:00:00-07:00
+		// DateTimeFormat format = DateTimeFormat
+		// .getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
+		DateTimeFormat format = DateTimeFormat
+				.getFormat("yyyy-MM-ddTHH:mm:ssZ");
+
+		String startTimeS = event.getObject("start").get("dateTime");
+		Date startTime = format.parse(startTimeS);
+		String endTimeS = event.getObject("end").get("dateTime");
+		Date endTime = format.parse(endTimeS);
+		Date now = new Date();
+
+		return startTime.getTime() < now.getTime()
+				&& now.getTime() < endTime.getTime();
+	}
 }
