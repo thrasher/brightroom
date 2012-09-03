@@ -60,7 +60,7 @@ public class RoomActivity extends DetailActivity {
 
 					@Override
 					public void onTap(TapEvent event) {
-						Window.alert("TODO: implement booking!");
+						quickAdd(roomId, "Ad hoc BrightRoom");
 					}
 				}));
 
@@ -164,5 +164,47 @@ public class RoomActivity extends DetailActivity {
 
 		return startTime.getTime() < now.getTime()
 				&& now.getTime() < endTime.getTime();
+	}
+
+	private native void quickAdd(String roomId, String text) /*-{
+		var x = this;
+		var start = new Date();
+		var end = new Date(start);
+		end.setMinutes(start.getMinutes() + 15);
+		console.log("this is it: " + roomId);
+		// NOTE: not documented, the resource is added as an attendee
+		var resource = {
+			"summary" : text,
+			"start" : {
+				"dateTime" : start
+			},
+			"end" : {
+				"dateTime" : end
+			},
+			"attendees" : [ {
+				"email" : roomId
+			} ]
+		};
+		var request = $wnd.gapi.client.calendar.events.insert({
+			'calendarId' : 'primary',
+			'resource' : resource
+		});
+		request
+				.execute(function(resp, raw) {
+					x.@com.btrll.rooms.client.activities.room.RoomActivity::handleQuickAdd(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;)(resp, raw);
+				});
+	}-*/;
+
+	private void handleQuickAdd(JSOModel resp, String raw) {
+		logger.fine(resp.toJson());
+		if (resp.get("error", null) != null) {
+			logger.warning(raw);
+			Window.alert("Sorry " + resp.get("code") + ": "
+					+ resp.get("message"));
+			return;
+		}
+
+		Window.alert("Success!");
+		refreshRoom();
 	}
 }
