@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.ui.client.widget.Button;
+import com.googlecode.mgwt.ui.client.widget.ProgressIndicator;
 
 public class RoomView extends DetailView implements RoomActivity.View {
 	private static final Binder binder = GWT.create(Binder.class);
@@ -18,7 +19,7 @@ public class RoomView extends DetailView implements RoomActivity.View {
 	@UiField
 	FlowPanel panel;
 	@UiField
-	FlowPanel checkPanel;
+	ProgressIndicator pi;
 	@UiField
 	FlowPanel busyPanel;
 	@UiField
@@ -55,13 +56,13 @@ public class RoomView extends DetailView implements RoomActivity.View {
 	}
 
 	public void setCheck() {
-		checkPanel.setVisible(true);
+		pi.setVisible(true);
 		busyPanel.setVisible(false);
 		availablePanel.setVisible(false);
 	}
 
 	public void setBusy(boolean isBusy) {
-		checkPanel.setVisible(false);
+		pi.setVisible(false);
 		busyPanel.setVisible(isBusy);
 		availablePanel.setVisible(!isBusy);
 	}

@@ -7,8 +7,17 @@
 			margin-top: 20px;
 		}
 		
+		.roomLabel {
+			text-align: center;
+		}
+		
 		.checkPanel {
-			
+			width: 100%;
+			height: 100px;
+		}
+		
+		.progressIndicator {
+			margin: 10px auto;
 		}
 		
 		.busyPanel {
@@ -25,10 +34,9 @@
 		parent. -->
 	<g:SimplePanel>
 		<g:FlowPanel ui:field='panel' styleName='{style.centered}'>
-			<g:Label ui:field='roomLabel'></g:Label>
-			<g:FlowPanel ui:field='checkPanel' styleName='{style.checkPanel}'>
-				<m:ProgressIndicator ui:field='pi' />
-			</g:FlowPanel>
+			<g:Label ui:field='roomLabel' styleName='{style.roomLabel}'></g:Label>
+			<m:ProgressIndicator ui:field='pi'
+				addStyleNames='{style.progressIndicator}' />
 			<g:FlowPanel ui:field='busyPanel' styleName='{style.busyPanel}'>
 				<m:Button ui:field='checkButton' important='true'>Check Again</m:Button>
 			</g:FlowPanel>
