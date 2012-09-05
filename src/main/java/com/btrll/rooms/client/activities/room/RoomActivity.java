@@ -9,8 +9,12 @@ import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.util.Gapi;
 import com.btrll.rooms.client.util.GapiResponseEvent;
 import com.btrll.rooms.client.util.JSOModel;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -28,7 +32,16 @@ public class RoomActivity extends DetailActivity {
 
 		public void setBusy(boolean isBusy);
 
-		public void setRoomName(String name);
+		public void setRoomName(SafeHtml name);
+	}
+
+	private static final Templates TEMPLATES = GWT.create(Templates.class);
+
+	interface Templates extends SafeHtmlTemplates {
+		// @Template("{0} in use by {1} for <a href=\"{2}\">{3}</a>")
+		@Template("{0} in use by {1} for {3}")
+		SafeHtml messageWithLink(String roomSummary, String organizer,
+				String eventUrl, String eventSummary);
 	}
 
 	static final Logger logger = Logger.getLogger("RoomActivity");
@@ -92,7 +105,9 @@ public class RoomActivity extends DetailActivity {
 		// this may become an async callback
 		room = clientFactory.getModelDao().getRoomById(roomId);
 		getView().getHeader().setText(room.getSummary());
-		getView().setRoomName(room.getSummary());
+		getView().setRoomName(
+				new SafeHtmlBuilder().appendEscaped(room.getSummary())
+						.toSafeHtml());
 
 		refreshRoom();
 	}
@@ -114,16 +129,18 @@ public class RoomActivity extends DetailActivity {
 
 		getView().setBusy(isBusy);
 		if (isBusy) {
-			// htmlsafe?
 			getView().setRoomName(
-					room.getSummary() + " in use by "
-							+ event.getObject("organizer").get("email")
-							+ " for '" + event.get("summary") + "'"
+					TEMPLATES.messageWithLink(room.getSummary(), event
+							.getObject("organizer").get("email"), event
+							.get("htmlLink"), event.get("summary"))
+
 			// + " until "
 			// + event.getObject("end").get("dateTime")
 					);
 		} else {
-			getView().setRoomName(room.getSummary() + " is available");
+			getView().setRoomName(
+					new SafeHtmlBuilder().appendEscaped(room.getSummary())
+							.appendHtmlConstant(" is available").toSafeHtml());
 		}
 	}
 
@@ -140,7 +157,7 @@ public class RoomActivity extends DetailActivity {
 	private boolean happeningNow(JSOModel event) {
 		// sample: 2012-09-02T23:00:00-07:00
 		// DateTimeFormat format = DateTimeFormat
-		// .getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
+		// .getFormat(DateTimeFormat.PredefinedFormat.ISO_8601); // broke
 		DateTimeFormat format = DateTimeFormat
 				.getFormat("yyyy-MM-ddTHH:mm:ssZ");
 

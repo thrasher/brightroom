@@ -8,6 +8,7 @@
 		}
 		
 		.roomLabel {
+			margin-bottom: 20px;
 			text-align: center;
 		}
 		
@@ -19,14 +20,6 @@
 		.progressIndicator {
 			margin: 10px auto;
 		}
-		
-		.busyPanel {
-			
-		}
-		
-		.availablePanel {
-			
-		}
 	</ui:style>
 
 	<!-- Note: outermost SimplePanel is a dummy, so the next inner panel can 
@@ -34,15 +27,11 @@
 		parent. -->
 	<g:SimplePanel>
 		<g:FlowPanel ui:field='panel' styleName='{style.centered}'>
-			<g:Label ui:field='roomLabel' styleName='{style.roomLabel}'></g:Label>
+			<g:HTML ui:field='roomLabel' styleName='{style.roomLabel}'></g:HTML>
 			<m:ProgressIndicator ui:field='pi'
 				addStyleNames='{style.progressIndicator}' />
-			<g:FlowPanel ui:field='busyPanel' styleName='{style.busyPanel}'>
-				<m:Button ui:field='checkButton' important='true'>Check Again</m:Button>
-			</g:FlowPanel>
-			<g:FlowPanel ui:field='availablePanel' styleName='{style.availablePanel}'>
-				<m:Button ui:field='bookButton' confirm='true'>Book It</m:Button>
-			</g:FlowPanel>
+			<m:Button ui:field='checkButton' important='true'>Check Again</m:Button>
+			<m:Button ui:field='bookButton' confirm='true'>Book It</m:Button>
 		</g:FlowPanel>
 	</g:SimplePanel>
 
