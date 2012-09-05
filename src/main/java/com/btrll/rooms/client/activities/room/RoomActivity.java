@@ -1,16 +1,16 @@
 package com.btrll.rooms.client.activities.room;
 
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
 import com.btrll.rooms.client.model.CalendarListResource;
+import com.btrll.rooms.client.util.Gapi;
+import com.btrll.rooms.client.util.GapiResponseEvent;
 import com.btrll.rooms.client.util.JSOModel;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -35,6 +35,8 @@ public class RoomActivity extends DetailActivity {
 	private final ClientFactory clientFactory;
 	private final String roomId;
 	private CalendarListResource room;
+	private int checkRoomCallId;
+	private int reserveCallId;
 
 	public RoomActivity(ClientFactory clientFactory, RoomPlace place) {
 		super(clientFactory.getRoomView(), "nav");
@@ -57,16 +59,40 @@ public class RoomActivity extends DetailActivity {
 						refreshRoom();
 					}
 				}));
-		this.addHandlerRegistration(getView().getBookButton().addTapHandler(
+		addHandlerRegistration(getView().getBookButton().addTapHandler(
 				new TapHandler() {
 
 					@Override
 					public void onTap(TapEvent event) {
-						quickAdd(roomId, "BrightRoom");
+						reserveCallId = Gapi.getCallId();
+						clientFactory.getGapi().reserveRoom(roomId, 15,
+								reserveCallId);
+					}
+				}));
+		addHandlerRegistration(eventBus.addHandler(GapiResponseEvent.getType(),
+				new GapiResponseEvent.Handler() {
+
+					@Override
+					public void onGapiResponse(GapiResponseEvent event) {
+						// handle success
+						int callId = event.getCallId();
+						if (callId == checkRoomCallId) {
+							handleCheckRoom(event.getResp(), event.getRaw());
+						} else if (callId == reserveCallId) {
+							// TODO: check that the roomId was actually added
+							Dialogs.alert("Success!", room.getSummary()
+									+ "\nis a BrightRoom.", null);
+							refreshRoom();
+						}
 					}
 				}));
 
 		panel.setWidget(getView());
+
+		// this may become an async callback
+		room = clientFactory.getModelDao().getRoomById(roomId);
+		getView().getHeader().setText(room.getSummary());
+		getView().setRoomName(room.getSummary());
 
 		refreshRoom();
 	}
@@ -77,55 +103,12 @@ public class RoomActivity extends DetailActivity {
 
 	private void refreshRoom() {
 		getView().setCheck();
-		CalendarListResource room = clientFactory.getModelDao().getRoomById(
-				roomId);
 
-		setRoom(room);
-
-		// doListTodaysMeetings(roomId);
-		checkRoom(roomId);
+		checkRoomCallId = Gapi.getCallId();
+		clientFactory.getGapi().checkRoom(room.getId(), checkRoomCallId);
 	}
-
-	private void setRoom(CalendarListResource room) {
-		this.room = room;
-		getView().getHeader().setText(room.getSummary());
-		getView().setRoomName(room.getSummary());
-		// eventBus.fireEventFromSource(new RoomListUpdateEvent(roomList),
-		// this);
-	}
-
-	private native void checkRoom(String roomId) /*-{
-		var x = this;
-		var d1 = new Date();
-		//		d1.setHours(0, 0, 0, 0);
-		var d2 = new Date(d1.getTime());
-		d2.setHours(24, 0, 0, 0);
-		// alert(d1 + "\n" + d2);
-		$wnd.gapi.client.calendar.events
-				.list({
-					'calendarId' : roomId,
-					'orderBy' : 'startTime',
-					'singleEvents' : true,
-					'timeMax' : d2,
-					'timeMin' : d1
-				})
-				.execute(
-						function(resp, raw) {
-							x.@com.btrll.rooms.client.activities.room.RoomActivity::handleCheckRoom(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;)(resp, raw);
-						});
-	}-*/;
 
 	private void handleCheckRoom(JSOModel resp, String raw) {
-		if (logger.isLoggable(Level.FINE)) {
-			resp.logToConsole();
-		}
-		if (resp.get("error", null) != null) {
-			logger.warning(raw);
-			Window.alert("Sorry " + resp.get("code") + ": "
-					+ resp.get("message"));
-			return;
-		}
-
 		JSOModel event = findCurrentEvent(resp.getArray("items"));
 		boolean isBusy = resp.getArray("items") != null && event != null;
 
@@ -169,49 +152,5 @@ public class RoomActivity extends DetailActivity {
 
 		return startTime.getTime() < now.getTime()
 				&& now.getTime() < endTime.getTime();
-	}
-
-	private native void quickAdd(String roomId, String text) /*-{
-		var x = this;
-		var start = new Date();
-		var end = new Date(start);
-		end.setMinutes(start.getMinutes() + 15);
-		console.log("this is it: " + roomId);
-		// NOTE: not documented, the resource is added as an attendee
-		var resource = {
-			"summary" : text,
-			"start" : {
-				"dateTime" : start
-			},
-			"end" : {
-				"dateTime" : end
-			},
-			"attendees" : [ {
-				"email" : roomId
-			} ]
-		};
-		var request = $wnd.gapi.client.calendar.events.insert({
-			'calendarId' : 'primary',
-			'resource' : resource
-		});
-		request
-				.execute(function(resp, raw) {
-					x.@com.btrll.rooms.client.activities.room.RoomActivity::handleQuickAdd(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;)(resp, raw);
-				});
-	}-*/;
-
-	private void handleQuickAdd(JSOModel resp, String raw) {
-		if (logger.isLoggable(Level.FINE)) {
-			resp.logToConsole();
-		}
-		if (resp.get("error", null) != null) {
-			logger.warning(raw);
-			Window.alert("Sorry " + resp.get("code") + ": "
-					+ resp.get("message"));
-			return;
-		}
-		Dialogs.alert("Success!", room.getSummary() + "\nis a BrightRoom.",
-				null);
-		refreshRoom();
 	}
 }

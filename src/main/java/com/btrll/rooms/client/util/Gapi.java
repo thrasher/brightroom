@@ -1,10 +1,10 @@
 package com.btrll.rooms.client.util;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.activities.gauth.GauthEvent;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
+import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
@@ -23,6 +23,9 @@ public class Gapi {
 	private boolean isOauth2Loaded = false;
 	private boolean isCalendarLoaded = false;
 
+	private static int requestCount = 0;
+
+	// TODO: add credentials here?
 	public Gapi(EventBus eventBus) {
 		this.eventBus = eventBus;
 
@@ -30,51 +33,91 @@ public class Gapi {
 	}
 
 	/**
-	 * print out json to console for all valid conference rooms based on regex.
+	 * Use this function to create call ID values based on current time.
+	 * 
+	 * @return
 	 */
-	public void getConferenceRooms() {
-		getConferenceRooms(this);
+	public static int getCallId() {
+		return requestCount++;
 	}
 
-	private native void getConferenceRooms(final Gapi x) /*-{
-		$wnd.gapi.client.calendar.calendarList
-				.list({})
-				.execute(
-						function(resp, raw) {
-							//$wnd.console.log(raw);
-							$entry(x.@com.btrll.rooms.client.util.Gapi::getConferenceRooms(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;)(resp, raw));
-						});
-	}-*/;
-
-	private void getConferenceRooms(JSOModel resp, String raw) {
-
-		// logger.fine(raw);
-		// logger.fine(resp.toJson());
-		// logger.fine("calendar count " + resp.getArray("items").length());
-
-		JsArray<JSOModel> entries = JSOModel.arrayFromJson("[]");
-
-		JsArray<JSOModel> a = resp.getArray("items");
-		for (int i = 0; i < a.length(); i++) {
-			if (a.get(i).get("summary").matches("SF.*|NYC.*|CHI.*|Palo Alto")) {
-				// logger.fine(i + " = " + a.get(i).get("summary"));
-				entries.push(a.get(i));
-			}
-		}
-		sortCalendarListEntry(entries);
-		resp.setArray("items", entries);
-		// this element is not in the docs
-		// https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list
-		resp.setArray("result", null);
-		logger.fine(resp.toJson());
-
-	}
-
-	private native void sortCalendarListEntry(JavaScriptObject item) /*-{
-		item.sort(function(a, b) {
-			return (a.summary < b.summary) ? -1 : 1;
+	public native void reserveRoom(String roomId, int minutes, int callId) /*-{
+		var x = this;
+		var start = new Date();
+		var end = new Date(start);
+		end.setMinutes(start.getMinutes() + minutes);
+		console.log("this is it: " + roomId);
+		// NOTE: not documented, the resource is added as an attendee
+		var resource = {
+			"summary" : "BrightRoom",
+			"start" : {
+				"dateTime" : start
+			},
+			"end" : {
+				"dateTime" : end
+			},
+			"attendees" : [ {
+				"email" : roomId
+			} ]
+		};
+		var request = $wnd.gapi.client.calendar.events.insert({
+			'calendarId' : 'primary',
+			'resource' : resource
 		});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
 	}-*/;
+
+	public native void checkRoom(String roomId, int callId) /*-{
+		var x = this;
+		var d1 = new Date();
+		var d2 = new Date(d1.getTime());
+		d2.setHours(24, 0, 0, 0);
+		var request = $wnd.gapi.client.calendar.events.list({
+			'calendarId' : roomId,
+			'orderBy' : 'startTime',
+			'singleEvents' : true,
+			'timeMax' : d2,
+			'timeMin' : d1
+		});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	/**
+	 * Get all calendars.
+	 * 
+	 * @param callId
+	 */
+	public native void listCalendars(int callId) /*-{
+		var x = this;
+		var request = $wnd.gapi.client.calendar.calendarList.list({});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	private void handleCallback(JSOModel resp, String raw, int callId) {
+		// NOTE: having UI in the API tier is bad bad bad
+		if (resp.get("error", null) != null) {
+			logger.warning(raw);
+			Window.alert("Sorry " + resp.get("code") + ": "
+					+ resp.get("message"));
+			return;
+		}
+
+		if (logger.isLoggable(Level.FINE)) {
+			resp.logToConsole();
+		}
+		GapiResponseEvent.fire(eventBus, resp, raw, callId);
+	}
+
+	// TODO: things below here are hacky, cleanup
 
 	public native void handleAuthClick() /*-{
 		$wnd.handleAuthClick();
@@ -104,7 +147,7 @@ public class Gapi {
 		doAuthComplete();
 	}
 
-	native void exportStaticMethods(final Gapi x) /*-{
+	private native void exportStaticMethods(final Gapi x) /*-{
 		$wnd.console.log('exportStaticMethods');
 		$wnd.__btrll_handleAuthResult = function(authResult) {
 			//$wnd.alert('__btrll_handleAuthResult');
