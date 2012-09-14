@@ -60,7 +60,7 @@ public class RoomActivity extends DetailActivity {
 		super.start(panel, eventBus);
 
 		getView().getMainButtonText().setText("Nav");
-		getView().getBackbuttonText().setText("UI");
+		getView().getBackbuttonText().setText("Back");
 
 		addHandlerRegistration(getView().getCheckButton().addTapHandler(
 				new TapHandler() {

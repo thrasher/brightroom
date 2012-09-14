@@ -45,6 +45,7 @@ public class MapActivity extends DetailActivity {
 	int batchCallId;
 	private EventBus eventBus;
 	private Timer refreshTimer;
+
 	/**
 	 * The delay in milliseconds between calls to refresh.
 	 */
@@ -81,7 +82,7 @@ public class MapActivity extends DetailActivity {
 		final View view = clientFactory.getMapView();
 		view.getHeader().setText(office.getName());
 		view.getMainButtonText().setText("Nav");
-		view.getBackbuttonText().setText("UI");
+		view.getBackbuttonText().setText("Back");
 
 		view.getPullHeader().setHTML("pull down");
 		view.getPullFooter().setHTML("pull up");
