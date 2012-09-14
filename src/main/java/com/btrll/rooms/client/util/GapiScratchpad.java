@@ -1,5 +1,6 @@
 package com.btrll.rooms.client.util;
 
+import com.btrll.rooms.client.ModelDao;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.Window;
@@ -10,6 +11,28 @@ import com.google.web.bindery.event.shared.EventBus;
  */
 public class GapiScratchpad {
 	int doListCalendarsId;
+	int doBatch;
+
+	public void doBatch(Gapi gapi, final EventBus eventBus) {
+		// NOTE: handler is not de-registered
+		eventBus.addHandler(GapiResponseEvent.getType(),
+				new GapiResponseEvent.Handler() {
+
+					@Override
+					public void onGapiResponse(GapiResponseEvent event) {
+						// handle success
+						int callId = event.getCallId();
+						if (callId == doBatch) {
+							Window.alert("check for doBatch json in console "
+									+ doBatch);
+						}
+					}
+				});
+		ModelDao dao = new ModelDao();
+
+		gapi.batchCalendars(doBatch = Gapi.getCallId(),
+				dao.getRooms(dao.getOfficeById("1")));
+	}
 
 	public void doListCalendars(Gapi gapi, final EventBus eventBus) {
 		// NOTE: handler is not de-registered
@@ -26,11 +49,10 @@ public class GapiScratchpad {
 						}
 					}
 				});
-		doListCalendarsId = Gapi.getCallId();
-		gapi.listCalendars(doListCalendarsId);
+		gapi.listCalendars(doListCalendarsId = Gapi.getCallId());
 	}
 
-	public void handleListCalendars(JSOModel resp, String raw) {
+	private void handleListCalendars(JSOModel resp, String raw) {
 		JsArray<JSOModel> entries = JSOModel.arrayFromJson("[]");
 
 		JsArray<JSOModel> a = resp.getArray("items");

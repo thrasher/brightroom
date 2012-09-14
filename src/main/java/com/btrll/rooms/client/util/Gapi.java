@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.activities.gauth.GauthEvent;
+import com.btrll.rooms.client.model.CalendarListResource;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -98,6 +100,35 @@ public class Gapi {
 						$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
 					}
 				});
+	}-*/;
+
+	public native void batchCalendars(int callId,
+			JsArray<CalendarListResource> a) /*-{
+		var x = this;
+		var rpcBatch = $wnd.gapi.client.newRpcBatch();
+		for ( var i = 0; i < a.length; ++i) {
+			var id = a[i].id;
+			// for each room
+			var d1 = new Date();
+			var d2 = new Date(d1.getTime());
+			d2.setHours(24, 0, 0, 0);
+			var req = $wnd.gapi.client.calendar.events.list({
+				'calendarId' : id,
+				'orderBy' : 'startTime',
+				'singleEvents' : true,
+				'timeMax' : d2,
+				'timeMin' : d1
+			});
+			// use the id to find the batch response object
+			rpcBatch.add(req, {
+				'id' : id
+			});
+		}
+		rpcBatch
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+
 	}-*/;
 
 	public native void reserveRoom(String roomId, int minutes, int callId) /*-{

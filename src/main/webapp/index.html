@@ -206,42 +206,7 @@
 			});
 
 		});
-		//getRoomSchedules();
-	}
-	// see: http://code.google.com/p/google-api-javascript-client/wiki/RpcBatch
-	// TODO: only batch-request for a specific office
-	// NOTE: each item in a batch counts against the quota (10k/day)!
-	function getRoomSchedules() {
-		var rpcBatch = gapi.client.newRpcBatch();
-		for ( var i = 0; i < config.rooms.length; i++) {
-			var id = config.rooms[i].id;
-			// for each room
-			var d1 = new Date();
-			d1.setHours(0, 0, 0, 0);
-			var d2 = new Date();
-			d2.setHours(24, 0, 0, 0);
-			//alert(d1 + "\n" + d2);
-			var req = gapi.client.calendar.events.list({
-				'calendarId' : id,
-				'orderBy' : 'startTime',
-				'singleEvents' : true,
-				'timeMax' : d2,
-				'timeMin' : d1
-			});
-			rpcBatch.add(req);
-			rpcBatch.execute(function(jsonResponse, rawResponse) {
-				for ( var id in jsonResponse) {
-					// Logs each individual response
-					console.log(jsonResponse[id]);
-
-					// TODO: udpate the map to show usage
-				}
-				// Logs the raw string response, a JSON-string representing the id-response map
-				//console.log(rawResponse);
-
-				// TODO: set timer to repeat the batch call every 1 minute
-			});
-		}
+		// TODO: batch update
 	}
 </script>
 
