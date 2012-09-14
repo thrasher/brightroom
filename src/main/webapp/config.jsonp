@@ -55,7 +55,8 @@ window.config =
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/OeAbDs"
+      "bitly_url": "http:\/\/bit.ly\/OeAbDs",
+      "d3id": ""
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -68,7 +69,8 @@ window.config =
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/Q02rK7"
+      "bitly_url": "http:\/\/bit.ly\/Q02rK7",
+      "d3id": ""
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -81,7 +83,8 @@ window.config =
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/TFq4fI"
+      "bitly_url": "http:\/\/bit.ly\/TFq4fI",
+      "d3id": ""
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -94,7 +97,8 @@ window.config =
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/OYR9qN"
+      "bitly_url": "http:\/\/bit.ly\/OYR9qN",
+      "d3id": ""
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -107,7 +111,8 @@ window.config =
       "foregroundColor": "#000000",
       "selected": true,
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/Mz4by7"
+      "bitly_url": "http:\/\/bit.ly\/Mz4by7",
+      "d3id": ""
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -119,7 +124,8 @@ window.config =
       "backgroundColor": "#9fe1e7",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/PdxE0G"
+      "bitly_url": "http:\/\/bit.ly\/PdxE0G",
+      "d3id": ""
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -131,7 +137,8 @@ window.config =
       "backgroundColor": "#42d692",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/RWOMd3"
+      "bitly_url": "http:\/\/bit.ly\/RWOMd3",
+      "d3id": "castro"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -143,7 +150,8 @@ window.config =
       "backgroundColor": "#7bd148",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/NEb2pG"
+      "bitly_url": "http:\/\/bit.ly\/NEb2pG",
+      "d3id": "chinatown"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -155,7 +163,8 @@ window.config =
       "backgroundColor": "#fa573c",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/So85bb"
+      "bitly_url": "http:\/\/bit.ly\/So85bb",
+      "d3id": "diamond_heights"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -167,7 +176,8 @@ window.config =
       "backgroundColor": "#ac725e",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/OeBu52"
+      "bitly_url": "http:\/\/bit.ly\/OeBu52",
+      "d3id": "golden_gate"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -179,7 +189,8 @@ window.config =
       "backgroundColor": "#9fe1e7",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/So8aLP"
+      "bitly_url": "http:\/\/bit.ly\/So8aLP",
+      "d3id": "haight"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -191,7 +202,8 @@ window.config =
       "backgroundColor": "#9fc6e7",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/Ox1Chs"
+      "bitly_url": "http:\/\/bit.ly\/Ox1Chs",
+      "d3id": "mission"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -203,7 +215,8 @@ window.config =
       "backgroundColor": "#ff7537",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/OYRdXB"
+      "bitly_url": "http:\/\/bit.ly\/OYRdXB",
+      "d3id": "north_beach"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -215,7 +228,8 @@ window.config =
       "backgroundColor": "#cabdbf",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/PoDKMR"
+      "bitly_url": "http:\/\/bit.ly\/PoDKMR",
+      "d3id": "presidio"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -227,7 +241,8 @@ window.config =
       "backgroundColor": "#fbe983",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/R2PvYQ"
+      "bitly_url": "http:\/\/bit.ly\/R2PvYQ",
+      "d3id": "nob_hill"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -239,7 +254,8 @@ window.config =
       "backgroundColor": "#b99aff",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/Nn5woR"
+      "bitly_url": "http:\/\/bit.ly\/Nn5woR",
+      "d3id": "embarcadero"
     },
     {
       "kind": "calendar#calendarListEntry",
@@ -251,7 +267,8 @@ window.config =
       "backgroundColor": "#c2c2c2",
       "foregroundColor": "#000000",
       "accessRole": "reader",
-      "bitly_url": "http:\/\/bit.ly\/TFqmmI"
+      "bitly_url": "http:\/\/bit.ly\/TFqmmI",
+      "d3id": "financial_district"
     }
   ]
 }
