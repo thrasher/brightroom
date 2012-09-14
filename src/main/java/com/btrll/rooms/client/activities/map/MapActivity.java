@@ -43,6 +43,12 @@ public class MapActivity extends DetailActivity {
 	private final ClientFactory clientFactory;
 	private final String officeId;
 	int batchCallId;
+	private EventBus eventBus;
+	private Timer refreshTimer;
+	/**
+	 * The delay in milliseconds between calls to refresh.
+	 */
+	private static final int REFRESH_DELAY = 2000;
 
 	public MapActivity(ClientFactory clientFactory, MapPlace place) {
 		super(clientFactory.getMapView(), "nav");
@@ -54,6 +60,10 @@ public class MapActivity extends DetailActivity {
 
 	@Override
 	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
+		logger.fine("MapActivity start");
+		super.start(panel, eventBus);
+		this.eventBus = eventBus;
+
 		addHandlerRegistration(eventBus.addHandler(GapiResponseEvent.getType(),
 				new GapiResponseEvent.Handler() {
 
@@ -65,9 +75,6 @@ public class MapActivity extends DetailActivity {
 						}
 					}
 				}));
-
-		logger.fine("MapActivity start");
-		super.start(panel, eventBus);
 
 		Office office = clientFactory.getModelDao().getOfficeById(officeId);
 
@@ -95,9 +102,10 @@ public class MapActivity extends DetailActivity {
 						// view.render(list);
 						view.refresh();
 						callback.onSuccess(null);
+						refreshTaskList();
 					}
 					// TODO change to 1ms, once jsni hook reloads data
-				}.schedule(1000);
+				}.schedule(1);
 			}
 		});
 		view.setHeaderPullHandler(headerHandler);
@@ -119,9 +127,10 @@ public class MapActivity extends DetailActivity {
 						// display.render(list);
 						view.refresh();
 						callback.onSuccess(null);
+						refreshTaskList();
 					}
 					// TODO change to 1ms, once jsni hook reloads data
-				}.schedule(1000);
+				}.schedule(1);
 			}
 		});
 		view.setFooterPullHandler(footerHandler);
@@ -130,9 +139,34 @@ public class MapActivity extends DetailActivity {
 
 		panel.setWidget(view);
 
+		// Create a timer to periodically refresh the task list.
+		refreshTimer = new Timer() {
+			@Override
+			public void run() {
+				refreshTaskList();
+			}
+		};
+		refreshTaskList();
+	}
+
+	@Override
+	public void onStop() {
+		eventBus = null;
+		// Kill the refresh timer.
+		if (refreshTimer != null) {
+			refreshTimer.cancel();
+		}
+	}
+
+	private void refreshTaskList() {
+		Office office = clientFactory.getModelDao().getOfficeById(officeId);
+
 		batchCallId = Gapi.getCallId();
 		clientFactory.getGapi().batchCalendars(batchCallId,
 				clientFactory.getModelDao().getRooms(office));
+
+		// TODO: Restart the timer.
+		// refreshTimer.schedule(REFRESH_DELAY);
 	}
 
 	private native void exportStaticMethods() /*-{
@@ -152,6 +186,11 @@ public class MapActivity extends DetailActivity {
 	}
 
 	private void handleBatchResponse(JSOModel resp) {
+		// Early exit if this activity has already been canceled.
+		if (eventBus == null) {
+			return;
+		}
+
 		// TODO: wow, this is some sloppy sh!t
 		Office office = clientFactory.getModelDao().getOfficeById(officeId);
 		JsArray<CalendarListResource> list = clientFactory.getModelDao()
