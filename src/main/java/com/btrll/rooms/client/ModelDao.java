@@ -61,7 +61,7 @@ public class ModelDao {
 		var or = new Array();
 		for ( var i = 0; i < rooms.length; i++) {
 			if (rooms[i].summary.match(office.summaryPrefix)) {
-				console.log(rooms[i].summary);
+				//console.log(rooms[i].summary);
 				or[or.length] = rooms[i];
 			}
 		}
@@ -75,7 +75,7 @@ public class ModelDao {
 			return 0;
 		});
 
-		console.log(or);
+		//console.log(or);
 
 		return or;
 	}-*/;
