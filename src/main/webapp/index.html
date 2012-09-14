@@ -157,6 +157,7 @@
 	}
 
 	// map functions
+	var neutralColor = "rgb(128, 128, 128)"
 	var availableColor = "rgb(141, 198, 63)"
 	var occupiedColor = "rgb(194, 69, 45)"
 
@@ -200,7 +201,7 @@
 			var importedNode = document.importNode(xml.documentElement, true);
 			d3.select("#map").node().appendChild(importedNode);
 			var rect = d3.select("#map").selectAll("#rooms").selectAll(
-					"*:not(g)").attr('fill', availableColor) //to make sure all colors in form rgb()
+					"*:not(g)").attr('fill', neutralColor) //to make sure all colors in form rgb()
 			.on("click", function(d) {
 				var id = d3.select(this).attr('id');
 				//toggleStatus(id)

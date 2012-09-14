@@ -7,6 +7,10 @@ import com.btrll.rooms.client.DetailActivity;
 import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.model.Office;
+import com.btrll.rooms.client.util.Gapi;
+import com.btrll.rooms.client.util.GapiResponseEvent;
+import com.btrll.rooms.client.util.JSOModel;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -37,23 +41,35 @@ public class MapActivity extends DetailActivity {
 
 	static final Logger logger = Logger.getLogger("MapActivity");
 	private final ClientFactory clientFactory;
-	private final MapPlace place;
+	private final String officeId;
+	int batchCallId;
 
 	public MapActivity(ClientFactory clientFactory, MapPlace place) {
 		super(clientFactory.getMapView(), "nav");
 		this.clientFactory = clientFactory;
-		this.place = place;
+		this.officeId = place.getOfficeId();
 
 		exportStaticMethods();
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
+		addHandlerRegistration(eventBus.addHandler(GapiResponseEvent.getType(),
+				new GapiResponseEvent.Handler() {
+
+					@Override
+					public void onGapiResponse(GapiResponseEvent event) {
+						// handle success
+						if (event.getCallId() == batchCallId) {
+							handleBatchResponse(event.getResp());
+						}
+					}
+				}));
+
 		logger.fine("MapActivity start");
 		super.start(panel, eventBus);
 
-		Office office = clientFactory.getModelDao().getOfficeById(
-				place.getOfficeId());
+		Office office = clientFactory.getModelDao().getOfficeById(officeId);
 
 		final View view = clientFactory.getMapView();
 		view.getHeader().setText(office.getName());
@@ -113,6 +129,10 @@ public class MapActivity extends DetailActivity {
 		view.setMap(office.getMap());
 
 		panel.setWidget(view);
+
+		batchCallId = Gapi.getCallId();
+		clientFactory.getGapi().batchCalendars(batchCallId,
+				clientFactory.getModelDao().getRooms(office));
 	}
 
 	private native void exportStaticMethods() /*-{
@@ -130,4 +150,33 @@ public class MapActivity extends DetailActivity {
 		}
 		clientFactory.getPlaceController().goTo(new RoomPlace(c.getId()));
 	}
+
+	private void handleBatchResponse(JSOModel resp) {
+		// TODO: wow, this is some sloppy sh!t
+		Office office = clientFactory.getModelDao().getOfficeById(officeId);
+		JsArray<CalendarListResource> list = clientFactory.getModelDao()
+				.getRooms(office);
+		for (int i = 0; i < list.length(); i++) {
+			CalendarListResource room = list.get(i);
+			JSOModel foo = resp.getObject(room.getId());
+			if (foo != null) {
+				JSOModel result = foo.getObject("result");
+				JSOModel event = clientFactory.getModelDao().findCurrentEvent(
+						result.getArray("items"));
+				boolean isBusy = result.getArray("items") != null
+						&& event != null;
+				// Window.alert(result.get("summary") + " : " + isBusy);
+				updateColor(room.getD3id(), isBusy);
+			}
+		}
+	}
+
+	private native void updateColor(String abbr, boolean isBusy) /*-{
+		if (isBusy) {
+			$wnd.colorRoomOccupied(abbr);
+		} else {
+			$wnd.colorRoomAvalable(abbr);
+		}
+	}-*/;
+
 }

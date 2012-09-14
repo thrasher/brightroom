@@ -1,6 +1,5 @@
 package com.btrll.rooms.client.activities.room;
 
-import java.util.Date;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
@@ -10,8 +9,6 @@ import com.btrll.rooms.client.util.Gapi;
 import com.btrll.rooms.client.util.GapiResponseEvent;
 import com.btrll.rooms.client.util.JSOModel;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -90,7 +87,7 @@ public class RoomActivity extends DetailActivity {
 						// handle success
 						int callId = event.getCallId();
 						if (callId == checkRoomCallId) {
-							handleCheckRoom(event.getResp(), event.getRaw());
+							handleCheckRoom(event.getResp());
 						} else if (callId == reserveCallId) {
 							// TODO: check that the roomId was actually added
 							Dialogs.alert("Success!", room.getSummary()
@@ -123,8 +120,9 @@ public class RoomActivity extends DetailActivity {
 		clientFactory.getGapi().checkRoom(room.getId(), checkRoomCallId);
 	}
 
-	private void handleCheckRoom(JSOModel resp, String raw) {
-		JSOModel event = findCurrentEvent(resp.getArray("items"));
+	private void handleCheckRoom(JSOModel resp) {
+		JSOModel event = clientFactory.getModelDao().findCurrentEvent(
+				resp.getArray("items"));
 		boolean isBusy = resp.getArray("items") != null && event != null;
 
 		getView().setBusy(isBusy);
@@ -142,32 +140,5 @@ public class RoomActivity extends DetailActivity {
 					new SafeHtmlBuilder().appendEscaped(room.getSummary())
 							.appendHtmlConstant(" is available").toSafeHtml());
 		}
-	}
-
-	private JSOModel findCurrentEvent(JsArray<JSOModel> items) {
-		for (int i = 0; i < items.length(); i++) {
-			JSOModel event = items.get(i);
-			if (happeningNow(event)) {
-				return event;
-			}
-		}
-		return null;
-	}
-
-	private boolean happeningNow(JSOModel event) {
-		// sample: 2012-09-02T23:00:00-07:00
-		// DateTimeFormat format = DateTimeFormat
-		// .getFormat(DateTimeFormat.PredefinedFormat.ISO_8601); // broke
-		DateTimeFormat format = DateTimeFormat
-				.getFormat("yyyy-MM-ddTHH:mm:ssZ");
-
-		String startTimeS = event.getObject("start").get("dateTime");
-		Date startTime = format.parse(startTimeS);
-		String endTimeS = event.getObject("end").get("dateTime");
-		Date endTime = format.parse(endTimeS);
-		Date now = new Date();
-
-		return startTime.getTime() < now.getTime()
-				&& now.getTime() < endTime.getTime();
 	}
 }

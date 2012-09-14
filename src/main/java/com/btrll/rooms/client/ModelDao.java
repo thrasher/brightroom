@@ -1,8 +1,12 @@
 package com.btrll.rooms.client;
 
+import java.util.Date;
+
 import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.model.Office;
+import com.btrll.rooms.client.util.JSOModel;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.i18n.client.DateTimeFormat;
 
 /**
  * This would be a RequestContext interface, if server-side data was used.
@@ -111,6 +115,33 @@ public class ModelDao {
 			}
 		}
 		return null;
+	}
+
+	public JSOModel findCurrentEvent(JsArray<JSOModel> items) {
+		for (int i = 0; i < items.length(); i++) {
+			JSOModel event = items.get(i);
+			if (happeningNow(event)) {
+				return event;
+			}
+		}
+		return null;
+	}
+
+	private boolean happeningNow(JSOModel event) {
+		// sample: 2012-09-02T23:00:00-07:00
+		// DateTimeFormat format = DateTimeFormat
+		// .getFormat(DateTimeFormat.PredefinedFormat.ISO_8601); // broke
+		DateTimeFormat format = DateTimeFormat
+				.getFormat("yyyy-MM-ddTHH:mm:ssZ");
+
+		String startTimeS = event.getObject("start").get("dateTime");
+		Date startTime = format.parse(startTimeS);
+		String endTimeS = event.getObject("end").get("dateTime");
+		Date endTime = format.parse(endTimeS);
+		Date now = new Date();
+
+		return startTime.getTime() < now.getTime()
+				&& now.getTime() < endTime.getTime();
 	}
 
 }
