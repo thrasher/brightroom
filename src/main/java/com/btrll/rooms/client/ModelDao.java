@@ -91,6 +91,17 @@ public class ModelDao {
 		return null;
 	}
 
+	public CalendarListResource getRoomByD3id(String id) {
+		JsArray<CalendarListResource> rooms = getRooms();
+		for (int i = 0; i < rooms.length(); i++) {
+			CalendarListResource r = rooms.get(i);
+			if (r.getD3id().equals(id)) {
+				return r;
+			}
+		}
+		return null;
+	}
+
 	public CalendarListResource getRoomBySummary(String summary) {
 		JsArray<CalendarListResource> list = getRooms();
 		for (int i = 0; i < list.length(); i++) {

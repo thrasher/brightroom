@@ -202,7 +202,9 @@
 			var rect = d3.select("#map").selectAll("#rooms").selectAll(
 					"*:not(g)").attr('fill', availableColor) //to make sure all colors in form rgb()
 			.on("click", function(d) {
-				toggleStatus(d3.select(this).attr('id'))
+				var id = d3.select(this).attr('id');
+				//toggleStatus(id)
+				__btrll_handleMapClick(id);
 			});
 
 		});

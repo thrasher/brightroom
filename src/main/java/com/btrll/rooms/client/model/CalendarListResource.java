@@ -35,4 +35,8 @@ public class CalendarListResource extends JSOModel {
 		return this.timeZone;
 	}-*/;
 
+	public final native String getD3id()/*-{
+		return this.d3id;
+	}-*/;
+
 }

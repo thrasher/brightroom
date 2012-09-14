@@ -4,8 +4,11 @@ import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
+import com.btrll.rooms.client.activities.room.RoomPlace;
+import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -40,6 +43,8 @@ public class MapActivity extends DetailActivity {
 		super(clientFactory.getMapView(), "nav");
 		this.clientFactory = clientFactory;
 		this.place = place;
+
+		exportStaticMethods();
 	}
 
 	@Override
@@ -108,5 +113,21 @@ public class MapActivity extends DetailActivity {
 		view.setMap(office.getMap());
 
 		panel.setWidget(view);
+	}
+
+	private native void exportStaticMethods() /*-{
+		var x = this;
+		$wnd.__btrll_handleMapClick = function(id) {
+			$entry(x.@com.btrll.rooms.client.activities.map.MapActivity::handleMapClick(Ljava/lang/String;)(id));
+		}
+	}-*/;
+
+	private void handleMapClick(String id) {
+		CalendarListResource c = clientFactory.getModelDao().getRoomByD3id(id);
+		if (c == null) {
+			Window.alert("Sorry, " + id + " is not a BrightRoom.");
+			return;
+		}
+		clientFactory.getPlaceController().goTo(new RoomPlace(c.getId()));
 	}
 }
