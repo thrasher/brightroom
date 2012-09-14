@@ -11,7 +11,7 @@
 
 	<servlet-mapping>
 		<servlet-name>ManifestServlet</servlet-name>
-		<url-pattern>/Rooms.manifest</url-pattern>
+		<url-pattern>/XRooms.manifest</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>
