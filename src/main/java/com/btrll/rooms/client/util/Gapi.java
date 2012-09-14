@@ -41,6 +41,65 @@ public class Gapi {
 		return requestCount++;
 	}
 
+	/**
+	 * Request the email address of the authorized user.
+	 * 
+	 * @param callId
+	 */
+	private native void getUserOAuthEmail(int callId) /*-{
+		var request = $wnd.gapi.client.oauth2.userinfo.get({
+			'fields' : 'email'
+		});
+
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	/**
+	 * Get a list of all event for the given calendar.
+	 * 
+	 * @param calendarId
+	 *            or null for 'primary' per the authorized user
+	 * @param callId
+	 */
+	private native void getCalendarEvents(String calendarId, int callId) /*-{
+		var request = gapi.client.calendar.events.list({
+			'calendarId' : calendarId == null ? 'primary' : calendarId
+		});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	private native void doListAllCalendars(int callId) /*-{
+		var request = gapi.client.calendar.calendarList.list({});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	private native void getCalendarList(int callId) /*-{
+		$wnd.gapi.client
+				.request({
+					'path' : '/calendar/v3/users/me/calendarList',
+					'method' : 'POST',
+					'headers' : {
+						'Content-Type' : 'application/json' // This is the default
+					},
+					'body' : JSON.stringify({
+						'id' : 'jthrasher@brightroll.com',
+						'selected' : true
+					}),
+					'callback' : function(resp, raw) {
+						$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+					}
+				});
+	}-*/;
+
 	public native void reserveRoom(String roomId, int minutes, int callId) /*-{
 		var x = this;
 		var start = new Date();

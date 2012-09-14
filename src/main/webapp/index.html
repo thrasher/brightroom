@@ -184,6 +184,7 @@
 	}
 
 	function toggleStatus(abbr) {
+		console.log(abbr);
 		var room = d3.select("#map").select("#" + abbr).attr('fill',
 				function(d) {
 					if (d3.select(this).attr('fill') == availableColor) {
@@ -241,80 +242,6 @@
 				// TODO: set timer to repeat the batch call every 1 minute
 			});
 		}
-	}
-
-	// sample GAPI requsts
-
-	function doListEventsPrimary() {
-		var request = gapi.client.calendar.events.list({
-			'calendarId' : 'primary'
-		});
-		request.execute(function(resp, raw) {
-			console.log(resp);
-		});
-	}
-	function doListAllMeetingRooms() {
-		gapi.client.calendar.calendarList.list({}).execute(function(resp, raw) {
-			var slist = {};
-			slist.sf = [];
-			slist.ny = [];
-			for ( var i = 0; i < resp.result.items.length; i++) {
-				if (resp.result.items[i].summary.indexOf('NY') >= 0) {
-					appendResults("'" + resp.result.items[i].id + "',");
-					slist.sf[slist.sf.length] = resp.result.items[i].id;
-				}
-			}
-
-			//appendResults(slist.sf.length);
-			prettyPrintJson(raw);
-		});
-	}
-	function doListAllUserCalendars() {
-		gapi.client.calendar.calendarList.list({}).execute(function(resp, raw) {
-			console.log(resp);
-		});
-	}
-	// get all events for the meeting room today
-	function doListTodaysMeetings() {
-		var d1 = new Date();
-		d1.setHours(0, 0, 0, 0);
-		var d2 = new Date();
-		d2.setHours(24, 0, 0, 0);
-		//alert(d1 + "\n" + d2);
-		gapi.client.calendar.events.list({
-			'calendarId' : rooms.sf[0],
-			'orderBy' : 'startTime',
-			'singleEvents' : true,
-			'timeMax' : d2,
-			'timeMin' : d1
-		}).execute(function(resp, raw) {
-			console.log(resp);
-		});
-	}
-	function makeOAuthCall() {
-		var request = gapi.client.oauth2.userinfo.get({
-			'fields' : 'email'
-		});
-
-		request.execute(function(resp, raw) {
-			console.log(resp);
-		});
-	}
-	function makeRestRequest() {
-		gapi.client.request({
-			'path' : '/calendar/v3/users/me/calendarList',
-			'method' : 'POST',
-			'headers' : {
-				'Content-Type' : 'application/json' // This is the default
-			},
-			'body' : JSON.stringify({
-				'id' : 'jthrasher@brightroll.com',
-				'selected' : true
-			}),
-			'callback' : function(resp, raw) {
-				console.log(resp);
-			}
-		});
 	}
 </script>
 
