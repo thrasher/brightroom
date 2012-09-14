@@ -1,5 +1,6 @@
 package com.btrll.rooms.client.activities.map;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
@@ -49,7 +50,7 @@ public class MapActivity extends DetailActivity {
 	/**
 	 * The delay in milliseconds between calls to refresh.
 	 */
-	private static final int REFRESH_DELAY = 2000;
+	private static final int REFRESH_DELAY = 60 * 1000;
 
 	public MapActivity(ClientFactory clientFactory, MapPlace place) {
 		super(clientFactory.getMapView(), "nav");
@@ -103,7 +104,7 @@ public class MapActivity extends DetailActivity {
 						// view.render(list);
 						view.refresh();
 						callback.onSuccess(null);
-						refreshTaskList();
+						refreshTaskList(false);
 					}
 					// TODO change to 1ms, once jsni hook reloads data
 				}.schedule(1);
@@ -128,7 +129,7 @@ public class MapActivity extends DetailActivity {
 						// display.render(list);
 						view.refresh();
 						callback.onSuccess(null);
-						refreshTaskList();
+						refreshTaskList(false);
 					}
 					// TODO change to 1ms, once jsni hook reloads data
 				}.schedule(1);
@@ -144,10 +145,10 @@ public class MapActivity extends DetailActivity {
 		refreshTimer = new Timer() {
 			@Override
 			public void run() {
-				refreshTaskList();
+				refreshTaskList(true);
 			}
 		};
-		refreshTaskList();
+		refreshTaskList(true);
 	}
 
 	@Override
@@ -159,15 +160,17 @@ public class MapActivity extends DetailActivity {
 		}
 	}
 
-	private void refreshTaskList() {
+	private void refreshTaskList(boolean isRepeated) {
 		Office office = clientFactory.getModelDao().getOfficeById(officeId);
 
 		batchCallId = Gapi.getCallId();
 		clientFactory.getGapi().batchCalendars(batchCallId,
 				clientFactory.getModelDao().getRooms(office));
 
-		// TODO: Restart the timer.
-		// refreshTimer.schedule(REFRESH_DELAY);
+		if (isRepeated) {
+			logger.fine("refresh on: " + new Date());
+			refreshTimer.schedule(REFRESH_DELAY);
+		}
 	}
 
 	private native void exportStaticMethods() /*-{
