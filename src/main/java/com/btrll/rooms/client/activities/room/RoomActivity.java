@@ -13,6 +13,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -89,10 +90,7 @@ public class RoomActivity extends DetailActivity {
 						if (callId == checkRoomCallId) {
 							handleCheckRoom(event.getResp());
 						} else if (callId == reserveCallId) {
-							// TODO: check that the roomId was actually added
-							Dialogs.alert("Success!", room.getSummary()
-									+ "\nis a BrightRoom.", null);
-							refreshRoom();
+							handleReserveResponse(event.getResp());
 						}
 					}
 				}));
@@ -120,20 +118,50 @@ public class RoomActivity extends DetailActivity {
 		clientFactory.getGapi().checkRoom(room.getId(), checkRoomCallId);
 	}
 
-	private void handleCheckRoom(JSOModel resp) {
-		if (resp.get("error", null) != null) {
-			if (resp.getInt("code") == 404) {
-				// in case of 404, user doesn't have access to the data, check
-				// the account they are using
-				Dialogs.alert(
-						"Sorry",
-						"You do not appear to have access to the resource.  Please check you're using the correct user account.",
-						null);
-			} else {
-				Dialogs.alert("Sorry",
-						resp.get("code") + ": " + resp.get("message"), null);
-			}
+	private void handleReserveResponse(JSOModel resp) {
+		if (isErrorResponse(resp)) {
+			return;
+		}
 
+		// TODO: check that the roomId was actually added
+
+		// verify that the resource's responseStatus needsAction
+		// resp.attendees[0].email = the room id
+		// resp.attendees[0].resource = true
+		// resp.attendees[0].responseStatus = "needsAction"
+
+		// if no action needed: success message and return
+
+		// make poll request for resp.id (the CalendarEvent)
+
+		// handle poll request for CalendarEvent
+
+		// poll room, and inspect CalendarEvent object
+		// resp.attendees[0].email = the room id
+		// resp.attendees[0].resource = true
+		// resp.attendees[0].responseStatus = "accepted"
+
+		// if poll response is "accepted", then message success and return
+
+		// if poll response is fail, then delete event resp.id, msg fail, return
+
+		// if poll response is needsAction/pending/etc, then make poll request
+
+		Dialogs.alert("Success!", room.getSummary() + "\nis a BrightRoom.",
+				null);
+		// TODO: poll until the resource is confirmed booked
+		// delay the check query, so the data propagates
+		Timer t = new Timer() {
+			@Override
+			public void run() {
+				refreshRoom();
+			}
+		};
+		t.schedule(500);
+	}
+
+	private void handleCheckRoom(JSOModel resp) {
+		if (isErrorResponse(resp)) {
 			return;
 		}
 
@@ -157,4 +185,28 @@ public class RoomActivity extends DetailActivity {
 							.appendHtmlConstant(" is available").toSafeHtml());
 		}
 	}
+
+	/**
+	 * check if the response contains an error, and display appropriate message
+	 * if it does.
+	 */
+	private boolean isErrorResponse(JSOModel resp) {
+		if (resp.get("error", null) == null) {
+			return false;
+		}
+		if (resp.getInt("code") == 404) {
+			// in case of 404, user doesn't have access to the data, check
+			// the account they are using
+			Dialogs.alert(
+					"Sorry",
+					"You do not appear to have access to the resource.  Please check you're using the correct user account.",
+					null);
+		} else {
+			Dialogs.alert("Sorry",
+					resp.get("code") + ": " + resp.get("message"), null);
+		}
+
+		return true;
+	}
+
 }
