@@ -48,15 +48,6 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
 	String error();
 
 	/**
-	 * Translated "Home".
-	 * 
-	 * @return translated "Home"
-	 */
-	@DefaultMessage("Home")
-	@Key("home")
-	String home();
-
-	/**
 	 * Translated "Nav".
 	 * 
 	 * @return translated "Nav"
@@ -64,4 +55,13 @@ public interface Messages extends com.google.gwt.i18n.client.Messages {
 	@DefaultMessage("Nav")
 	@Key("nav")
 	String nav();
+
+	/**
+	 * Translated "Offices".
+	 * 
+	 * @return translated "Offices"
+	 */
+	@DefaultMessage("Offices")
+	@Key("offices")
+	String offices();
 }

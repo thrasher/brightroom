@@ -87,7 +87,7 @@ public class RoomListActivity extends MGWTAbstractActivity {
 	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
 		final View view = clientFactory.getRoomListView();
 
-		view.setBackButtonText(Messages.INSTANCE.home());
+		view.setBackButtonText(Messages.INSTANCE.offices());
 		view.setTitle(office.getName());
 
 		addHandlerRegistration(view.getBackButton().addTapHandler(

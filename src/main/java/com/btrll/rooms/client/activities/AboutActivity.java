@@ -27,7 +27,7 @@ public class AboutActivity extends DetailActivity {
 		super.start(panel, eventBus);
 		View aboutView = clientFactory.getAboutView();
 
-		aboutView.getBackbuttonText().setText(Messages.INSTANCE.home());
+		aboutView.getBackbuttonText().setText(Messages.INSTANCE.offices());
 
 		aboutView.getHeader().setText(Messages.INSTANCE.about());
 
