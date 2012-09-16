@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import com.btrll.rooms.client.activities.gauth.GauthEvent;
 import com.btrll.rooms.client.model.CalendarListResource;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 
 /**
@@ -193,14 +192,6 @@ public class Gapi {
 	}-*/;
 
 	private void handleCallback(JSOModel resp, String raw, int callId) {
-		// NOTE: having UI in the API tier is bad bad bad
-		if (resp.get("error", null) != null) {
-			logger.warning(raw);
-			Window.alert("Sorry " + resp.get("code") + ": "
-					+ resp.get("message"));
-			return;
-		}
-
 		if (logger.isLoggable(Level.FINE)) {
 			resp.logToConsole();
 		}
