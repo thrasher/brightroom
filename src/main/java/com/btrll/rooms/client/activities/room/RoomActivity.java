@@ -77,8 +77,8 @@ public class RoomActivity extends DetailActivity {
 					@Override
 					public void onTap(TapEvent event) {
 						reserveCallId = Gapi.getCallId();
-						clientFactory.getGapi().reserveRoom(roomId, 15,
-								reserveCallId);
+						clientFactory.getGapi().calEventsInsertPrimary(roomId,
+								15, reserveCallId);
 					}
 				}));
 		addHandlerRegistration(eventBus.addHandler(GapiResponseEvent.getType(),
@@ -115,7 +115,7 @@ public class RoomActivity extends DetailActivity {
 		getView().setCheck();
 
 		checkRoomCallId = Gapi.getCallId();
-		clientFactory.getGapi().checkRoom(room.getId(), checkRoomCallId);
+		clientFactory.getGapi().calEventsList(room.getId(), checkRoomCallId);
 	}
 
 	private void handleReserveResponse(JSOModel resp) {

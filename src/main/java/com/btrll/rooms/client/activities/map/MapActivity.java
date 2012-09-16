@@ -165,7 +165,7 @@ public class MapActivity extends DetailActivity {
 		Office office = clientFactory.getModelDao().getOfficeById(officeId);
 
 		batchCallId = Gapi.getCallId();
-		clientFactory.getGapi().batchCalendars(batchCallId,
+		clientFactory.getGapi().batchCalEventsList(batchCallId,
 				clientFactory.getModelDao().getRooms(office));
 
 		if (isRepeated) {

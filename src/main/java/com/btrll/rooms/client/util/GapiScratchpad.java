@@ -30,7 +30,7 @@ public class GapiScratchpad {
 				});
 		ModelDao dao = new ModelDao();
 
-		gapi.batchCalendars(doBatch = Gapi.getCallId(),
+		gapi.batchCalEventsList(doBatch = Gapi.getCallId(),
 				dao.getRooms(dao.getOfficeById("1")));
 	}
 
@@ -49,7 +49,7 @@ public class GapiScratchpad {
 						}
 					}
 				});
-		gapi.listCalendars(doListCalendarsId = Gapi.getCallId());
+		gapi.calCalendarListList(doListCalendarsId = Gapi.getCallId());
 	}
 
 	private void handleListCalendars(JSOModel resp, String raw) {

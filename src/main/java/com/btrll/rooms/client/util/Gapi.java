@@ -34,7 +34,8 @@ public class Gapi {
 	}
 
 	/**
-	 * Use this function to create call ID values based on current time.
+	 * Create call ID values to identify which async response on the event bus
+	 * is appropriate to use.
 	 * 
 	 * @return
 	 */
@@ -47,7 +48,7 @@ public class Gapi {
 	 * 
 	 * @param callId
 	 */
-	private native void getUserOAuthEmail(int callId) /*-{
+	private native void oauth2UserInfoGet(int callId) /*-{
 		var request = $wnd.gapi.client.oauth2.userinfo.get({
 			'fields' : 'email'
 		});
@@ -58,32 +59,7 @@ public class Gapi {
 				});
 	}-*/;
 
-	/**
-	 * Get a list of all event for the given calendar.
-	 * 
-	 * @param calendarId
-	 *            or null for 'primary' per the authorized user
-	 * @param callId
-	 */
-	private native void getCalendarEvents(String calendarId, int callId) /*-{
-		var request = gapi.client.calendar.events.list({
-			'calendarId' : calendarId == null ? 'primary' : calendarId
-		});
-		request
-				.execute(function(resp, raw) {
-					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
-				});
-	}-*/;
-
-	private native void doListAllCalendars(int callId) /*-{
-		var request = gapi.client.calendar.calendarList.list({});
-		request
-				.execute(function(resp, raw) {
-					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
-				});
-	}-*/;
-
-	private native void getCalendarList(int callId) /*-{
+	private native void usersMeCalendarList(int callId) /*-{
 		$wnd.gapi.client
 				.request({
 					'path' : '/calendar/v3/users/me/calendarList',
@@ -101,7 +77,7 @@ public class Gapi {
 				});
 	}-*/;
 
-	public native void batchCalendars(int callId,
+	public native void batchCalEventsList(int callId,
 			JsArray<CalendarListResource> a) /*-{
 		var x = this;
 		var rpcBatch = $wnd.gapi.client.newRpcBatch();
@@ -130,7 +106,54 @@ public class Gapi {
 
 	}-*/;
 
-	public native void reserveRoom(String roomId, int minutes, int callId) /*-{
+	public native void calEventsGet(String calendarId, String eventId,
+			int callId) /*-{
+		var request = $wnd.gapi.client.calendar.events.get({
+			'eventId' : eventId,
+			'calendarId' : calendarId == null ? 'primary' : calendarId
+		});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	public native void calEventsDelete(String calendarId, String eventId,
+			int callId) /*-{
+		var request = $wnd.gapi.client.calendar.events['delete']({
+			'eventId' : eventId,
+			'sendNotifications' : false,
+			'calendarId' : calendarId == null ? 'primary' : calendarId
+		});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	/**
+	 * Get a list of all event for the given calendar.
+	 * 
+	 * @param calendarId
+	 *            or null for 'primary' per the authorized user
+	 * @param callId
+	 */
+	private native void calListEvents(String calendarId, int callId) /*-{
+		var request = $wnd.gapi.client.calendar.events.list({
+			'calendarId' : calendarId == null ? 'primary' : calendarId
+		});
+		request
+				.execute(function(resp, raw) {
+					$entry(x.@com.btrll.rooms.client.util.Gapi::handleCallback(Lcom/btrll/rooms/client/util/JSOModel;Ljava/lang/String;I)(resp, raw, callId));
+				});
+	}-*/;
+
+	public void calEventsInsertPrimary(String roomId, int minutes, int callId) {
+		calEventsInsert("primary", roomId, minutes, callId);
+	}
+
+	public native void calEventsInsert(String calendarId, String roomId,
+			int minutes, int callId) /*-{
 		var x = this;
 		var start = new Date();
 		var end = new Date(start);
@@ -150,8 +173,8 @@ public class Gapi {
 			} ]
 		};
 		var request = $wnd.gapi.client.calendar.events.insert({
-			'calendarId' : 'primary',
-			'resource' : resource
+			'resource' : resource,
+			'calendarId' : calendarId == null ? 'primary' : calendarId
 		});
 		request
 				.execute(function(resp, raw) {
@@ -159,7 +182,7 @@ public class Gapi {
 				});
 	}-*/;
 
-	public native void checkRoom(String roomId, int callId) /*-{
+	public native void calEventsList(String roomId, int callId) /*-{
 		var x = this;
 		var d1 = new Date();
 		var d2 = new Date(d1.getTime());
@@ -182,7 +205,7 @@ public class Gapi {
 	 * 
 	 * @param callId
 	 */
-	public native void listCalendars(int callId) /*-{
+	public native void calCalendarListList(int callId) /*-{
 		var x = this;
 		var request = $wnd.gapi.client.calendar.calendarList.list({});
 		request
