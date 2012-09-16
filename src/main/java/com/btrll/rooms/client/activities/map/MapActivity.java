@@ -14,10 +14,10 @@ import com.btrll.rooms.client.util.GapiResponseEvent;
 import com.btrll.rooms.client.util.JSOModel;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.googlecode.mgwt.ui.client.widget.base.HasRefresh;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowStandardHandler;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowStandardHandler.PullActionHandler;
@@ -184,7 +184,7 @@ public class MapActivity extends DetailActivity {
 	private void handleMapClick(String id) {
 		CalendarListResource c = clientFactory.getModelDao().getRoomByD3id(id);
 		if (c == null) {
-			Window.alert("Sorry, " + id + " is not a BrightRoom.");
+			Dialogs.alert("Sorry", id + " is not a BrightRoom.", null);
 			return;
 		}
 		clientFactory.getPlaceController().goTo(new RoomPlace(c.getId()));
