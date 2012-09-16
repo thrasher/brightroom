@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
+import com.btrll.rooms.client.Messages;
 import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.model.Office;
@@ -82,15 +83,15 @@ public class MapActivity extends DetailActivity {
 
 		final View view = clientFactory.getMapView();
 		view.getHeader().setText(office.getName());
-		view.getMainButtonText().setText("Nav");
-		view.getBackbuttonText().setText("Back");
+		view.getMainButtonText().setText(Messages.INSTANCE.nav());
+		view.getBackbuttonText().setText(Messages.INSTANCE.back());
 
 		view.getPullHeader().setHTML("pull down");
 		view.getPullFooter().setHTML("pull up");
 
 		PullArrowStandardHandler headerHandler = new PullArrowStandardHandler(
 				view.getPullHeader(), view.getPullPanel());
-		headerHandler.setErrorText("Error");
+		headerHandler.setErrorText(Messages.INSTANCE.error());
 		headerHandler.setLoadingText("Loading " + office.getName());
 		headerHandler.setNormalText("pull to update " + office.getName());
 		headerHandler.setPulledText("release to refresh " + office.getName());
@@ -114,7 +115,7 @@ public class MapActivity extends DetailActivity {
 
 		PullArrowStandardHandler footerHandler = new PullArrowStandardHandler(
 				view.getPullFooter(), view.getPullPanel());
-		footerHandler.setErrorText("Error");
+		footerHandler.setErrorText(Messages.INSTANCE.error());
 		footerHandler.setLoadingText("Loading " + office.getName());
 		footerHandler.setNormalText("pull to update " + office.getName());
 		footerHandler.setPulledText("release to refresh " + office.getName());

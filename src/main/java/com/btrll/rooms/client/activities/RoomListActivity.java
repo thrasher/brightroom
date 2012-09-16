@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.btrll.rooms.client.ClientFactory;
+import com.btrll.rooms.client.Messages;
 import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.activities.room.RoomPlace;
 import com.btrll.rooms.client.event.ActionEvent;
@@ -86,7 +87,7 @@ public class RoomListActivity extends MGWTAbstractActivity {
 	public void start(AcceptsOneWidget panel, final EventBus eventBus) {
 		final View view = clientFactory.getRoomListView();
 
-		view.setBackButtonText("Home");
+		view.setBackButtonText(Messages.INSTANCE.home());
 		view.setTitle(office.getName());
 
 		addHandlerRegistration(view.getBackButton().addTapHandler(

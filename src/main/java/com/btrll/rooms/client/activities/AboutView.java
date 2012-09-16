@@ -1,6 +1,7 @@
 package com.btrll.rooms.client.activities;
 
 import com.btrll.rooms.client.DetailView;
+import com.btrll.rooms.client.Messages;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -25,7 +26,7 @@ public class AboutView extends DetailView implements AboutActivity.View {
 		initWidget(binder.createAndBindUi(this));
 
 		if (MGWT.getOsDetection().isPhone()) {
-			button = new Button("back");
+			button = new Button(Messages.INSTANCE.back());
 			button.getElement().setAttribute("style",
 					"margin:auto;width: 200px;display:block");
 			panel.add(button);

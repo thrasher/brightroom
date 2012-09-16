@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
+import com.btrll.rooms.client.Messages;
 import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.util.Gapi;
 import com.btrll.rooms.client.util.GapiResponseEvent;
@@ -59,8 +60,8 @@ public class RoomActivity extends DetailActivity {
 		logger.fine("RoomActivity start");
 		super.start(panel, eventBus);
 
-		getView().getMainButtonText().setText("Nav");
-		getView().getBackbuttonText().setText("Back");
+		getView().getMainButtonText().setText(Messages.INSTANCE.nav());
+		getView().getBackbuttonText().setText(Messages.INSTANCE.back());
 
 		addHandlerRegistration(getView().getCheckButton().addTapHandler(
 				new TapHandler() {

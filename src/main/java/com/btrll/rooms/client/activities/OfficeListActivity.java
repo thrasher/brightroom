@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.ClientFactory;
-import com.btrll.rooms.client.activities.map.MapPlace;
+import com.btrll.rooms.client.Messages;
 import com.btrll.rooms.client.model.Office;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -51,8 +51,8 @@ public class OfficeListActivity extends MGWTAbstractActivity {
 		this.eventBus = eventBus;
 		View view = getOfficeListView();
 
-		view.setTitle("BrightRoom");
-		view.setRightButtonText("about");
+		view.setTitle(Messages.INSTANCE.appname());
+		view.setRightButtonText(Messages.INSTANCE.about());
 
 		view.getFirstHeader().setText("Location");
 

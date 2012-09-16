@@ -83,7 +83,6 @@
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>compile</goal>
-							<goal>i18n</goal>
 						</goals>
 					</execution>
 				</executions>
