@@ -85,7 +85,6 @@ public class RoomActivity extends DetailActivity {
 
 					@Override
 					public void onGapiResponse(GapiResponseEvent event) {
-						// handle success
 						int callId = event.getCallId();
 						if (callId == checkRoomCallId) {
 							handleCheckRoom(event.getResp());
@@ -122,6 +121,22 @@ public class RoomActivity extends DetailActivity {
 	}
 
 	private void handleCheckRoom(JSOModel resp) {
+		if (resp.get("error", null) != null) {
+			if (resp.getInt("code") == 404) {
+				// in case of 404, user doesn't have access to the data, check
+				// the account they are using
+				Dialogs.alert(
+						"Sorry",
+						"You do not appear to have access to the resource.  Please check you're using the correct user account.",
+						null);
+			} else {
+				Dialogs.alert("Sorry",
+						resp.get("code") + ": " + resp.get("message"), null);
+			}
+
+			return;
+		}
+
 		JSOModel event = clientFactory.getModelDao().findCurrentEvent(
 				resp.getArray("items"));
 		boolean isBusy = resp.getArray("items") != null && event != null;
