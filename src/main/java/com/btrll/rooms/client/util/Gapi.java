@@ -108,6 +108,7 @@ public class Gapi {
 
 	public native void calEventsGet(String calendarId, String eventId,
 			int callId) /*-{
+		var x = this;
 		var request = $wnd.gapi.client.calendar.events.get({
 			'eventId' : eventId,
 			'calendarId' : calendarId == null ? 'primary' : calendarId
@@ -120,6 +121,7 @@ public class Gapi {
 
 	public native void calEventsDelete(String calendarId, String eventId,
 			int callId) /*-{
+		var x = this;
 		var request = $wnd.gapi.client.calendar.events['delete']({
 			'eventId' : eventId,
 			'sendNotifications' : false,
@@ -159,7 +161,7 @@ public class Gapi {
 		var end = new Date(start);
 		end.setMinutes(start.getMinutes() + minutes);
 		console.log("this is it: " + roomId);
-		// NOTE: not documented, the resource is added as an attendee
+		// NOTE: not documented by google, the resource is added as an attendee
 		var resource = {
 			"summary" : "BrightRoom",
 			"start" : {
