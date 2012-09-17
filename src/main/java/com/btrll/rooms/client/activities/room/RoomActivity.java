@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.DetailActivity;
 import com.btrll.rooms.client.Messages;
+import com.btrll.rooms.client.model.Attendee;
+import com.btrll.rooms.client.model.CalendarEvent;
 import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.util.Gapi;
 import com.btrll.rooms.client.util.GapiResponseEvent;
@@ -43,12 +45,14 @@ public class RoomActivity extends DetailActivity {
 				String eventUrl, String eventSummary);
 	}
 
-	static final Logger logger = Logger.getLogger("RoomActivity");
+	private static final Logger logger = Logger.getLogger("RoomActivity");
 	private final ClientFactory clientFactory;
 	private final String roomId;
 	private CalendarListResource room;
 	private int checkRoomCallId;
 	private int reserveCallId;
+	private int calEventsGet;
+	private int deleteCallId;
 
 	public RoomActivity(ClientFactory clientFactory, RoomPlace place) {
 		super(clientFactory.getRoomView(), "nav");
@@ -76,6 +80,7 @@ public class RoomActivity extends DetailActivity {
 
 					@Override
 					public void onTap(TapEvent event) {
+						getView().setCheck();
 						reserveCallId = Gapi.getCallId();
 						clientFactory.getGapi().calEventsInsertPrimary(roomId,
 								15, reserveCallId);
@@ -87,10 +92,16 @@ public class RoomActivity extends DetailActivity {
 					@Override
 					public void onGapiResponse(GapiResponseEvent event) {
 						int callId = event.getCallId();
-						if (callId == checkRoomCallId) {
+						if (isErrorResponse(event.getResp())) {
+							return;
+						} else if (callId == checkRoomCallId) {
 							handleCheckRoom(event.getResp());
 						} else if (callId == reserveCallId) {
-							handleReserveResponse(event.getResp());
+							handleCalEventsGet((CalendarEvent) event.getResp());
+						} else if (callId == calEventsGet) {
+							handleCalEventsGet((CalendarEvent) event.getResp());
+						} else if (callId == deleteCallId) {
+							handleDelete(event.getResp());
 						}
 					}
 				}));
@@ -113,58 +124,79 @@ public class RoomActivity extends DetailActivity {
 
 	private void refreshRoom() {
 		getView().setCheck();
-
 		checkRoomCallId = Gapi.getCallId();
 		clientFactory.getGapi().calEventsList(room.getId(), checkRoomCallId);
 	}
 
-	private void handleReserveResponse(JSOModel resp) {
-		if (isErrorResponse(resp)) {
-			return;
-		}
-
-		// TODO: check that the roomId was actually added
-
-		// verify that the resource's responseStatus needsAction
-		// resp.attendees[0].email = the room id
-		// resp.attendees[0].resource = true
-		// resp.attendees[0].responseStatus = "needsAction"
-
-		// if no action needed: success message and return
-
-		// make poll request for resp.id (the CalendarEvent)
-
-		// handle poll request for CalendarEvent
-
-		// poll room, and inspect CalendarEvent object
-		// resp.attendees[0].email = the room id
-		// resp.attendees[0].resource = true
-		// resp.attendees[0].responseStatus = "accepted"
-
-		// if poll response is "accepted", then message success and return
-
-		// if poll response is fail, then delete event resp.id, msg fail, return
-
-		// if poll response is needsAction/pending/etc, then make poll request
-
-		Dialogs.alert("Success!", room.getSummary() + "\nis a BrightRoom.",
-				null);
-		// TODO: poll until the resource is confirmed booked
-		// delay the check query, so the data propagates
+	private void handleDelete(JSOModel resp) {
+		// delete object has no data.
 		Timer t = new Timer() {
 			@Override
 			public void run() {
 				refreshRoom();
 			}
 		};
-		t.schedule(500);
+		t.schedule(1000); // good enough
+	}
+
+	private void handleCalEventsGet(final CalendarEvent resp) {
+		for (int i = 0; i < resp.getAttendees().length(); i++) {
+			Attendee attendee = (Attendee) resp.getAttendees().get(i);
+			logger.fine(attendee.getDisplayName() + ": "
+					+ attendee.getResponseStatus());
+			if (roomId.equals(attendee.getEmail())) {
+				if (Attendee.ACCEPTED.equals(attendee.getResponseStatus())) {
+					Dialogs.alert(
+							"Success!", // room.getSummary()
+							attendee.getDisplayName() + " is a BrightRoom.",
+							null);
+					refreshRoom();
+				} else if (Attendee.DECLINED.equals(attendee
+						.getResponseStatus())) {
+					// delete event so we don't pollute calendar, notify user
+					Dialogs.alert(
+							"Conflict!", // room.getSummary()
+							attendee.getDisplayName()
+									+ " is not reservable, as it overlaps with an existing event.",
+							null);
+					deleteCallId = Gapi.getCallId();
+					clientFactory.getGapi().calEventsDelete(null, resp.getId(),
+							deleteCallId);
+				} else if (Attendee.NEEDSACTION.equals(attendee
+						.getResponseStatus())) {
+					// poll
+					Timer t = new Timer() {
+						@Override
+						public void run() {
+							pollEvent(resp.getId());
+						}
+					};
+					// TODO: exponential back-off
+					t.schedule(200);
+				} else {
+					// unhandled response status, alert user
+					Dialogs.alert(
+							"That's weird!", // room.getSummary()
+							attendee.getDisplayName() + " is "
+									+ attendee.getResponseStatus()
+									+ ".  Please let Jason T. know.", null);
+					refreshRoom();
+				}
+			}
+			return;
+		}
+		// shouldn't get here
+		logger.warning("expected to find room resource, but it was missing.");
+		Dialogs.alert("That's weird!", room.getSummary() + " is not found."
+				+ "  Please let Jason T. know.", null);
+	}
+
+	private void pollEvent(String eventId) {
+		calEventsGet = Gapi.getCallId();
+		clientFactory.getGapi().calEventsGet(null, eventId, calEventsGet);
 	}
 
 	private void handleCheckRoom(JSOModel resp) {
-		if (isErrorResponse(resp)) {
-			return;
-		}
-
 		JSOModel event = clientFactory.getModelDao().findCurrentEvent(
 				resp.getArray("items"));
 		boolean isBusy = resp.getArray("items") != null && event != null;
