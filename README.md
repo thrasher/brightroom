@@ -1,63 +1,48 @@
 BrightRoom
 ===========
 
-This is a BrightRoll HAX project to allow for easy ad-hoc meeting room utilization.
+BrightRoom is a BrightRoll HAX project to allow for easy ad-hoc meeting room utilization.  Most scheduling apps show a calendar-like view of resource availability over time, but BrightRoom does it differently.  BrightRoom shows what rooms are available right now, in real time from a mobile device.  It allows you to schedule an ad-hoc private discussion in a room, based on current availability.  A map is included to show all rooms in the San Francisco office that are free or busy, and allow you to schedule any of the available rooms with two clicks.  (Other office maps are coming soon!)
 
-The current version of the app is deployed here:
-http://bit.ly/BrightRoom
+BrightRoom is designed for use from a mobile device, but works fine on a desktop too.  Android and iOS devices have a native-app look to them, which is familiar to many people.  Once you've logged into BrightRoom, bookmark the app (Android) or "Add to Home Screen" (iOS) so you have quick access to it in the future.
 
-Which points to a Google App Engine app here:
+The app needs permission to your calendar before showing views.  This allows the app to schedule room resources in your name.  It also asserts your authorization, which allows the app to check rooms on your behalf.
+
+## Current Version
+
+The current version of the app is deployed to:
 http://btrllroom.appspot.com/
 
-) When a user loads the app, use GPS location info to determine what office they are in.
-) A user should be able to set the default office location.
-) When a user loads the app, rooms will be shown for their default office location.
-) Let them specify the office location (config screen)
-) use the office location to verify/add access to all calendars in that office
-) use CalendarList: get for each calendar, to see if the user has access to it
-) add any calendars the user doesn't have access to for the given location
-) inform the user that all calendars for the given location have been added to their calendar
-) store the preferred user location on the client
-) show a list of rooms in the current location
-) When a user selects a room, display the room's schedule for the current day.
-) When a user views a room schedule, show if the room is available or not.
-) When a user views an available room, let them create a reservation for 20 minutes.
-) When a user views an available room, show them how much time they can book it for.
-) let the user choose a room (same url as QR code to scan a room)
-) show schedule of events for the room for the current day
-   button to allow them to navigate to the next day
-   button to allow them to navigate to the previous day
-   button to schedule the next available meeting in the room
-   button to schedule the next available room to meet in (need to specify number of people?)
+## Basic Features
 
-User can easily add all rooms to their calendar.
-- select office location
-- add all rooms
-- view confirmation dialog that rooms are added
-- set default location cookie for user to the target office
+- All office locations with bookable resources (rooms) in Google Calendar are displayed, grouped by office location.
+- A list of meeting rooms in each location is displayed alphabetically.
+- When a user views a room's details, they can see free/busy information.
+- If a room is currently in use by someone, their email and subject of their use is shown.
+- If a room is free, it can be reserved as a BrightRoom for 15 minutes.
+- QRCodes posted on each room (in the SF office), allow you to scan directly to the room's availability view, and book it if free.
+- A map view (SF only) shows all of the rooms, where they are, and their availability.
+- Clicking on a room in the map allows you to reserve the room.  Green == available, Red == busy.
 
-User can easily remove all rooms from their calendar.
-- select office location (defaults to cookied location)
-- remove all rooms button
-- view confirmation dialog that all rooms were removed
+### Offices with bookable rooms currently include:
 
-User can see all rooms by navigating by office
-- show friendly brightroll logo
-- San Francisco <- click
+- San Francisco
 - New York
+- Chicago
+- Palo Alto
 
-SF Room List
-- Golden Gate <- click room to view avaiability
-- Chinatown
-- ...etc
-- navigate back to previous screen
+## Backlog
 
-Golden Gate Schedule
-- Show Golden Gate schedule for the day
-- navigate back to the previous screen
+The backlog lists ideas contributed by users, that are not currently implemented in the app.  BrightRoom may be re-haxed in the future, so keep the ideas coming (email thrasher@btrll)!
 
-Is there an easy way to navigate a tree structure in javascript?
-Should the UI just handle an array of nodes to display, and provide navigation between array lists?
-
-
-
+- When a user loads the app, use GPS location info to determine what office they are in.
+- A user should be able to set the default office location.
+- When a user loads the app, rooms will be shown for their default office location.
+- Let them specify the office location (config screen)
+- use the office location to verify/add access to all calendars in that office
+- store the preferred user location on the client
+- When a user selects a room, display the room's schedule for the current day.
+- When a user views a room schedule, show if the room is available or not.
+- When a user views an available room, show them how much time they can book it for.
+- show schedule of events for the room for the current day
+- button to schedule the next available meeting in the room
+- button to schedule the next available room to meet in (need to specify number of people?)
