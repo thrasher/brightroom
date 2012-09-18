@@ -15,7 +15,7 @@
 <rect x="1155.967" y="759.121" opacity="0.5" fill="#A7A9AC" width="82.278" height="113.57" id="rect3091"/>
 <g id="rooms">
     <rect inkscape:label="#rect3069" id="embarcadero" height="145.926" width="161.362" fill="#8DC63F" y="21.459" x="1473.479"/>
-    <rect id="mission" inkscape:label="#rect3071" height="129.799" width="192.267" fill="#8DC63F" y="888.865" x="1442.575"/>
+    <rect inkscape:label="#rect3071" id="mission" height="129.799" width="192.267" fill="#8DC63F" y="888.865" x="1442.575"/>
     <rect inkscape:label="#rect3073" id="financial_district" height="116.566" width="178.497" fill="#8DC63F" y="21.459" x="21.951"/>
     <rect inkscape:label="#rect3075" id="nob_hill" height="116.566" width="178.497" fill="#8DC63F" y="141.987" x="21.951"/>
     <rect inkscape:label="#rect3077" id="chinatown" height="100.031" width="150.315" fill="#8DC63F" y="254.65" x="670.405"/>
