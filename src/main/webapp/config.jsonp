@@ -269,7 +269,15 @@ window.config =
       "accessRole": "reader",
       "bitly_url": "http:\/\/bit.ly\/TFqmmI",
       "d3id": "financial_district"
-    }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "id": "brightroll.com_2d3536343232313233393535@resource.calendar.google.com",
+      "summary": "SF: All Hands",
+      "timeZone": "America\/Los_Angeles",
+      "bitly_url": "",
+      "d3id": "allhands"
+    }    
   ]
 }
 ;
