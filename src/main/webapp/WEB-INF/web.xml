@@ -8,12 +8,12 @@
 		<servlet-name>ManifestServlet</servlet-name>
 		<servlet-class>com.googlecode.mgwt.linker.server.MGWTHtml5ManifestServlet</servlet-class>
 	</servlet>
-
+<!-- commenting out until I figure out how to handle code push on client
 	<servlet-mapping>
 		<servlet-name>ManifestServlet</servlet-name>
-		<url-pattern>/XRooms.manifest</url-pattern>
+		<url-pattern>/Rooms.manifest</url-pattern>
 	</servlet-mapping>
-	
+-->	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
