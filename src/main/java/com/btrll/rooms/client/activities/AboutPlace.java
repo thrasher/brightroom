@@ -24,7 +24,7 @@ import com.google.gwt.place.shared.Prefix;
  * 
  */
 public class AboutPlace extends Place {
-	@Prefix("about")
+	@Prefix(PREFIX)
 	public static class Tokenizer implements PlaceTokenizer<AboutPlace> {
 
 		@Override
@@ -38,4 +38,12 @@ public class AboutPlace extends Place {
 		}
 
 	}
+
+	private static final String PREFIX = "about";
+
+	@Override
+	public String toString() {
+		return PREFIX + ":";
+	}
+
 }

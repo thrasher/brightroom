@@ -5,7 +5,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
 public class GauthPlace extends Place {
-	@Prefix("")
+	@Prefix(PREFIX)
 	public static class Tokenizer implements PlaceTokenizer<GauthPlace> {
 
 		@Override
@@ -19,4 +19,12 @@ public class GauthPlace extends Place {
 		}
 
 	}
+
+	private static final String PREFIX = "";
+
+	@Override
+	public String toString() {
+		return PREFIX + ":";
+	}
+
 }

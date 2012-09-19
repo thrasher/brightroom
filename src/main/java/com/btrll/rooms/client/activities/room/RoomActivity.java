@@ -116,6 +116,7 @@ public class RoomActivity extends DetailActivity {
 						.toSafeHtml());
 
 		refreshRoom();
+		clientFactory.getGA().trackPageview(new RoomPlace(roomId));
 	}
 
 	private View getView() {

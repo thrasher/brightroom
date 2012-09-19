@@ -39,4 +39,10 @@ public class HomePlace extends Place {
 			return true;
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "HomePlace";
+	}
+
 }

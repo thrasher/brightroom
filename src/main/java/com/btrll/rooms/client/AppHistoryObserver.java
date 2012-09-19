@@ -22,15 +22,26 @@ import com.googlecode.mgwt.ui.client.MGWT;
 
 public class AppHistoryObserver implements HistoryObserver {
 	static final Logger logger = Logger.getLogger("AppHistoryObserver");
+	private final ClientFactory clientFactory;
+
+	public AppHistoryObserver(ClientFactory clientFactory) {
+		this.clientFactory = clientFactory;
+	}
 
 	@Override
 	public void onPlaceChange(Place place, HistoryHandler handler) {
-
+		if (place instanceof RoomPlace) {
+			return;
+		}
+		clientFactory.getGA().trackPageview(place);
 	}
 
 	@Override
 	public void onHistoryChanged(Place place, HistoryHandler handler) {
-
+		if (place instanceof RoomPlace) {
+			return;
+		}
+		clientFactory.getGA().trackPageview(place);
 	}
 
 	@Override
@@ -40,9 +51,8 @@ public class AppHistoryObserver implements HistoryObserver {
 		} else {
 			// tablet
 			onTabletNav(place, historyHandler);
-
 		}
-
+		clientFactory.getGA().trackPageview(place);
 	}
 
 	@Override

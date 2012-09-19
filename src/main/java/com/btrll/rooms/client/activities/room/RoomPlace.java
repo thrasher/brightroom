@@ -5,7 +5,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
 public class RoomPlace extends Place {
-	@Prefix("room")
+	@Prefix(PREFIX)
 	public static class Tokenizer implements PlaceTokenizer<RoomPlace> {
 		private static final String NO_ID = "create";
 
@@ -26,6 +26,7 @@ public class RoomPlace extends Place {
 		}
 	}
 
+	private static final String PREFIX = "room";
 	private static RoomPlace singleton;
 
 	/**
@@ -51,4 +52,8 @@ public class RoomPlace extends Place {
 		return resourceId;
 	}
 
+	@Override
+	public String toString() {
+		return PREFIX + ":" + getResourceId();
+	}
 }

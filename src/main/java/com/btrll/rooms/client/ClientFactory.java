@@ -7,6 +7,7 @@ import com.btrll.rooms.client.activities.gauth.GauthActivity;
 import com.btrll.rooms.client.activities.map.MapActivity;
 import com.btrll.rooms.client.activities.room.RoomActivity;
 import com.btrll.rooms.client.util.Gapi;
+import com.btrll.rooms.client.util.GA;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -33,4 +34,7 @@ public interface ClientFactory {
 	public RoomActivity.View getRoomView();
 
 	public ModelDao getModelDao();
+
+	public GA getGA();
+
 }

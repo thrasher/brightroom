@@ -13,6 +13,7 @@ import com.btrll.rooms.client.activities.map.MapView;
 import com.btrll.rooms.client.activities.room.RoomActivity;
 import com.btrll.rooms.client.activities.room.RoomView;
 import com.btrll.rooms.client.util.Gapi;
+import com.btrll.rooms.client.util.GA;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -29,6 +30,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private RoomActivity.View roomView;
 	private MapActivity.View mapView;
 	private ModelDao modelDao;
+	private GA ga;
 
 	public ClientFactoryImpl() {
 		eventBus = new SimpleEventBus();
@@ -111,6 +113,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			modelDao = new ModelDao();
 		}
 		return modelDao;
+	}
+
+	@Override
+	public GA getGA() {
+		if (ga == null) {
+			ga = new GA("UA-34537948-1");
+		}
+		return ga;
 	}
 
 }

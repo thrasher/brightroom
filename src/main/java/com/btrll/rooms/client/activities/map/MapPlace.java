@@ -5,7 +5,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
 public class MapPlace extends Place {
-	@Prefix("map")
+	@Prefix(PREFIX)
 	public static class Tokenizer implements PlaceTokenizer<MapPlace> {
 		private static final String NO_ID = "create";
 
@@ -51,6 +51,13 @@ public class MapPlace extends Place {
 
 	public String getOfficeId() {
 		return officeId;
+	}
+
+	private static final String PREFIX = "map";
+
+	@Override
+	public String toString() {
+		return PREFIX + ":" + getOfficeId();
 	}
 
 }

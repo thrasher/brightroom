@@ -182,6 +182,7 @@ public class MapActivity extends DetailActivity {
 	}-*/;
 
 	private void handleMapClick(String id) {
+		clientFactory.getGA().trackEvent("Map", "Select Room", id);
 		CalendarListResource c = clientFactory.getModelDao().getRoomByD3id(id);
 		if (c == null) {
 			Dialogs.alert("Sorry", id + " is not a BrightRoom.", null);
