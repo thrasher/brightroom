@@ -23,11 +23,11 @@ public class TabletMainAnimationMapper implements AnimationMapper {
 		}
 
 		if (newPlace instanceof MapPlace) {
-			return Animation.SWAP;
+			return Animation.FLIP;
 		}
 
 		if (oldPlace instanceof MapPlace && newPlace instanceof RoomListPlace) {
-			return Animation.SWAP_REVERSE;
+			return Animation.FLIP_REVERSE;
 		}
 
 		if (oldPlace instanceof MapPlace && newPlace instanceof RoomPlace) {
