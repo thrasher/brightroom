@@ -54,7 +54,7 @@ public class GA {
 	}-*/;
 
 	public void trackPageview(Place place) {
-		trackPageview(place.toString());
+		trackPageview(Window.Location.getPath() + "#" + place.toString());
 	}
 
 	public native void trackPageview(String url) /*-{
