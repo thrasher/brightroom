@@ -141,7 +141,8 @@
 		gapi.auth.authorize({
 			client_id : config.googleApiProject.clientId,
 			scope : config.googleApiProject.scopes,
-			immediate : false
+			immediate : false,
+			hd: 'brightroll.com'
 		}, handleAuthResult);
 	}
 	var savedAuthResult = null;
