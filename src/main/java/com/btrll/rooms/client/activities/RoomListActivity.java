@@ -7,10 +7,9 @@ import com.btrll.rooms.client.ClientFactory;
 import com.btrll.rooms.client.Messages;
 import com.btrll.rooms.client.activities.map.MapPlace;
 import com.btrll.rooms.client.activities.room.RoomPlace;
-import com.btrll.rooms.client.event.ActionEvent;
-import com.btrll.rooms.client.event.ActionNames;
 import com.btrll.rooms.client.model.CalendarListResource;
 import com.btrll.rooms.client.model.Office;
+import com.btrll.rooms.client.places.HomePlace;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -95,8 +94,8 @@ public class RoomListActivity extends MGWTAbstractActivity {
 
 					@Override
 					public void onTap(TapEvent event) {
-						ActionEvent.fire(eventBus, ActionNames.BACK);
-
+						clientFactory.getPlaceController()
+								.goTo(new HomePlace());
 					}
 				}));
 
