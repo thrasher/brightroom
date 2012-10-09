@@ -3,15 +3,45 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m='urn:import:com.googlecode.mgwt.ui.client.widget'>
 
+	<ui:style>
+		ul#team {
+			list-style-type: none;
+		}
+	</ui:style>
 	<!-- Note: outermost SimplePanel is a dummy, so the next inner panel can 
 		be removed from the UiBinder and added to the scrollPanel in the non-UiBinder 
 		parent. -->
 	<g:SimplePanel>
 		<m:RoundPanel ui:field='panel'>
 			<g:HTML>
-				<a href='http://bit.ly/BrightRoom'>bit.ly/BrightRoom</a>
+				<img src='images/btrll_logo_small.png' />
 				<br />
-				BrightRoll HAX 8/15/2012
+				<br />
+				<h3>BrightRoom HAX Team Aug. 15, 2012</h3>
+				<hr />
+				<ul id='team'>
+					<li>
+						<a href='mailto:jmueller@brightroll.com'>Jessie Mueller</a>
+					</li>
+					<li>
+						<a href='mailto:max@brightroll.com'>Max Sadrieh</a>
+					</li>
+					<li>
+						<a href='mailto:kiran@brightroll.com'>Kiran Divvela</a>
+					</li>
+					<li>
+						<a href='mailto:pdavis@brightroll.com'>Patrick Davis</a>
+					</li>
+					<li>
+						<a href='mailto:tessa@brightroll.com'>Tessa Serdar</a>
+					</li>
+					<li>
+						<a href='mailto:edurgin@brightroll.com'>Elizabeth Durgin</a>
+					</li>
+					<li>
+						<a href='mailto:thrasher@brightroll.com'>Jason Thrasher</a>
+					</li>
+				</ul>
 			</g:HTML>
 		</m:RoundPanel>
 	</g:SimplePanel>
