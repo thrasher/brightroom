@@ -1,5 +1,6 @@
 package com.btrll.rooms.client;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
@@ -115,7 +116,8 @@ public class Rooms implements EntryPoint {
 			createPhoneDisplay(clientFactory);
 		}
 
-		AppHistoryObserver historyObserver = new AppHistoryObserver(clientFactory);
+		AppHistoryObserver historyObserver = new AppHistoryObserver(
+				clientFactory);
 
 		MGWTPlaceHistoryHandler historyHandler = new MGWTPlaceHistoryHandler(
 				historyMapper, historyObserver);
@@ -197,12 +199,18 @@ public class Rooms implements EntryPoint {
 
 			@Override
 			public void onUncaughtException(Throwable e) {
-				Window.alert("uncaught: " + e.getMessage());
-				String s = buildStackTrace(e, "RuntimeExceotion:\n");
-				logger.severe(s);
-				Window.alert(s);
-				e.printStackTrace();
-
+				if (GWT.isScript()) {
+					// in the event of failure, just reload the page
+					Window.alert("Oops, that's an error.\nPlease let jthrasher@brightroll.com know: "
+							+ e.getMessage());
+					Window.Location.reload();
+				} else {
+					Window.alert("uncaught: " + e.getMessage());
+					String s = buildStackTrace(e, "RuntimeException:\n");
+					logger.severe(s);
+					Window.alert(s);
+					e.printStackTrace();
+				}
 			}
 		});
 
