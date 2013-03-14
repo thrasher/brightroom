@@ -277,6 +277,22 @@ window.config =
       "timeZone": "America\/Los_Angeles",
       "bitly_url": "",
       "d3id": "allhands"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "id": "brightroll.com_34393938323132373138@resource.calendar.google.com",
+      "summary": "SF: PR Richmond",
+      "timeZone": "America\/Los_Angeles",
+      "bitly_url": "",
+      "d3id": "richmond"
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "id": "brightroll.com_39323536393633372d343539@resource.calendar.google.com",
+      "summary": "SF: PR Sunset",
+      "timeZone": "America\/Los_Angeles",
+      "bitly_url": "",
+      "d3id": "sunset"
     }    
   ]
 }
