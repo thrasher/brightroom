@@ -1,6 +1,5 @@
 package com.btrll.rooms.client;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.btrll.rooms.client.activities.gauth.GauthActivity;
@@ -203,7 +202,7 @@ public class Rooms implements EntryPoint {
 					// in the event of failure, just reload the page
 					Window.alert("Oops, that's an error.\nPlease let jthrasher@brightroll.com know: "
 							+ e.getMessage());
-					Window.Location.reload();
+					Window.Location.replace("/#map:1");//.reload();
 				} else {
 					Window.alert("uncaught: " + e.getMessage());
 					String s = buildStackTrace(e, "RuntimeException:\n");
