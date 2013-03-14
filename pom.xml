@@ -10,6 +10,13 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>BrightRoom</name>
 
+<!--
+For deployment:
+gae:unpack will download and unpack the configured GAE version locally
+gae:run will simulate GAE locally
+gae:deploy will push the code to GAE and requires the GAE username/password to be set in the settings.xml file
+-->
+
 	<scm>
 		<developerConnection>scm:git:git://github.com/thrasher/brightroom.git</developerConnection>
 	</scm>
@@ -144,7 +151,7 @@
 			<plugin>
 				<groupId>net.kindleit</groupId>
 				<artifactId>maven-gae-plugin</artifactId>
-				<version>0.9.4</version>
+				<version>0.9.5</version>
 				<configuration>
 					<serverId>appengine.google.com</serverId>
 				</configuration>
@@ -200,19 +207,19 @@
 		<dependency>
 			<groupId>com.googlecode.mgwt</groupId>
 			<artifactId>mgwt</artifactId>
-			<version>1.1.2-SNAPSHOT</version>
+			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.4.0</gwtVersion>
+		<gwtVersion>2.5.0</gwtVersion>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- GWT needs at least java 1.6 -->
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<gae.version>1.7.0</gae.version>
+		<gae.version>1.7.4</gae.version>
 		<!-- identifier from the GAE dashboard, selects which app is deployed -->
 		<gae.application.identifier>btrllroom</gae.application.identifier>
 		<!-- Upload to http://test.<applicationName>.appspot.com by default -->
