@@ -23,6 +23,12 @@ http://btrllroom.appspot.com/
 - A map view (SF only) shows all of the rooms, where they are, and their availability.
 - Clicking on a room in the map allows you to reserve the room.  Green == available, Red == busy.
 
+## Useage Notes
+
+To cancel a booking, use a desktop browser to delete the event.
+
+Rooms are booked for 15 minute increments only, starting from when you press "Book It".  If the 15 minute interval overlaps with an upcoming reservation, you should get a message saying the booking was denied.  If the room is "green" in the map, then it's available at least until the upcoming reservation, so you can run to the room and grab it until then.
+
 ### Offices with bookable rooms currently include:
 
 - San Francisco
