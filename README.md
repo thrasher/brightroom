@@ -1,7 +1,7 @@
 BrightRoom
 ===========
 
-BrightRoom is a BrightRoll HAX project to allow for easy ad-hoc meeting room utilization.  Most scheduling apps show a calendar-like view of resource availability over time, but BrightRoom does it differently.  BrightRoom shows what rooms are available right now, in real time from a mobile device.  It allows you to schedule an ad-hoc private discussion in a room, based on current availability.  A map is included to show all rooms in the San Francisco office that are free or busy, and allow you to schedule any of the available rooms with two clicks.  (Other office maps are coming soon!)
+BrightRoom is a mobile app that allows for easy ad-hoc meeting room utilization.  Most scheduling apps show a calendar-like view of resource availability over time, but BrightRoom does it differently.  BrightRoom shows what rooms are available right now, in real time from a mobile device.  It allows you to schedule an ad-hoc private discussion in a room, based on current availability.  A map is included to show all rooms in the San Francisco office that are free or busy, and allow you to schedule any of the available rooms with two clicks.  (Other office maps are coming soon!)
 
 BrightRoom is designed for use from a mobile device, but works fine on a desktop too.  Android and iOS devices have a native-app look to them, which is familiar to many people.  Once you've logged into BrightRoom, bookmark the app (Android) or "Add to Home Screen" (iOS) so you have quick access to it in the future.
 
