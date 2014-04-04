@@ -11,10 +11,11 @@
 	<name>BrightRoom</name>
 
 <!--
-For deployment:
-gae:unpack will download and unpack the configured GAE version locally
-gae:run will simulate GAE locally
-gae:deploy will push the code to GAE and requires the GAE username/password to be set in the settings.xml file
+To run local development test:
+mvn appengine:devserver
+
+To upload new code to GAE:
+mvn appengine:update
 -->
 
 	<scm>
@@ -27,8 +28,24 @@ gae:deploy will push the code to GAE and requires the GAE username/password to b
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</repository>
 	</repositories>
-
+	<pluginRepositories>
+		<pluginRepository>
+			<id>google-staging</id>
+			<name>Google Staging</name>
+			<url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1004/</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.google.appengine</groupId>
+					<artifactId>appengine-maven-plugin</artifactId>
+					<version>${gae.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<!-- Generate compiled stuff in the folder used for developing mode -->
 		<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 		<!-- add sources as resource for other GWT libraries <resources> <resource> 
@@ -105,74 +122,49 @@ gae:deploy will push the code to GAE and requires the GAE username/password to b
 			<!-- Copy static web files before executing gwt:run -->
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>exploded</goal>
-						</goals>
-					</execution>
-				</executions>
+				<version>2.3</version>
 				<configuration>
-					<webappDirectory>${webappDirectory}</webappDirectory>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<git-SHA-1>${buildNumber}</git-SHA-1>
-						</manifestEntries>
-					</archive>
+					<archiveClasses>true</archiveClasses>
 					<webResources>
+						<!-- in order to interpolate version from pom into appengine-web.xml -->
 						<resource>
-							<directory>src/main/webapp</directory>
+							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
 							<filtering>true</filtering>
-							<includes>
-								<include>**/appengine-web.xml</include>
-							</includes>
+							<targetPath>WEB-INF</targetPath>
 						</resource>
 					</webResources>
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<groupId>com.google.appengine</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>${gae.version}</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<fullScanSeconds>1</fullScanSeconds>
+					<server>preview.appengine.google.com</server>
 				</configuration>
-			</plugin>
-			<!-- The actual maven-gae-plugin. Type "mvn gae:run" to run project, "mvn 
-				gae:deploy" to upload to GAE. -->
-			<!-- configure the settings.xml with: <server> <id>appengine.google.com</id> 
-				<username>jthrasher@brightroll.com</username> <password>secret</password> 
-				</server> -->
-			<plugin>
-				<groupId>net.kindleit</groupId>
-				<artifactId>maven-gae-plugin</artifactId>
-				<version>0.9.5</version>
-				<configuration>
-					<serverId>appengine.google.com</serverId>
-				</configuration>
-				<executions>
-					<!-- This execution isn't needed if you run gae:unpack to place the 
-						AppEngine SDK in your maven repo (needed one time per dev environment) <execution> 
-						<id /> <phase>validate</phase> <goals> <goal>unpack</goal> </goals> </execution> -->
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>net.kindleit</groupId>
-						<artifactId>gae-runtime</artifactId>
-						<version>${gae.version}</version>
-						<type>pom</type>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
+		<!-- Compile/runtime dependencies -->
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<version>${gae.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
@@ -184,6 +176,24 @@ gae:deploy will push the code to GAE and requires the GAE username/password to b
 			<artifactId>gwt-user</artifactId>
 			<version>${gwtVersion}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.mgwt</groupId>
+			<artifactId>mgwt</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+		<!-- Test Dependencies -->
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-testing</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-stubs</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -204,26 +214,23 @@ gae:deploy will push the code to GAE and requires the GAE username/password to b
 			<classifier>sources</classifier>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.googlecode.mgwt</groupId>
-			<artifactId>mgwt</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.5.0</gwtVersion>
+		<gwtVersion>2.6.0</gwtVersion>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- GWT needs at least java 1.6 -->
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<gae.version>1.7.4</gae.version>
+
+		<gae.version>1.9.2</gae.version>
 		<!-- identifier from the GAE dashboard, selects which app is deployed -->
 		<gae.application.identifier>btrllroom</gae.application.identifier>
 		<!-- Upload to http://test.<applicationName>.appspot.com by default -->
 		<gae.application.version>test</gae.application.version>
+
 		<!-- GAE logging -->
 		<java.util.logging.config.file>WEB-INF/logging.properties</java.util.logging.config.file>
 
