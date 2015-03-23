@@ -220,7 +220,23 @@ window.config =
       "seats": "16",
       "phone": "415-632-4561",
       "timeZone": "America\/Los_Angeles"
-    }    
+    },
+    {
+      "id": "yahoo-inc.com_43522d534e56412d30332d446561746856616c6c6579@resource.calendar.google.com",
+      "summary": "CR-SNVA-03-Death Valley (4)"
+    },
+    {
+      "id": "yahoo-inc.com_43522d534e56412d30332d536571756f6961@resource.calendar.google.com",
+      "summary": "CR-SNVA-03-Sequoia (4)"
+    },
+    {
+      "id": "yahoo-inc.com_56432d534e56412d30332d596f73656d697465@resource.calendar.google.com",
+      "summary": "VC-SNVA-03-Yosemite  (12)"
+    },
+    {
+      "id": "",
+      "summary": ""
+    }
   ]
 }
 ;
