@@ -48,8 +48,8 @@ mvn appengine:update
 
 		<!-- Generate compiled stuff in the folder used for developing mode -->
 		<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
-		<!-- add sources as resource for other GWT libraries <resources> <resource> 
-			<directory>src/main/java</directory> </resource> <resource> <directory>src/main/resources</directory> 
+		<!-- add sources as resource for other GWT libraries <resources> <resource>
+			<directory>src/main/java</directory> </resource> <resource> <directory>src/main/resources</directory>
 			</resource> </resources> -->
 
 		<plugins>
@@ -66,13 +66,13 @@ mvn appengine:update
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Add source folders to test classpath in order to run gwt-tests as 
-				normal junit-tests <plugin> <artifactId>maven-surefire-plugin</artifactId> 
-				<version>2.5</version> <configuration> <additionalClasspathElements> <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement> 
-				<additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement> 
-				</additionalClasspathElements> <useManifestOnlyJar>false</useManifestOnlyJar> 
-				<forkMode>always</forkMode> <systemProperties> <property> <name>gwt.args</name> 
-				<value>-out ${webappDirectory}</value> </property> </systemProperties> </configuration> 
+			<!-- Add source folders to test classpath in order to run gwt-tests as
+				normal junit-tests <plugin> <artifactId>maven-surefire-plugin</artifactId>
+				<version>2.5</version> <configuration> <additionalClasspathElements> <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+				<additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+				</additionalClasspathElements> <useManifestOnlyJar>false</useManifestOnlyJar>
+				<forkMode>always</forkMode> <systemProperties> <property> <name>gwt.args</name>
+				<value>-out ${webappDirectory}</value> </property> </systemProperties> </configuration>
 				</plugin> -->
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -110,7 +110,7 @@ mvn appengine:update
 						</goals>
 					</execution>
 				</executions>
-				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
+				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin
 					documentation at codehaus.org -->
 				<configuration>
 					<runTarget>index.html</runTarget>
@@ -198,7 +198,7 @@ mvn appengine:update
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
